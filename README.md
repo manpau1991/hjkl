@@ -1,3 +1,3 @@
-Test
-Yuri du Nerd!
-Testt
+== README ==
+
+This repository contains mostly random program fragments.
