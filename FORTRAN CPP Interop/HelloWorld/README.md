@@ -11,21 +11,21 @@ Use your C and FORTRAN compiler of choice to build this program. We use `gcc` an
 
 Instructions for Linux:
 
-# Use
+1. Use
 ```shell
 gfortran -c hello.f95
 ```
 to compile the FORTRAN program without linking it yet. This will create a non-executable
 `hello.o` object file.
 
-# In the same fashion, use
+2. In the same fashion, use
 ```shell
 gcc -c main.c
 ```
 to compile the C program without linking it. This step creates a non-executable `main.o`
 object file.
 
-# Link the object files together using gfortran:
+3. Link the object files together using gfortran:
 ```shell
 gfortran -o hw main.o hello.o
 ```
