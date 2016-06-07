@@ -11,9 +11,9 @@ Notes
    order. For example, consider the following matrix:
 
    ```
-       | 1 2 3 |           FORTRAN: M(3,3)
+        | 1 2 3 |           FORTRAN: M(3,3)
    M = | 4 5 6 |                 C: M[3][3]
-       | 7 8 9 |
+        | 7 8 9 |
    ```
 
       - In FORTRAN, `M` is stored along the columns: `[1 4 7 | 2 3 8 | 3 6 9]`
@@ -37,7 +37,7 @@ to build the program. This creates an executable called `fmat`, which can be run
 ```
 The program scales a given matrix by a factor of 2. You should see the following printed on your
 screen:
-```shell
+```
 Before:
 | 1 2 3 |
 | 4 5 6 |
