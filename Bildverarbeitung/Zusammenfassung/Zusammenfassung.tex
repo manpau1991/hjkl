@@ -1,0 +1,173 @@
+\input{Preamble}
+
+\begin{document}
+
+\title{Bildverarbeitung}
+\subtitle{Zusammenfassung}
+\author{Manuel Pauli\and{}Sebastian Schweikl}
+
+\maketitle
+
+\section{Mathematische Grundlagen}
+
+\begin{definition}[Funktionenräume] \leavevmode
+\begin{itemize}
+\item Wir bezeichnen mit $ L(\R) $ die Gesamtheit aller reellwertigen Funktionen, d.h.\ die Menge 
+  aller Funktionen, die von $ \R $ von $ \R $ abbilden:
+  \[
+    L(\R) = \{ f : \R \rightarrow \R \}.
+  \]
+  Analog ist $ l(\Z) $ die Menge aller reellwertigen Folgen, also Funktionen, die von $ \Z $ nach
+  $ \R $ abbilden:
+  \[
+    l(\Z) = \{ c : \Z \rightarrow \R \}.
+  \]
+  Wichtig: Die Indexmenge der Folge kommt aus $ \Z $, das Bild einer Folge das aber 
+  selbstverständlich weiterhin eine Teilmenge von $ \R $ sein. Wir könnten also auch schreiben:
+  \[
+    l(\Z) = \{ (c_{n})_{n \in \Z} \subseteq \R \}.
+  \]
+\item Die Menge aller summierbaren Funktionen $ L_{1}(\R) $ ist definiert durch
+\[ 
+  L_{1}(\R) \coloneqq \left\{
+    f \in L(\R) : \norm{f}_{1} \coloneqq \int_{\R} |f(t)| \dif t < \infty
+  \right\}
+\]
+und die Menge aller summierbaren Folgen durch
+\[ 
+  l_{1}(\Z) \coloneqq \left\{
+    c \in l(\Z) : \norm{f}_{1} \coloneqq \sum_{k \in \Z} |c(k)| < \infty
+  \right\}
+\]
+D.h., wir betrachten hier nur Funktionen (bzw. Folgen, aber das werde ich jetzt nicht mehr dazu 
+sagen), die \enquote{brav} sind. Damit ist gemeint, dass die
+Funktionen ein hinreichend schnelles Abklingverhalten gegen $ 0 $ besitzen müssen. Anschaulich 
+gesprochen bewirkt der Betrag ja, dass wir einfach alles, was von der Funktion unterhalb der
+$ x $-Achse liegt, nach oben \enquote{umklappen}, sodass es nun positiv ist. Und wenn wir jetzt 
+darüber integrieren, darf nur was Endliches dabei herauskommen. Dies ist eine hinreichende 
+Forderung, damit wir die Fourier-Transformation zu einer Funktion überhaupt vernünftig definieren 
+können.
+
+Wir stellen fest, dass in $ l_{1}(\Z) $ \emph{nur} absolut konvergente Nullfolgen (Folgen, deren
+Grenzwert $ 0 $ ist) zu finden sind.
+\item Analog wird die Menge der quadratsummierbaren Funktionen $ L_{2}(\R) $ definiert durch
+\[ 
+  L_{2}(\R) \coloneqq \left\{
+    f \in L(\R) : \norm{f}_{2} \coloneqq \sqrt{ \int_{\R} |f(t)|^{2} \dif t } < \infty
+  \right\}
+\]
+Unterschied zu den \enquote{normalen} summierbaren Funktionen ist, dass hier die Zwei-Norm der
+Funktion kleiner als unendlich sein muss anstatt der Eins-Norm (daher kommt ja auch der Name
+\enquote{quadratsummeribar}). Leider gibt es hierfür keine so schöne geometrische Anschauung, da wir
+über ganz $ \R $ integrieren, aber man kann versuchen, sich das Ganze so vorzustellen: Durch das
+Quadrieren des Betrags erhält man sozusagen eine Fläche, und durch das Integrieren erzeugen wir
+ein Volumen, welches dann so wie ein Schlauch an der $ x $-Achse entlang wabert. Durch das 
+Wurzelziehen brechen wir das Volumen wieder herunter auf eine Fläche. Und hier endet leider schon
+die Analogie. Auf dem Torus würde man jetzt noch durch $ 2\pi $ teilen (weil das die Länge eines
+Intervalls ist, welches isomorph zum Torus ist), und man könnte sich die Zwei-Norm vorstellen als
+Mittelwert der Fläche. Da wir aber über ganz $ \R $ integrieren und wir schlecht durch $ \infty $
+teilen können, lass ma das hier bleiben und geben uns mit dem zufrieden, was wir schon haben. 
+
+Das führt uns unweigerlich zu einer wichtigen Frage: Warum sollte man also überhaupt den Raum $ 
+L_{2}(\R) $ definieren wollen? Die Antwort ist: Weil Mathematiker es immer cool finden, 
+irgendwelche abgefahrenen Konzepte zu verallgemeinern. Außerdem kann man in $ L_{2}(\R) $ ein 
+Skalarprodukt von Funktionen definieren, mit dem sich recht schön rechnen lässt, was eben in 
+$ L_{1}(\R) $ nicht geht.
+
+Für die mathematisch Interessieren unter uns: $ L_{2}(\R) $ liegt dicht in $ L_{1}(\R) $, und es
+gilt:
+\[
+  L_{1}(\R) \nsubset L_{2}(\R) \quad \text{und} \quad L_{2}(\R) \nsubset L_{1}(\R).
+\]
+Cool ist es aber, wenn wir Funktionen im Schnitt der beiden Funktionenräume betrachten. Für solche
+Funktionen kann man nämlich wieder eine Fourier-Transformierte definieren, und man hat sogar ein
+Skalarprodukt.
+
+\item Einer geht noch: Die Menge aller beschränkten Funktionen und Folgen definiert durch
+\[
+  L_{\infty}(\R) \coloneqq \left\{
+    f \in L(\R) : \norm{f}_{\infty} \coloneqq
+      \sup_{t \in \R} |f(t)| < \infty
+  \right\}
+\]
+bzw.
+\[
+  l_{\infty}(\Z) \coloneqq \left\{
+    c \in l(\Z) : \norm{c}_{\infty} \coloneqq
+      \sup_{k \in \Z} |c(k)| < \infty
+  \right\}.
+\]
+Betrachten wir als Beispiel einer Folge in $ l_{\infty}(\Z) $ die Folge $ ((-1)^{n} : n \in \Z) $.
+Die Folge besitzt zwei Häufungspunkte $ -1 $ und $ 1 $, zwischen denen sie immer hin- und 
+herspringt. Das Supremum dieser Folge ist natürlich $ 1 $, was kleiner als $ \infty $ ist. Wäre 
+diese Folge auch in $ l_{1}(\Z) $? Nein, wäre sie nicht, da sie nicht mal konvergiert.
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Dirac-Puls]
+Der Dirac-Puls
+\[
+  \delta(k) \coloneqq \delta_{0k} \coloneqq 
+  \begin{cases}
+    1,& k = 0, \\ 0,& k \neq 0.
+  \end{cases}
+\]
+ist eine lustige Funktion, die nur an der Stelle $ 0 $ gleich $ 1 $ ist und sonst überall $ 0 $.
+\end{definition}
+
+\begin{definition}[Abtastoperator]
+Der Abtastoperator $  S_{h} : L(\R) \rightarrow l(\R) $ mit Schrittweite $ h $ ist für eine
+Funktion $ f $ definiert als
+\[
+  (S_{h}f)(k) \coloneqq f(hk), \quad k \in \Z.
+\]
+Das heißt, anstatt die Funktion für alle reellen Zahlen zu betrachten, tasten wir die Funktion
+an diskret vielen Stellen ab, welche alle im Abstand $ h \in \R $ zueinander sind. Wir betrachten
+die Funktion also nur an den Stellen $ 0, h, -h, 2h, -2h, 3h, -3h \dots $.
+\end{definition}
+
+\section{Fourier}
+
+\begin{definition}[Fourier-Transformation]
+Für Funktionen $ f \in L_{1}(\R) $ definieren wir mit
+\[
+  \widehat{f} : \R \rightarrow \C, \qquad
+  \widehat{f}(\xi) \coloneqq f^{\wedge}(\xi) \coloneqq 
+  \int_{\R} f(t) e^{-i\xi t} \dif t, \quad \xi \in \R
+\]
+die Fourier-Transformierte von $ f $.
+
+Was machen wir hier eigentlich? Schreiben wir einfach mal $ \widehat{f} $ als
+\begin{align*}
+   \int_{\R} f(t) e^{-i\xi t} \dif t
+&= \int_{\R} f(t) (\cos(\xi t) - i\sin(\xi t)) \dif t \\
+&= \int_{\R} f(t) \cos(\xi t) - i \int_{\R} f(t) \sin(\xi t) \dif t
+\end{align*}
+dann sehen wir, dass wir lediglich versuchen, $ f $ auszudrücken als Kombination von sinus- und
+cosinus-Termen. Wir schauen einfach, wo $ f $ und der $ \sin $ bzw. $ \cos $ eine große Ähnlichkeit
+zueinander haben (an der Stelle wird das Integral dann groß) und finden so heraus, welchen Anteil
+welche Frequenz am Signal $ f $ hat. Dass wir hier die doofe imaginäre Einheit $ i $ mit drin haben,
+liegt halt einfach daran, dass wir die Identität
+\[
+  e^{ix} = \cos(x) + i \sin(x)
+\]
+ausgenutzt haben, um die Fouriertransformation besonders elegant zu schreiben. Man hätte auch für
+Real- und Imaginärteil zwei gesonderte Fouriertransformationen definieren können. Aber das soll uns
+hier nicht weiter stören. Außerdem kann man halt mit einer Exponentialfunktion schöner rechnen 
+(z.B. ist die Ableitung der Exponentialfunktion wieder die Exponentialfunktion). Das ist eigentlich
+alles, was dahinter steckt.
+
+Wichtig: Mit der Fouriertransformation finden wir zwar heraus, welche Frequenzen im Singal stecken,
+aber wir wissen nicht, an welcher Stelle welche Frequenz auftritt! Wir haben keine Lokalität, da wir
+ja über ganz $ \R $ integrieren. Das ist ein wichtiger Unterschied zur Gabor-Transformation, wo wir
+unser einer Fensterfunktion bedienen, um so Frequenzen besser lokalisieren zu können $ \smiley $.
+
+Warum brachen wir $ L_{1}(\R) $-Funktionen? Wie vorher schon erwähnt, ist das eine 
+hinreichende Bedingung, dass $ \widehat{f} $ überhaupt existiert:
+\[
+  \widehat{f} \leq |\widehat{f}| = \left| \int_{\R} f(t) e^{-i\xi t} \dif t \right|
+  \leq \int_{\R} |f(t)| \underbrace{|e^{-i\xi t}|}_{= 1} \dif t = \int_{\R} |f(t)| \dif t < \infty.
+\]
+\end{definition}
+
+\end{document}
