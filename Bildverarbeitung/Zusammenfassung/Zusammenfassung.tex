@@ -1,5 +1,5 @@
 \input{Preamble}
-
+\usepackage[pdftex]{graphicx}  
 \begin{document}
 
 \title{Bildverarbeitung}
@@ -90,6 +90,16 @@ und die Menge aller summierbaren Folgen durch
     c \in l(\Z) \colon \norm{f}_{1} \coloneqq \sum_{k \in \Z} |c(k)| < \infty
   \right\}
 \]
+Bildlich Dargestellt kann man sich dies so vorstellen:
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\linewidth]{Bilder/L1}
+\caption{}
+\label{fig:L1}
+\end{figure}
+
+
+
 
 \item Analog wird die Menge der quadratsummierbaren Funktionen $ L_{2}(\R) $ definiert durch
 \[ 
@@ -103,7 +113,14 @@ und die Menge der quadratsummierbaren Folgen durch
     c \in l(\Z) \colon \norm{c}_{2} \coloneqq \sqrt{ \sum_{k \in \Z} |c(k)|^{2} } < \infty.
   \right\}
 \]
-$ \norm{\bullet}_{2} $ bezeichnet man auch als die \enquote{Energie-Norm}.
+$ \norm{\bullet}_{2} $ bezeichnet man auch als die \enquote{Energie-Norm}.\\
+Bildlich Dargestellt kann man sich dies so vorstellen:
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{Bilder/L2}
+	\caption{}
+	\label{fig:L1}
+\end{figure}
 \item Die Menge aller beschränkten Funktionen und Folgen definiert durch
 \[
   L_{\infty}(\R) \coloneqq \left\{
@@ -275,9 +292,21 @@ Das Argument lässt sich analog auf $ l_{1}(\Z) $-Folgen übertragen.
 \item Der Translationsoperator $ \tau_{y} $ mit $ y \in \R $ angewendet auf eine Funktion $ f $ ist 
 definiert als
 \[ \tau_{y} \ f \coloneqq f(\bullet + y). \]
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{Bilder/translation}
+	\caption{}
+	\label{fig:L1}
+\end{figure}
 \item Der Skalierungsoperator $ \sigma_{h} $ mit $ h \in \R \setminus \{ 0 \} $ angewendet auf eine 
 Funktion $ f $ ist definiert als
 \[ \sigma_{h} \ f \coloneqq f(h \cdot \bullet). \]
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{Bilder/Skalierung}
+	\caption{}
+	\label{fig:L1}
+\end{figure}
 \end{enumerate}
 \end{definition}
 
@@ -393,7 +422,14 @@ Fläche zwischen beiden Rechtecksfunktionen eingeschlossen, also Flächeninhalt 
 kommt bei $ \Delta_{[-2,2]}(x) $ heraus, wenn man $ x = 1 $ oder $ x = -1 $ einsetzt.
 
 Die geometrische Interpretation einer Faltung ist also sehr vielfältig und hängt sehr stark von den
-beiden Funktionen ab, die miteinander gefaltet werden.
+beiden Funktionen ab, die miteinander gefaltet werden.\\
+Bildlich Dargestellt kann man sich dies so vorstellen:
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{Bilder/Faltung}
+	\caption{}
+	\label{fig:L1}
+\end{figure}
 \end{example}
 
 \end{document}
