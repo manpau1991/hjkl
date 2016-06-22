@@ -1,0 +1,72 @@
+\documentclass{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{microtype}
+
+\usepackage{scrhack} % Verschiedene Hacks für die Kompatibilität anderer Pakete mit KOMA-Script.
+
+\usepackage{libertine}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[libertine]{newtxmath} % Libertine Math.
+\usepackage{commath}
+
+\usepackage{wasysym}
+
+\usepackage[T1]{fontenc}
+
+% Schusterjungen und Hurenkinder
+\widowpenalties 3 10000 10000 100
+\clubpenalties 3 10000 10000 100
+\displaywidowpenalty = 10000
+
+\usepackage[german=guillemets]{csquotes}
+\usepackage{booktabs}
+
+\usepackage{hyperref}
+
+\allowdisplaybreaks % Allows pagebreaking of aligned equations
+
+\newtheoremstyle{myplain}% name
+  {\topsep}% Space above
+  {\topsep}% Space below
+  {\itshape}% Body font
+  {}% Indent amount
+  {\bfseries\sffamily}% Theorem head font
+  {}%Punctuation after theorem head
+  {.5em}%Space after theorem head
+  {}% theorem head spec
+
+\newtheoremstyle{mydefinition}% name
+  {\topsep}% Space above
+  {\topsep}% Space below
+  {\normalfont}% Body font
+  {}% Indent amount
+  {\bfseries\sffamily}% Theorem head font
+  {}%Punctuation after theorem head
+  {.5em}%Space after theorem head
+  {}% theorem head spec
+
+\newtheoremstyle{myremark}% name
+  {\topsep}% Space above
+  {\topsep}% Space below
+  {\normalfont}% Body font
+  {}% Indent amount
+  {\itshape\sffamily}% Theorem head font
+  {}%Punctuation after theorem head
+  {.5em}%Space after theorem head
+  {}% theorem head spec
+
+\theoremstyle{myplain}
+\newtheorem{proposition}{Satz}[section]
+
+\theoremstyle{mydefinition}
+\newtheorem{definition}[proposition]{Definition}
+\newtheorem{example}[proposition]{Beispiel}
+\newtheorem{remark}[proposition]{Bemerkung}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\T}{\mathbb{T}}
