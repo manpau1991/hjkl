@@ -431,5 +431,18 @@ Bildlich Dargestellt kann man sich dies so vorstellen:
 	\label{fig:L1}
 \end{figure}
 \end{example}
-
+\begin{remark}[Eigenschaften der Fouriertransformation und deren graphische Deutung]:
+	 %%Hier könnten wir zu jeder Eigenschaft kurz schreiben was sie bedeuten und falls nötig oder möglich durch Bilder
+	%%veranschaulichen
+	\begin{enumerate}
+		\item Translation für $ f \in L_1(\R)  $ und $ y \in \R $ 
+		\[ \widehat{\tau_{y} \ f}(\xi) = e^{iy\xi}\widehat{f}(\xi), \xi \in \R \]
+		Wie bereits oben erwähnt verschiebt eine Translation eine Funktion um den Wert $ y $. Verschiebt man nun die ursprüngliche Funktion des Signal, sollte sich an den Anteilen der Frequenzen $ \xi $ nichts ändern. Wo kommt aber nun dieser seltsame Faktor $ e^{iy\xi} $ her? Dazu müssen wir uns wieder in Erinnerung rufen, dass sich die Fouriertransformation auch so schreiben lässt: $ \int_{\R} f(t) \cos(\xi t) - i \int_{\R} f(t) \sin(\xi t) \dif t $\\
+		$ \rightarrow $ Es gibt einen Imaginärteil und einen Realteil. Durch die Translation ändert sich nur die Aufteilung zwischen diesen zwei Teilen. Der Gesamtanteil bleibt gleich. Diese Umverteilung geschieht durch den Vorfaktor $ e^{iy\xi} $  (Bild einfügen)
+		\item Skalierung
+		\item Faltung
+		\item Ableitungseigenschaften
+		\item Inverse Fouriertransformation
+	\end{enumerate}
+\end{remark}
 \end{document}
