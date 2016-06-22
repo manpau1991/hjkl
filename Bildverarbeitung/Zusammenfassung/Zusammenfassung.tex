@@ -10,8 +10,59 @@
 
 \section{Mathematische Grundlagen}
 
+\begin{definition}[Torus]
+Als \emph{Torus} bezeichnet man die Menge der Äquivalenzklassen definiert durch
+\[
+  \T \coloneqq \R / 2\pi\Z,
+\]
+
+gesprochen \enquote{$ \R $ modulo $ 2\pi\Z $}.
+\end{definition}
+
+\begin{remark}[Torus]
+Einfach gesagt: Alle reellen Zahlen, die beim Teilen durch Vielfache von $ 2\pi $ den selben Rest 
+lassen, sind äquivalent, und der Torus enthält alle möglichen Reste, die dabei auftreten können. 
+Beispiel:
+\[
+0 / 2\pi = 0 \text{ Rest } 0, \quad 
+2\pi / 2\pi = 1 \text{ Rest } 0, \quad 
+4\pi / 2\pi = 2 \text{ Rest } 0, \dots
+\]
+D.h., die Zahlen $ 0 $, $ 2\pi $ und $ 4\pi $ sind zueinander äquivalent, da sie alle den Rest $ 0 $
+lassen. Man sagt, sie befinden sich in einer gemeinsamen \emph{Äquivalenzklasse}. Da es unendlich
+viele Zahlen gibt, die beim Teilen durch $ 2\pi $ den Rest $ 0 $ lassen, befinden sich unendlich
+viele Zahlen in dieser Äquivalenzklasse. Daher sucht man sich einen Stellvertreter (einen sog.
+\emph{Repräsentanten}), um vernünftig arbeiten zu können. Es bietet sich die einfachste Zahl in der
+Äquivalenzklasse an, in diesem Fall die $ 0 $, und man schreibt dann häufig $ [0] $, wenn alle 
+Zahlen gemeint sind, die zur $ 0 $ äquivalent sind.
+
+Nun wird dem einen oder anderen schon aufgefallen sein, dass der Torus auch unendlich viele 
+Äquivalenzklassen besitzt (da es ja unendlich viele mögliche Reste beim Teilen gibt).
+Z.B.\ ist jede Zahl aus dem Intervall $ [0, 2\pi) $ ein Repräsentant genau einer Äquivalenzklasse,
+und zu jeder Äquivalenzklasse kann man einen Repräsentanten in $ [0, 2\pi) $ finden. Daher sagt man
+$ \T $ ist \emph{isomorph} zu $ [0, 2\pi) $, in Zeichen
+\[
+  \T \simeq [0, 2\pi).
+\]
+Wichtig: Das heißt \emph{nicht}, dass $ \T $ das Gleiche ist wie $ [0, 2\pi) $! $ [0, 2\pi) $
+ist immer noch ein Intervall, und die Elemente aus $ \T $ können zwar mit denen aus $ [0, 2\pi) $ 
+identifiziert werden, aber $ \T $ hat \emph{mehr Struktur} als $ [0, 2\pi) $. Denn: Wenn ich z.B. 
+die Zahl $ \pi $ aus dem Torus mit sich selber addiere, dann bekomme ich $ 0 $, denn
+$ \pi + \pi = 2\pi $ und $ 2\pi / 2\pi = 1 $ mit Rest $ 0 \in \T $. Das Ergebnis ist wieder ein 
+Element aus dem Torus! Wenn ich aber $ \pi \in [0, 2\pi) $ betrachte, und die selbe Rechnung
+wiederhole, dann bekomme ich immer noch $ 2\pi $. Aber im Unterschied zu vorher gilt jetzt
+$ 2\pi \notin [0, 2\pi) $!
+
+Übrigens gibt es unendlich viele Intervalle, die isomorph zu $ \T $ sind, z.B.
+\[
+  [-\pi, \pi), (-2\pi, 0], [-2\pi, 0), [42.5\pi, 44.5\pi), \dots
+\]
+Jedes Intervall der Länge $ 2\pi $ ist isomorph zu $ \T $! Aber man sucht sich natürlich nur die
+hübschen Intervalle raus, und das sind im wesentlichen eh nur $ [0, 2\pi) $ und $ [-\pi, \pi) $.
+\end{remark}
+
 \begin{definition}[Funktionenräume] \leavevmode
-\begin{itemize}
+\begin{enumerate}
 \item Wir bezeichnen mit $ L(\R) $ die Gesamtheit aller reellwertigen Funktionen, d.h.\ die Menge 
   aller Funktionen, die von $ \R $ von $ \R $ abbilden:
   \[
@@ -39,23 +90,66 @@ und die Menge aller summierbaren Folgen durch
     c \in l(\Z) : \norm{f}_{1} \coloneqq \sum_{k \in \Z} |c(k)| < \infty
   \right\}
 \]
-D.h., wir betrachten hier nur Funktionen (bzw. Folgen, aber das werde ich jetzt nicht mehr dazu 
-sagen), die \enquote{brav} sind. Damit ist gemeint, dass die
-Funktionen ein hinreichend schnelles Abklingverhalten gegen $ 0 $ besitzen müssen. Anschaulich 
-gesprochen bewirkt der Betrag ja, dass wir einfach alles, was von der Funktion unterhalb der
-$ x $-Achse liegt, nach oben \enquote{umklappen}, sodass es nun positiv ist. Und wenn wir jetzt 
-darüber integrieren, darf nur was Endliches dabei herauskommen. Dies ist eine hinreichende 
-Forderung, damit wir die Fourier-Transformation zu einer Funktion überhaupt vernünftig definieren 
-können.
 
-Wir stellen fest, dass in $ l_{1}(\Z) $ \emph{nur} absolut konvergente Nullfolgen (Folgen, deren
-Grenzwert $ 0 $ ist) zu finden sind.
 \item Analog wird die Menge der quadratsummierbaren Funktionen $ L_{2}(\R) $ definiert durch
 \[ 
   L_{2}(\R) \coloneqq \left\{
     f \in L(\R) : \norm{f}_{2} \coloneqq \sqrt{ \int_{\R} |f(t)|^{2} \dif t } < \infty
   \right\}
 \]
+und die Menge der quadratsummierbaren Folgen durch
+\[ 
+  l_{2}(\Z) \coloneqq \left\{
+    c \in l(\Z) : \norm{c}_{2} \coloneqq \sqrt{ \sum_{k \in \Z} |c(k)|^{2} } < \infty
+  \right\}
+\]
+\item Die Menge aller beschränkten Funktionen und Folgen definiert durch
+\[
+  L_{\infty}(\R) \coloneqq \left\{
+    f \in L(\R) : \norm{f}_{\infty} \coloneqq
+      \sup_{t \in \R} |f(t)| < \infty
+  \right\}
+\]
+bzw.
+\[
+  l_{\infty}(\Z) \coloneqq \left\{
+    c \in l(\Z) : \norm{c}_{\infty} \coloneqq
+      \sup_{k \in \Z} |c(k)| < \infty
+  \right\}.
+\]
+\item Einer geht noch: Die Menge der Funktionen und Folgen mit \emph{endlichem Träger}, geschrieben
+als $ L_{00}(\R) $ bzw.\ $ l_{00}(\Z) $. Was ist mit \enquote{endlichem Träger} gemeint? Das 
+bedeutet, dass der Bereich, auf dem die Funktion bzw.\ Folge lebt, nicht unendlich groß sein darf.
+Formal: Es existiert ein $ N \in \N $, sodass
+\[
+  \left.
+  \begin{array}{r}
+    \{ t \in \R : f(t) \neq 0 \} \\
+    \{ k \in \Z : c(k) \neq 0 \}
+  \end{array}
+  \right\}
+  \subseteq [-N, N].
+\]
+\end{enumerate}
+\end{definition}
+
+\begin{remark}[$ L_{1}(\R) $-Funktionen und $ l_{1}(\Z) $-Folgen]
+Wir betrachten nur Funktionen (bzw. Folgen, aber das werde ich jetzt nicht mehr dazu 
+sagen), die \enquote{brav} sind. Damit ist gemeint, dass die Funktionen ein hinreichend schnelles 
+Abklingverhalten gegen $ 0 $ besitzen müssen. Anschaulich gesprochen bewirkt der Betrag ja, dass 
+wir einfach alles, was von der Funktion unterhalb der $ x $-Achse liegt, nach oben 
+\enquote{umklappen}, sodass es nun positiv ist. Und wenn wir jetzt darüber integrieren, darf nur 
+was Endliches dabei herauskommen. Dies ist eine hinreichende Forderung, damit wir die 
+Fourier-Transformation zu einer Funktion überhaupt vernünftig definieren können.
+
+Wir stellen fest, dass in $ l_{1}(\Z) $ \emph{nur} Nullfolgen (Folgen, deren
+Grenzwert $ 0 $ ist) zu finden sind, z.B.\ $ (1 / k^2)_{k \in \Z} $. Achtung! Die Folge 
+$ (1 / k)_{k \in \Z} $ ist zwar auch eine Nullfolge, aber die Reihe dazu konvergiert nicht 
+absolut (wir haben es hier ja mit der harmonischen Reihe zu tun), und ist daher ist die Folge auch 
+nicht in $ l_{1}(\Z) $.
+\end{remark}
+
+\begin{remark}[$ L_{2}(\R) $-Funktionen und $ l_{2}(\Z) $-Folgen]
 Unterschied zu den \enquote{normalen} summierbaren Funktionen ist, dass hier die Zwei-Norm der
 Funktion kleiner als unendlich sein muss anstatt der Eins-Norm (daher kommt ja auch der Name
 \enquote{quadratsummeribar}). Leider gibt es hierfür keine so schöne geometrische Anschauung, da wir
@@ -82,34 +176,27 @@ gilt:
 Cool ist es aber, wenn wir Funktionen im Schnitt der beiden Funktionenräume betrachten. Für solche
 Funktionen kann man nämlich wieder eine Fourier-Transformierte definieren, und man hat sogar ein
 Skalarprodukt.
+\end{remark}
 
-\item Einer geht noch: Die Menge aller beschränkten Funktionen und Folgen definiert durch
-\[
-  L_{\infty}(\R) \coloneqq \left\{
-    f \in L(\R) : \norm{f}_{\infty} \coloneqq
-      \sup_{t \in \R} |f(t)| < \infty
-  \right\}
-\]
-bzw.
-\[
-  l_{\infty}(\Z) \coloneqq \left\{
-    c \in l(\Z) : \norm{c}_{\infty} \coloneqq
-      \sup_{k \in \Z} |c(k)| < \infty
-  \right\}.
-\]
+\begin{example}[Beschränkte Folge]
 Betrachten wir als Beispiel einer Folge in $ l_{\infty}(\Z) $ die Folge $ ((-1)^{n} : n \in \Z) $.
 Die Folge besitzt zwei Häufungspunkte $ -1 $ und $ 1 $, zwischen denen sie immer hin- und 
 herspringt. Das Supremum dieser Folge ist natürlich $ 1 $, was kleiner als $ \infty $ ist. Wäre 
-diese Folge auch in $ l_{1}(\Z) $? Nein, wäre sie nicht, da sie nicht mal konvergiert.
-\end{itemize}
-\end{definition}
+diese Folge auch in $ l_{1}(\Z) $? Nein, wäre sie nicht, da sie ja nicht mal konvergiert.
+\end{example}
+
+\begin{example}[$ L_{00}(\R) $-Funktion]
+Die Exponentialfunktion $ \exp $ wird niemals $ 0 $, sie hat unendlichen Träger und
+deshalb keine $ L_{00}(\R) $-Funktion. Die Rechtecksfunktion $ \chi_{[-1,1]} $ hingegen ist nur
+im Intervall $ [-1,1] $ ungleich $ 0 $ und daher in $ L_{00}(\R) $.
+\end{example}
 
 \begin{definition}[Dirac-Puls]
 Der Dirac-Puls
 \[
   \delta(k) \coloneqq \delta_{0k} \coloneqq 
   \begin{cases}
-    1,& k = 0, \\ 0,& k \neq 0.
+    1,& k = 0, \\ 0,& k \neq 0
   \end{cases}
 \]
 ist eine lustige Funktion, die nur an der Stelle $ 0 $ gleich $ 1 $ ist und sonst überall $ 0 $.
@@ -136,8 +223,11 @@ Für Funktionen $ f \in L_{1}(\R) $ definieren wir mit
   \int_{\R} f(t) e^{-i\xi t} \dif t, \quad \xi \in \R
 \]
 die Fourier-Transformierte von $ f $.
+\end{definition}
 
-Was machen wir hier eigentlich? Schreiben wir einfach mal $ \widehat{f} $ als
+\begin{remark}[Fourier-Transformation]\leavevmode
+\begin{itemize}
+\item Was machen wir hier eigentlich? Schreiben wir einfach mal $ \widehat{f} $ als
 \begin{align*}
    \int_{\R} f(t) e^{-i\xi t} \dif t
 &= \int_{\R} f(t) (\cos(\xi t) - i\sin(\xi t)) \dif t \\
@@ -145,29 +235,31 @@ Was machen wir hier eigentlich? Schreiben wir einfach mal $ \widehat{f} $ als
 \end{align*}
 dann sehen wir, dass wir lediglich versuchen, $ f $ auszudrücken als Kombination von sinus- und
 cosinus-Termen. Wir schauen einfach, wo $ f $ und der $ \sin $ bzw. $ \cos $ eine große Ähnlichkeit
-zueinander haben (an der Stelle wird das Integral dann groß) und finden so heraus, welchen Anteil
-welche Frequenz am Signal $ f $ hat. Dass wir hier die doofe imaginäre Einheit $ i $ mit drin haben,
-liegt halt einfach daran, dass wir die Identität
+zueinander haben (an der Stelle wird das Integral dann groß) und finden so heraus, welchen 
+\enquote{Anteil} welche Frequenz $ \xi $ am Signal $ f $ hat. Dass wir hier die doofe imaginäre 
+Einheit $ i $ mit drin haben, liegt halt einfach daran, dass wir die Identität
 \[
   e^{ix} = \cos(x) + i \sin(x)
 \]
 ausgenutzt haben, um die Fouriertransformation besonders elegant zu schreiben. Man hätte auch für
 Real- und Imaginärteil zwei gesonderte Fouriertransformationen definieren können. Aber das soll uns
 hier nicht weiter stören. Außerdem kann man halt mit einer Exponentialfunktion schöner rechnen 
-(z.B. ist die Ableitung der Exponentialfunktion wieder die Exponentialfunktion). Das ist eigentlich
-alles, was dahinter steckt.
-
-Wichtig: Mit der Fouriertransformation finden wir zwar heraus, welche Frequenzen im Singal stecken,
-aber wir wissen nicht, an welcher Stelle welche Frequenz auftritt! Wir haben keine Lokalität, da wir
-ja über ganz $ \R $ integrieren. Das ist ein wichtiger Unterschied zur Gabor-Transformation, wo wir
-unser einer Fensterfunktion bedienen, um so Frequenzen besser lokalisieren zu können $ \smiley $.
-
-Warum brachen wir $ L_{1}(\R) $-Funktionen? Wie vorher schon erwähnt, ist das eine 
+(z.B. ist die Stammfunktion der Exponentialfunktion wieder die Exponentialfunktion). Das ist 
+eigentlich alles, was dahinter steckt. Will man die imaginäre Einheit ganz wegbekommen, geht man 
+im diskreten Fall einfach über zur \emph{Diskreten Cosinus-Transformation}.
+\item Wichtig: Mit der Fouriertransformation finden wir zwar heraus, welche Frequenzen im Singal 
+stecken,
+aber wir wissen nicht, an welcher Stelle bzw. zu welchem Zeitpunkt die entsprechende Frequenz 
+auftritt! Wir haben keine Lokalität, da wir ja über ganz $ \R $ integrieren. Das ist ein wichtiger 
+Unterschied zur \emph{Gabor-Transformation}, wo wir unser einer Fensterfunktion bedienen, um so 
+Frequenzen besser lokalisieren zu können $ \smiley $.
+\item Warum brachen wir $ L_{1}(\R) $-Funktionen? Wie vorher schon erwähnt, ist das eine 
 hinreichende Bedingung, dass $ \widehat{f} $ überhaupt existiert:
 \[
   \widehat{f} \leq |\widehat{f}| = \left| \int_{\R} f(t) e^{-i\xi t} \dif t \right|
   \leq \int_{\R} |f(t)| \underbrace{|e^{-i\xi t}|}_{= 1} \dif t = \int_{\R} |f(t)| \dif t < \infty.
 \]
-\end{definition}
+\end{itemize}
+\end{remark}
 
 \end{document}
