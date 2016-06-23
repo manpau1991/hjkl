@@ -148,8 +148,9 @@
 \section{Filter}
 \begin{description}
 	\item[Was ist ein Filter?]
+      Ein Filter ist ein Operator, der ein gegebenes Signal in ein anderes Signal transformiert.
 	\item[Wie sieht ein Filter allgemein aus?]
-	\item[Wie sieht ein Tiefpass aus? Zeichne den Graph]
+	\item[Wie sieht ein Tiefpass-Filter aus? Zeichne den Graph]
 	\item[Forderungen an die Transferfunktion für Tiefpass]
 	\item[Erkläre das Gibbs-Phänomen]
 	\item[Welche Arten von Filter gibt es? Erklären Sie diese]
@@ -161,11 +162,34 @@
 \subsection{Was ist ein Gradientenfilter?}
 \begin{description}
 	\item[Wozu ist er gut?]
+      Mit einem Gradientenfilter können Kanten in Bildern erkannt/hervorgehoben werden.
 	\item[Wie funktioniert er?]
+      Ist eine solche Kante in einem Bild, so muss dort ein signifikant anderer Farbwert
+      vorhanden sein. Dies macht man sich zu nutze, indem man sich die Steigung zwischen
+      zwei benachbarten Farbwerten ansieht: Ist diese Steigung groß, so sind die Farbwerte
+      grob unterschiedlich (beispielsweise eine schwarze Kante auf einem weißen Hintergrund),
+      was ein Indikator für eine Kante ist.
 	\item[Wie sieht so ein Filter aus? (Gradient + Filtermatrix)]
+      Wie schon erwähnt betrachtet man die Steigungen. Kontinuierlich betrachtet ist dies
+      aber gerade die erste Ableitung, was im mehrdimensionalen der Gradient
+      $$ \nabla f = \begin{pmatrix} \frac{\partial}{\partial x_1}f\\ \vdots\\ \frac{\partial}{\partial x_n}f \end{pmatrix} $$
+      ist. Um diesen nun auf ein diskretes Signal (z.B. ein Bild) anwenden zu können, muss
+      man diesen geeignet diskretisieren. Dies ergibt die Filtermatrizen in $x$- und $y$-Richtung
+      $$ \begin{pmatrix}0&0&0\\0&-1&1\\0&0&0\end{pmatrix},\qquad\begin{pmatrix}0&1&0\\0&-1&0\\0&0&0\end{pmatrix}. $$
 	\item[Wie kommt man auf die Impulsantwort?]
 	\item[Nachteile + mögliche Gegenmaßnahmen]
+      Ein wesentlicher Nachteil eines reinen Gradientenfilters ist, dass dieser gegen Rauschen extrem empfindlich ist, da
+      auch diese feinen Unterschiede unterschiedliche Farbwerte und damit potenzielle Kanten liefern.\\
+      Um dies zu beheben, kann man den Gradientenfilter mit einem Mittelwertfilter kombinieren, welcher das Bild glättet 
+      und damit Rauschen entfernt, gefolgt vom eigentlichen Gradientenfilter.\\
 	\item[Wie sieht so ein Filter aus?]
+      Obiges Vorgehen liefert z.B. diese neuen Filtermatrizen:
+      $$ \frac{1}{9}\begin{pmatrix}-1&0&0&1\\-1&0&0&1\\-1&0&0&1\end{pmatrix},\qquad \frac{1}{9}\begin{pmatrix}1&1&1\\0&0&0\\0&0&0\\-1&-1&-1\end{pmatrix}$$
+    \item[So viel zu Gradientenfilter, was ist aber dann ein Laplace-Filter?]
+      Ein Laplace-Filter ist eine Diskretisierung des Laplace-Operators
+      $$ \Delta = \langle \nabla, \nabla \rangle, $$
+      welcher offensichtlich beide Richtungen kombiniert. Eine Diskretisierung ergibt z.B. die Filtermatrix
+      $$ \begin{pmatrix} 1&1&1\\1&-8&1\\1&1&1 \end{pmatrix}.$$
 \end{description}
 \subsection{Filterbänke}
 \begin{description}
@@ -184,11 +208,28 @@
 	\item[Was ist ein bandbeschränktes Signal?]
 	\item[Was ist der Träger eines Signals?]
 	\end{description}
-\section{Hugh-Transformation}
+\section{Hough-Transformation}
 \begin{description}
-	\item[Was ist die Hugh-Transformation?]
+	\item[Was ist die Hough-Transformation?]
+      % Ja, hier hab ich textbf verwendet, weil ich das explizit fett haben will, nur so zur Info ...
+      Die Hough-Transformation ist ein allgemeines Verfahren, um in einem \textbf{binearisierten} Bild Formen zu erkennen.
 	\item[Wie funktioniert sie?]
+      Bei der Hough-Transformation wird für alle möglichen Variationen einer Form im gesamten Bild
+      gesucht, ob diese vorkommt. Dies wir dadurch realisiert, dass man bei der Test-Form alle Pixel gezählt
+      werden, bei der in der binearisierten Form ein Farbwert (z.B. 1 für Schwarz) steht. Hat man nun eine hohe Anzahl
+      gefunden, so hat man ziemlich sicher auch die gesuchte Form im Bild erkannt.
 	\item[Was ermöglicht sie?]
+      Mit diesem Verfahren kann man nun nach \emph{allen möglichen} Formen in Bildern suchen, die Formen müssen sich 
+      entsprechen parameterisieren lassen. Dies ist u.a. für Linien, Kreise, Ellipsen u.v.m. möglich.
+
+      Man beachte aber, dass man z.B. bei Linien zwei Freiheitsgrade hat. D.h. man muss für alle Möglichkeiten dieser
+      Freiheitsgrade das Bild absuchen, was hier schon quadratischen Aufwand liefert. Will man nun z.B. Kreise finden,
+      so hat man schon drei Freiheitsgrade (die $x$- und die $y$-Koordinate des Mittelpunktes und den Radius $r$), was
+      entsprechend kubischen Aufwand liefert.
+    \item[Was sind mögliche Optimierungsmöglichkeiten?]
+      Mögliche einfache Optimierungen sind z.B., dass man die Freiheitsgrade einschränkt. Sucht man z.B. in einem Bild
+      nur nach Kreisen mit einem festen Radius, so besteht die einzige Variationsmöglichkeit in den Koordinaten des
+      Kreismittelpunktes, was insgesamt also quadratischen Aufwand verursacht.
 	\item[Welcher Filter spielt dabei eine Rolle?]
 	\item[Gibt es weitere Filter zur Kantenerkennung?]
 \end{description}
