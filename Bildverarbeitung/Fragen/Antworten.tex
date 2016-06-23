@@ -9,6 +9,11 @@
 \newcommand{\DIFF}[2]{\frac{\INT{#1}}{\INT{#2}}}
 \renewcommand{\theta}{\vartheta}
 
+% ----
+% JAAAA, ich weiß, ich verwende hier oft \text, was aber für
+% unsere Belange hier komplett ausreichend ist.
+% ----
+
 \title{Bildverarbeitung}
 \subtitle{Fragen}
 \author{Manuel Pauli\and{}Sebastian Schweikl\and{}Thomas Lang}
@@ -202,12 +207,35 @@
 \begin{description}
 	\item[Welche Eigenschaften müssen für eine Abtastung gelten?]
 	\item[Erkläre den Shannonschen Abtastsatz]
+      Der Shannon'sche Abtastsatz sagt, dass wenn man eine $T$-bandbeschränkte $L_1$-Funktion fein genug
+      abtastet, dann kann man aus dieser Abtastung durch eine semi-diskrete Faltung mit der \emph{sinc}-Funktion
+      die Originalfunktion eindeutig rekonstruieren.
 	\item[Wie funktioniert Abtasten überhaupt?]
+      Beim Abtasten mit Faktor $h$ nimmt man nur jeden $h$-ten Funktionswert in die Evaluation auf.
+      Formal nimmt man also nur jeden $c(h\cdot)$-ten Wert auf.
 	\item[Was ist die kritische Abtastrate?]
+      Die kritische Abtastschrittweite ist der Kehrwert der sogenannten Nyquist-Frequenz. Das bedeutet, dass
+      man mit einer höheren Frequenz als der Nyquist-Frequenz (und damit mit einer kleineren Abtastschrittweite) 
+      abtasten muss, um die Funktion (sofern überhaupt möglich) eindeutig aus der Abtastung rekonstruieren zu können.\\
+      Tastet man zu grob ab, so kommt es zu \emph{Überlagerungen}, wo man im Nachhinein nicht mehr sagen kann, zu welchem
+      Teil des Signals welcher Teil der Überlagerung gehört.
 	\item[Wie berechnet man die kritische Abtastrate?]
+      Die Nyquist-Frequenz einer $T$-bandbeschränkten Funktion ist gegeben durch $T/\pi$, entsprechend ergibt sich
+      die kritische Abtastschrittweite durch deren Kehrwert, also $h^* = \pi/T$.\\
+      Um nun die angesprochene eindeutige Rekonstruktion zu bewerkstelligen, muss man mit einer Schrittweite von
+      $h < h^*$ abtasten.
 	\item[Was ist ein bandbeschränktes Signal?]
+      Ein bandbeschränktes Signal $f\in L_1(\R)$ ist ein Signal, welches nur ein \emph{beschränktes Band} and Frequenzen
+      ($[-N,N], N\in\R$) beinhaltet\footnote{Was ja auch durchaus realitätsnah ist.}, formal:
+      $$ \hat f(\xi) = 0 \Leftrightarrow \xi \not\in [-N,N]\quad,\xi\in\R $$
 	\item[Was ist der Träger eines Signals?]
-	\end{description}
+      Der Träger eines Signals ist umgangssprachlich definiert als der Bereich auf der Zeitachse, auf der
+      das Signal \emph{lebt}. Formal ist der Träger
+      $$ \text{supp} f = \{t \in \R \colon f(t) \neq 0 \} \subset \R $$
+
+      In einem realen Anwendungsfall wir ein Signal immer endlichen Träger $[a,b]\subset\R$ haben, 
+      also gilt für ein passendes Maß $\INTM{\mu}$, dass $\INTM{\mu}([a,b]) < \infty$ ist.
+\end{description}
 \section{Hough-Transformation}
 \begin{description}
 	\item[Was ist die Hough-Transformation?]
