@@ -127,6 +127,23 @@
       $$ \hat f(\xi) = \int_\R^2 f(t)e^{-i \xi^T t}\INT{t}\quad, \xi,t\in\R^2 $$
 \end{description}
 \subsection{Faltung}
+\begin{description}
+  \item[Was ist formal eine Faltung?]
+    Formal gesehen ist eine Faltung ein Integral. Dieses ist für Funktionen $f, g\in\R^n \to \C$ definiert als
+    $$ (f*g) = \int_{\R^n} f(\cdot - t)g(t)\INT{t}. $$
+    Prinzipiell ist dieser Ausdruck definiert für alle Funktionen, die für \emph{fast alle} $x\in\R$ wohldefiniert
+    sind. In unserem eingeschränkten Kontext der integrierbaren  Funktionen ist dies automatisch erfüllt.
+  \item[Wie kann man sich so eine Faltung graphisch vorstellen?]
+    Man kann sich das so vorstellen, dass man eine Funktion über die zweite \emph{schiebt} und dort die 
+    Übereinstimmung berechnet. Bei einer hohen Übereinstimmung zwischen den Funktionen wird dieses Integral einen
+    hohen Wert liefern, während sich bei wenig Übereinstimmung nur ein kleiner Wert ergibt.
+  \item[Was bringt so eine Faltung?]
+    Das im letzten Punkt beschriebene Verhalten der Faltung kann man sich z.B. in der Texterkennung zu nutze machen.
+    Dabei prüft man z.B., ob es eine hohe Übereinstimmung zwischen einem Bild eines Buchstaben und dem vorliegenden
+    Bild gibt, indem man über diese Bildteile die Faltung berechnet. Ein hoher Wert indiziert dabei, dass mit hoher
+    Wahrscheinlichkeit der gesuchte Buchstabe vorliegt.\\
+    Ganz allgemein ist dieses Prinzip die Grundlage von Filterungen.
+\end{description}
 
 \section{Filter}
 \begin{description}
