@@ -1,6 +1,6 @@
 \input{Preamble}
 \usepackage[pdftex]{graphicx}  
-\begin{document}
+\usepackage{listings}
 
 \newcommand{\INT}[1]{\text{d#1}}
 \newcommand{\INTM}[1]{\text{d} #1}
@@ -13,6 +13,8 @@
 % JAAAA, ich weiß, ich verwende hier oft \text, was aber für
 % unsere Belange hier komplett ausreichend ist.
 % ----
+
+\begin{document}
 
 \title{Bildverarbeitung}
 \subtitle{Fragen}
@@ -129,7 +131,7 @@
       Hierbei hat man also Punkte $p = (x, y) \in \Z^2$, entsprechen betrachtet man auch die Fouriertransformation
       in zwei unterschiedlichen Richtungen (in $x$- und in $y$-Richtung). Formal übersetzt ergibt sich also die
       Fouriertransformation im $\R^2$ als
-      $$ \hat f(\xi) = \int_\R^2 f(t)e^{-i \xi^T t}\INT{t}\quad, \xi,t\in\R^2 $$
+      $$ \hat f(\xi) = \int_{\R^2} f(t)e^{-i \xi^T t}\INT{t}\quad, \xi,t\in\R^2 $$
 \end{description}
 \subsection{Faltung}
 \begin{description}
@@ -156,10 +158,46 @@
       Ein Filter ist ein Operator, der ein gegebenes Signal in ein anderes Signal transformiert.
 	\item[Wie sieht ein Filter allgemein aus?]
 	\item[Wie sieht ein Tiefpass-Filter aus? Zeichne den Graph]
+      Ein Tiefpass-Filter $f$ lässt wie der Name sagt die tiefen Frequenzen durch, entsprechen wir sich für die 
+      obere Frequenz $\xi$ ergeben, dass $\hat f([0,\xi])>0$ ist, während er für die höheren Frequenzen sperrt, also
+      $\hat f((\xi,2\pi]) = 0$.
+
+      Ein idealer Tiefpass-Filter ist dabei die Rechtecksfunktion, welche direkt an der Frequenzgrenze $\xi$
+      abschneidet. Dies ist aber keinesfalls zu empfehlen (schon alleine aus numerischen Gründen), daher wird 
+      dieses Rechteck i.d.R. abgerundet und leicht deformiert sein.
 	\item[Forderungen an die Transferfunktion für Tiefpass]
+      Siehe vorheriger Punkt.
 	\item[Erkläre das Gibbs-Phänomen]
+      Das Gibbs-Phänomen sind \emph{Überschwinger}, welche bei der Bildung von Partialsummen auftreten. Dieses
+      Phänomen lässt sich nicht einfach vermeiden, da diese Überschwinger höchstens enger zusammenrücken, aber 
+      in der Amplitude nicht kleiner werden. Um dieses Phänomen dennoch zu vermeiden muss man mit Approximationen 
+      arbeiten.
 	\item[Welche Arten von Filter gibt es? Erklären Sie diese]
+      Es gibt i.W. sechs verschiedene Unterarten von Filtern:
+
+      \begin{enumerate}
+        \item Energieerhaltende Filter, wenn sie normiert sind.
+        \item Lineare Filter, wenn dieser eine lineare Funktion ist.
+        \item Zeitinvarianter Filter, wenn es egal ist, ob zuerst gefiltert und translatiert
+          oder ob zuerst translatiert und anschließend gefiltert wird.
+        \item Kausale Filter, wenn der Filter nicht \emph{in die Zukunft sehen} kann, also
+          wenn das Ergebnis nur von den reinen Eingabedaten abhängt.
+        \item FIR-Filter, wenn die Impulsantwort des Filters endlich ist.
+        \item IIR-Filter, wenn die Impulsantwort des Filters unendlich ist.
+      \end{enumerate}
 	\item[Zeichen Sie ein Schaltbild zu einem Filter (Addierer,Verzögerer, Multiplizierer)]
+      Es stehe \lstinline|A| für einen Addierer, \lstinline|M| für einen Multiplizierer und
+      \lstinline|V| für einen Verzögerer. Dann hat ein Filter die prinzipielle Form:
+
+      \begin{lstlisting}
+        --+-------> V ---+----> V ----+----- ......
+          |              |            |
+          |              |            |
+          +-> M          +--> M --+   |--> M --+
+              |                   |            |
+              |                   +->          +->
+              +---------------------> A ---------> A --- ....
+      \end{lstlisting}
 	\item[Welchen Filter zur Kantenerkennung?]
 	\item[Was ist eine Impulsantwort?]
 	\item[Spielt die Laufzeit von Filtern in der Praxis eine Rolle?]
@@ -236,7 +274,8 @@
       In einem realen Anwendungsfall wir ein Signal immer endlichen Träger $[a,b]\subset\R$ haben, 
       also gilt für ein passendes Maß $\INTM{\mu}$, dass $\INTM{\mu}([a,b]) < \infty$ ist.
 \end{description}
-\section{Hough-Transformation}
+\section{Transformationen}
+\subsection{Hough-Transformation}
 \begin{description}
 	\item[Was ist die Hough-Transformation?]
       % Ja, hier hab ich textbf verwendet, weil ich das explizit fett haben will, nur so zur Info ...
@@ -261,9 +300,89 @@
 	\item[Welcher Filter spielt dabei eine Rolle?]
 	\item[Gibt es weitere Filter zur Kantenerkennung?]
 \end{description}
-\section{Muss noch zugeordnet werden}
+\subsection{Gabor-Transformation}
 \begin{description}
-	\item[Erklären Sie die Heisenbergboxen]
+  \item[Was ist die Gabor-Transformation?]
+    Die Gabor-Transformation ist eine \emph{gefensterte} Fouriertransformation.\\
+    Formal gilt also für $f,g \in L_2(\R), g \text{ gerade und }\|g\|_2 = 1$:
+    $$ Gf(u,\xi) = \int_\R f(t) e^{-i\xi t} g(t-u) \INT{t} $$
+  \item[Was ist ein Spektrogramm?]
+    Ein Spektrogramm ist ein Diagramm, auf denn $x$-Achse die Zeit und auf der $y$-Achse die Frequenz aufgetragen ist.
+    Das spiegelt also wider, wieviel Energie sich zu einer Zeit in einer gewissen Frequenz konzentriert.
+  \item[Wie hängt die Gabor-Transformation mit der Fouriertransformation zusammen?]
+    Durch die Fensterfunktion bekommt man eine gewisse Lokalitätseigenschaft, da man dann Aussagen über die
+    Frequenzanteile in dem spezifizierten Zeitfenster treffen kann, während sich die reine Fouriertransformation diese
+    Informationen global ansieht.
 \end{description}
+\subsection{Wavelets}
+\begin{description}
+  \item[Was ist ein Wavelet?]
+    Ein Wavelet $\Psi$ ist eine beliebige $L_2$-Funktion, die die Eigenschaft der Mittelwertfreiheit erfüllt, also dass gilt
+    $$ \int_\R \Psi(t) \INT{t} = 0. $$ Der Name kommt daher, dass diese Funktionen wie Wellen aussehen müssen (also Anteile
+    über und unter der $x$-Achse), um in der Fläche $0$ zu sein.
+  \item[Was bedeutet Zuverlässigkeit bei Wavelets?]
+    Die Zuverlässigkeit bei Wavelets ist eine mathematische Bedingung, dass 
+    $$ C_\Psi := \int_\R \frac{\left|\hat \Psi(\xi)\right|^2}{|\xi|}\INTM{\xi} < \infty $$
+    gelten muss. Um dies zu gewährleisten sollte die Funktion an der $0$ insbesondere $0$ sein, weil man selten
+    gut durch Null dividieren kann.
+  \item[Was ist die Wavelet-Transformation?]
+    Die Wavelet-Transformation ist eine integraltransformation, welche das Signal und das Wavelet quasi als Fensterfunktion
+    miteinander in Beziehung setzt:
+    $$ \mathcal{W}_\Psi f(u,s) := \int_\R f(t) \frac{1}{\sqrt{|s|}}\overline{\Psi\left(\frac{t-u}{s}\right)}\INT{t} $$
+  \item[Was ist ein Skalogramm?]
+    Ein Skalogramm ist das Analogon zum Sprektrogramm der Gabor-Transformation, mit dem Unterschied, dass nun auf der
+    vertikalen Achse nicht die Frequenzen sondern die \emph{Skalen} aufgetragen sind, was in etwa dem Kehrwert der 
+    Frequenzen entspricht. Die (Farb-)Werte im Diagramm selbst wird dann die Intensität da sein.
+  \item[Was sind Heisenberg-Boxen?]
+    Die Heisenberg-Boxen sind die graphischen Elemente des Skalogramms. Diese werden durch insgesamt vier Parameter 
+    definiert:
+
+    \begin{enumerate}
+      \item Zeitauflösung $\mu$
+      \item Frequenzauflösung $\hat \mu$
+      \item Zeitvarianz $\sigma$
+      \item Frequenzvarianz $\hat \sigma$
+    \end{enumerate}
+
+    Die Zeit- und die Frequenzauflösung bilden zusammen den Mittelpunkt der Box im Diagramm, während die Varianzen
+    die halbe Ausdehnung der Boxen in die jeweiligen Achenrichtungen darstellen.
+
+    Graphisch (oder semi-graphisch) dargestellt:
+
+    \begin{lstlisting}
+      +----------------------------------------+
+      |                                        |
+      |                                        |
+      |                   x (mu, hat mu)       |<---|
+      |                                        |    | \hat sigma
+      |                                        |    |
+      +----------------------------------------+<---|
+                          ^                    ^
+                          |____________________|
+                                   sigma
+    \end{lstlisting}
+  \item[Was besagt die Heisenberg'sche Unschärferelation?]
+    Die Heisenberg'sche Unschärferelation besagt, dass diese Heisenberg-Boxe eine Mindestfläche
+    besitzen. Das bedeutet insbesondere, dass man nicht beliebig genau in Zeit und Frequenz auflösen
+    kann. Dies ist aber auch der Natur nachempfunden, da z.B. ein Ton mit einer niedrigen Frequenz
+    relativ lange schwingen muss, um gehört zu werden.
+  \item[Warum findet sich bei vielen Wavelets der Gauß-Kern als Term wieder?]
+    Dies liegt daran, dass man mit dem reinen Gauß-Kern prinzipiell die bestmögliche Zeit-/Frequenz-
+    Auflösung bekommen würde (also hat die Heisenberg-Box dann maximale Fläche). Das Problem ist nur,
+    dass der Gaußkern kein Wavelet ist, da nicht mittelwertfrei.
+  \item[Was ist der Vorteil der Wavelet-Transformation gegenüber der Fourier- bzw Gabor-Transformation?]
+    Der klare Vorteil hierbei liegt darin, dass sich die Heisenberg-Boxen (und damit die Auflösung)
+    dynamisch an die Frequenz oder Zeit anpasst. Bei Gabor legt man durch die Fensterfunktion aber eine
+    fixe Frequenz-/Zeit-Auflösung fest. Man bekommt mit der Wavelet-Transformation also eine dynamische
+    Zeit-/Frequenz-Auflösung mit einer gewissen Lokalitätseigenschaft.
+  \item[Wo spiegelt sich bei der Wavelet-Transformation Redundanz wider?]
+    Man kann\footnote{Man kann, ich kann es nicht ...} mathematisch nachweisen, dass man die Originalfunktion
+    aus der Wavelet-Transformation mit nur einer einzigen Skala rekonstruieren kann.
+  \item[Gibt es praktische Anwendungen für die Wavelets?]
+    Ein prominentes Beispiel\footnote{Ein prominentes Beispiel, was dennoch kein Schwein hernimmt (facepalm).}
+    ist z.B. Bildkompression mit JPEG-2000.
+\end{description}
+
+
 \end{document}
 
