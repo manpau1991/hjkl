@@ -17,7 +17,7 @@
 \begin{document}
 
 \title{Bildverarbeitung}
-\subtitle{Fragen}
+\subtitle{Antworten zu den Fragen}
 \author{Manuel Pauli\and{}Sebastian Schweikl\and{}Thomas Lang}
 
 \maketitle
@@ -47,7 +47,7 @@
       lässt sich also immer eine Funktionenfolge aus $L_1(\R)\cap L_2(\R)$ finden, die im Grenzwert
       gegen unsere gesuchte Fouriertransformierte konvergiert\footnote{Geht immer, zwecks Banachraum und so.}.
 	\item[Wie sieht das Ergebnis der FT bei einer reellwertigen Funktion aus?]
-    \item[Was sagt der Satz von Parseval/Plancherel?]%%copy
+    \item[Was sagt der Satz von Parseval/Plancherel?]
       Der Satz von Parseval/Plancherel beschreibt den Wechsel zwischen einem 
       Skalarprodukt im Zeit- und einem Skalarprodukt im Frequenzbereich.\\
       Formal gilt für Funktionen $f, g \in L_1(\R)$:
@@ -55,7 +55,7 @@
       Im Speziellen für $f=g$ folgt, dass
       $$ \|f\|_1^2 = \frac{1}{2\pi}\|\hat f\|_2^2 $$
       gilt, also dass hier (bis auf Normierung) eine Isometrie vorliegt.
-    \item[Sie sprachen von Isometrie, warum ist dann der konstante Faktor vor dem rechten Term?]%% copy
+    \item[Sie sprachen von Isometrie, warum ist dann der konstante Faktor vor dem rechten Term?]
       Dieser Faktor kommt daher, weil wir bei der Definition der Fouriertransformation keinen Faktor
       dabei hatten. Hätte man dort einen Faktor $1/\sqrt{2\pi}$ hinzugefügt, so hätte man hier eine
       perfekte Isometrie, was man ja mit Energieerhaltung\footnote{Die $2$-Norm $\|\cdot\|_2$ beschreibt ja
@@ -94,7 +94,7 @@
       Da man dabei einen Baumalgorithmus implementiert, hat man also \emph{nur} $\log n$ Ebenen abzuarbeiten, wobei
       man immer noch alle Folgenglieder $c(k),k\in\Z_n$ verarbeiten muss, es entsteht also ein Aufwand 
       in $\mathcal{O}(n \log n)$. Nachzuweisen ist dies mit dem Mastertheorem.
-    \item[Theorie schön und gut, aber wozu braucht man die Fouriertransformation nun in der Praxis?]%%copy
+    \item[Theorie schön und gut, aber wozu braucht man die Fouriertransformation nun in der Praxis?]
       Mit der ganzen Theorie (insbesondere mit dem Zusammenhang zwischen der Faltung und der Fouriertransformation)
       können Bildverarbeitungsalgorithmen in verschiedenster Hinsicht optimiert werden. Beispielsweise
       um die reine Berechnung zu beschleunigen (Multiplikation vs Faltung) oder um die numerische Stabilität
@@ -118,7 +118,7 @@
 
       Bei der Dekompression geht man entsprechend umgekehrt vor: Man Ersetzt die gekürzten Codes mit den ursprünglichen
       Werten und wendet die inverse Transformation (IDFT, IFFT, IDCT) an, um das alte Bild z.B. darstellen zu können.
-    \item[Macht das JPEG wirklich so?]%%copy
+    \item[Macht das JPEG wirklich so?]
       Nein, da die DFT/FFT u.U. imaginäre Werte liefert. Diese lassen sich aber nur auf wenigen (heute nicht mehr
       aktuellen) Maschinen in Hardware darstellen, und die Verarbeitung in Software dauert sehr lange.\\
       Als Alternative wird daher in JPEG (vor Standard JPEG-2000) die \emph{Diskrete Cosinus-Transformation}(DCT)
