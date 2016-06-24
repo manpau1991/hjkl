@@ -71,7 +71,7 @@ Funktion $ f $ ist definiert als
 \[ \sigma_{h} \ f \coloneqq f(h \cdot \bullet). \]
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=\linewidth]{Bilder/Skalierung.png}
+	\includegraphics[width=0.5\linewidth]{Bilder/Skalierung.png}
 	\caption{Skalierung der sinus-Funktion (blau) mit dem Faktor $ 2 $ führt zu doppelt so schneller
   	Schwingung (roter Graph). Skalierung mit dem Faktor $ 0.5 $ bewirkt halb so schnelle
   	Schwingung (grüner Graph).}
@@ -107,6 +107,13 @@ sogar an der $ y $-Achse spiegeln:\par
   $ h < -1 $ & Stauchung und Spiegelung an der $ y $-Achse \\ \bottomrule
   \end{tabular}
 \end{center}
+\item Die Definition des Skalierungsoperators ist recht ähnlich zur der des Abtastoperators mit
+  Schrittweite $ h $. An dieser Stelle sollte betont werden, dass beide Operatoren nicht miteinander
+  zu verwechseln sind! Der Abtastoperator liefert zu einem kontinuierlichen Signal $ f $
+  ein diskretes Signal $ S_{h} \ f = (f(h \cdot \bullet))_{h \in \Z} $. Das $ h $ ist hier 
+  variabel. Der Skalierungsoperator überführt ein kontinuierliches Signal $ f $ wieder in ein 
+  kontinuierliches Signal $ \sigma_{h} \ f = f(h \cdot \bullet) $, welches eben um den Faktor $ h $ 
+  gestreckt bzw.\ gestaucht wurde. $ h $ ist hier ein fester Wert.
 \item Translation und Skalierung sind invertierbar, d.h.\ man kann ihre Auswirkungen wieder
 rückgängig machen:
 \[
