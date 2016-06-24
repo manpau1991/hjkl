@@ -207,8 +207,22 @@ Der Dirac-Puls
     1,& k = 0, \\ 0,& k \neq 0
   \end{cases}
 \]
-ist eine lustige Funktion, die nur an der Stelle $ 0 $ gleich $ 1 $ ist und sonst überall $ 0 $.
-\TODO{Sollen wir noch ein Bild dazu einfügen?}
+ist eine lustige Funktion, die nur an der Stelle $ 0 $ gleich $ 1 $ ist und sonst überall $ 0 $
+(siehe Abbildung~\ref{fig:dirac}).
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\draw [->] (-4.5,0) -- (4.5,0) node [right] {$ x $};
+\foreach \x in {-4,-3,...,4}{
+  \draw (\x, -0.1) node [below] {$ \x $} -- (\x, 0.1);
+}
+\draw [->] (0,0) -- (0,1) node [right] {$ 1 $} -- (0,1.5) node [right] {$ \delta(x) $};
+\draw (-0.1,1) -- (0.1,1);
+\draw [color=red, thick] (0,0) -- (0,1);
+\end{tikzpicture}
+\label{fig:dirac}
+\caption{Der Dirac-Puls $ \delta $.}
+\end{figure}
 \end{definition}
 
 \begin{definition}[Abtastoperator]
@@ -225,5 +239,18 @@ nur an abzählbar vielen Stellen im Abstand $ h \in \R $ ab. Wir betrachten
 die Funktion also nur an den Stellen $ 0, h, -h, 2h, -2h, 3h, -3h \dots $, was effektiv zu einer
 Diskretisierung des gegebene kontinuierlichen Signals führt. Dieses Prozess kann man auch als
 \emph{Downsampling} bezeichnen.
-\TODO{Sollen wir noch ein Bild dazu einfügen?}
 \end{remark}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\draw [->] (-4.5,0) -- (4.5,0) node [right] {$ x $};
+\draw [->] (0,-1.5) -- (0,1.5) node [right] {$ y $};
+\foreach \x in {-4,-3,-2,-1,1,2,3,4}{
+  \draw (\x,-0.1) node [below] {$ \x $} -- (\x,0.1);
+}
+\draw [color=blue, mark=*,] plot [domain=-1.5*pi:1.5*pi,smooth] (\x,{sin(deg(\x))});
+\end{tikzpicture}
+\label{fig:abtastoperator}
+\caption{}
+\end{figure}
