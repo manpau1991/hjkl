@@ -249,6 +249,9 @@ Diskretisierung des gegebene kontinuierlichen Signals führt. Dieses Prozess kan
 \foreach \x in {-4,-3,-2,-1,1,2,3,4}{
   \draw (\x,-0.1) node [below] {$ \x $} -- (\x,0.1);
 }
+\foreach \y in {-1,1}{
+  \draw (-0.1,\y) -- (0.1,\y) node [right] {$ \y $};
+}
 \draw [color=blue, mark=*,] plot [domain=-1.5*pi:1.5*pi,smooth] (\x,{sin(deg(\x))});
 \end{tikzpicture}
 \label{fig:abtastoperator}

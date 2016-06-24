@@ -212,9 +212,8 @@ Fläche zwischen beiden Rechtecksfunktionen eingeschlossen, also Flächeninhalt 
 kommt bei $ \Delta_{[-2,2]}(x) $ heraus, wenn man $ x = 1 $ oder $ x = -1 $ einsetzt.
 
 Die geometrische Interpretation einer Faltung ist also sehr vielfältig und hängt sehr stark von den
-beiden Funktionen ab, die miteinander gefaltet werden.\\
-Bildlich Dargestellt kann man sich dies so vorstellen:
-\begin{figure}[h]
+beiden Funktionen ab, die miteinander gefaltet werden, siehe Abbildung~\ref{fig:faltung}.
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.7\linewidth]{Bilder/Faltung}
 	\caption{Faltung der Rechtecksfunktion (orange und rot) mit sich selbst ergibt die 
@@ -285,6 +284,37 @@ Fouriertransformierte besonders schnell berechnen wollen.
 		Umverteilung geschieht durch den Vorfaktor $ e^{iy\xi} $. (Dies bezeichnet man auch als
 		\emph{Frequenz-Modulation}).
 		
+  \begin{figure}[ht]
+      \centering
+      \begin{minipage}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{Bilder/Rechteck1}
+      \end{minipage}
+      \begin{minipage}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{Bilder/Rechteck2}
+      \end{minipage}
+      \caption{Links: Rechtecksfunktion und deren Fouriertransformierte. Rechts: Die um $ 1 $
+        nach links verschobene Rechtecksfunktion und deren Fouriertransformierte mit Real- und 
+        Imaginärteil separat geplottet (Realteil rot, Imaginärteil grün).}
+      \label{fig:Rechteck12}
+    \end{figure}
+    \begin{figure}[ht]
+      \centering
+      \begin{minipage}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{Bilder/Rechteck3}
+      \end{minipage}
+      \begin{minipage}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{Bilder/Rechteck4}
+      \end{minipage}
+      \caption{Links: Fouriertransformierte der Rechtecksfunktion (blau) und der verschobenen
+        Rechtecksfunktion (Realteil rot, Imaginärteil grün). Rechts: Fouriertransformation der
+        Rechtecksfunktion (blau) und der verschobenen Rechtecksfunktion im Absolutbetrag (rot).}
+      \label{fig:Rechteck34}
+    \end{figure}
+		
 		Betrachten wir $ \widehat{f} $ als Vektor in der komplexen Zahlenebene, so führt der Faktor $ 
 		e^{iy\xi} $ lediglich dazu, dass die 
 		der Vektor um den Winkel $ y \cdot \xi $ im Uhrzeigersinn gedreht wird. D.h.\ an den Anteilen
@@ -322,36 +352,7 @@ Fouriertransformierte besonders schnell berechnen wollen.
   	Übrigens: Der Realteil der Fouriertransformierten ist immer achsensymmetrisch zur $ y $-Achse,
   	weil der cosinus achsensymmetrisch zur $ y $-Achse ist, und der Imaginärteil ist 
   	punktsymmetrisch um den Ursprung, weil der sinus punktsymmetrisch um den Ursprung ist.
-    \begin{figure}[ht]
-      \centering
-      \begin{minipage}{0.49\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{Bilder/Rechteck1}
-      \end{minipage}
-      \begin{minipage}{0.49\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{Bilder/Rechteck2}
-      \end{minipage}
-      \caption{Links: Rechtecksfunktion und deren Fouriertransformierte. Rechts: Die um $ 1 $
-        nach links verschobene Rechtecksfunktion und deren Fouriertransformierte mit Real- und 
-        Imaginärteil separat geplottet (Realteil rot, Imaginärteil grün).}
-      \label{fig:Rechteck12}
-    \end{figure}
-    \begin{figure}[ht]
-      \centering
-      \begin{minipage}{0.49\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{Bilder/Rechteck3}
-      \end{minipage}
-      \begin{minipage}{0.49\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{Bilder/Rechteck4}
-      \end{minipage}
-      \caption{Links: Fouriertransformierte der Rechtecksfunktion (blau) und der verschobenen
-        Rechtecksfunktion (Realteil rot, Imaginärteil grün). Rechts: Fouriertransformation der
-        Rechtecksfunktion (blau) und der verschobenen Rechtecksfunktion im Absolutbetrag (rot).}
-      \label{fig:Rechteck34}
-    \end{figure}
+ 
 		\item (Zeit-)Skalierung. Sei $ f \in L_{1}(\R) $ und $ h \neq 0 $. Dann gilt
   		\[
       		(\sigma_{h} \ f)^{\wedge}(\xi) 
@@ -364,6 +365,22 @@ Fouriertransformierte besonders schnell berechnen wollen.
     halbiert, so verdoppelt sich doch die Frequenz, denn der sinus schwingt jetzt doppelt so 
     schnell. In diesem Kontext ist die Frequenz der Reziprokwert der Periodenlänge.
     
+    \begin{figure}[ht]
+          \centering
+          \begin{minipage}{0.49\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{Bilder/FT_Skalierung_Zeit}
+          \end{minipage}
+          \begin{minipage}{0.49\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{Bilder/FT_Skalierung_Freq}
+          \end{minipage}
+          \caption{Links: Rechtecksfunktion (blau) und gestauchte Rechtecksfunktion (rot). 
+          Rechts:
+            Fouriertransformationen zu den Rechtecksfunktionen (in gleicher Farbe).}
+          \label{fig:FT_Skalierung}
+        \end{figure}
+    
     Können wir diese Analogie auch auf die Fouriertransformation übertragen? Betrachten wir ein
     weiteres Mal die Rechtecksfunktion. Skalieren wir diese mit einem Faktor von $ h = 2 $ und 
     bilden davon die Fouriertransformation, so erhalten wir:
@@ -374,28 +391,21 @@ Fouriertransformierte besonders schnell berechnen wollen.
     \]
     Abbildung~\ref{fig:FT_Skalierung} zeigt die eben angesprochenen Funktionen. Das 
     $ \xi /2 $ im Argument von $ (\sigma_{2} \ \chi_{[-1,1]})^{\wedge} $ führt dazu, dass die
-    Funktion nur noch halb so schnell schwingt. Durch den Vorfaktor $ 2 / \xi $ verringert sich
-    zudem die Amplitude.
-    
-    \TODO{Eine anschauliche Erklärung hierfür finden!}
+    Fouriertransformation auseinander gezogen wird. Durch den Vorfaktor $ 2 / \xi $ verringert sich
+    zudem die Amplitude. Dies macht auch Sinn, denn durch das Zusammenstauchen einer Funktion im
+    Ortsbereich schwingt sie ja schneller, sie wird hochfrequenter. Das entspricht genau dem
+    Auseinanderziehen der Fouriertransformation. Es wird mehr Anteil in den hochfrequenten Bereich
+    verlagert. Gleichzeitig wird der Anteil der niedrigen Frequenzen (die sich im Frequenzbereich 
+    um den Ursprung konzentrieren) geringer, was dem Plattdrücken der Fouriertransformierten 
+    entspricht.
     
     Man stellt fest: Für große Werte von $ h $ konzentriert sich die Funktion im Zeitbereich stark 
-    um den Ursprung, sie wird gestaucht. Im Frequenzbereich hingegen führt dies dazu, dass die 
-    Fouriertransformation gestreckt (auseinander gezogen) und platt gedrückt wird.
-    \begin{figure}[ht]
-      \centering
-      \begin{minipage}{0.49\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{Bilder/FT_Skalierung_Zeit}
-      \end{minipage}
-      \begin{minipage}{0.49\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{Bilder/FT_Skalierung_Freq}
-      \end{minipage}
-      \caption{Links: Rechtecksfunktion (blau) und gestauchte Rechtecksfunktion (rot). Rechts:
-        Fouriertransformationen zu den Rechtecksfunktionen (in gleicher Farbe).}
-      \label{fig:FT_Skalierung}
-    \end{figure}
+    um den Ursprung, sie wird gestaucht und hochfrequenter. Im Frequenzbereich führt dies dazu,
+    dass die Fouriertransformation gestreckt (auseinander gezogen) und platt gedrückt wird.
+    Umgekehrt führen kleine Werte von $ h $ dazu, dass die Funktion im Ortsbereich gestreckt wird,
+    also niederfrequenter wird. Die Fouriertransformation wird um den Ursprung zusammengedrückt und
+    schlägt stärker aus.
+    
 		\item Faltung
 		\item Ableitungseigenschaften
 		\item Inverse Fouriertransformation
