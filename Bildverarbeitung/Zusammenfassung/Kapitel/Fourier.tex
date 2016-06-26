@@ -24,8 +24,8 @@ die Fourier-Transformierte von $ c $.
 &= \int_{\R} f(t) (\cos(\xi t) - i\sin(\xi t)) \dif t \\
 &= \int_{\R} f(t) \cos(\xi t) - i \int_{\R} f(t) \sin(\xi t) \dif t
 \end{align*}
-dann sehen wir, dass wir lediglich versuchen, $ f $ auszudrücken als Kombination von sinus- und
-cosinus-Termen. Wir schauen einfach, wo $ f $ und der $ \sin $ bzw. $ \cos $ eine große Ähnlichkeit
+dann sehen wir, dass wir lediglich versuchen, $ f $ auszudrücken als Kombination von Sinus- und
+coSinus-Termen. Wir schauen einfach, wo $ f $ und der $ \sin $ bzw. $ \cos $ eine große Ähnlichkeit
 zueinander haben (an der Stelle wird das Integral dann groß) und finden so heraus, welchen 
 \enquote{Anteil} die Frequenz $ \xi $ am Signal $ f $ hat. Dass wir hier die doofe imaginäre 
 Einheit $ i $ mit drin haben, liegt halt einfach daran, dass wir die Identität
@@ -37,7 +37,7 @@ Real- und Imaginärteil zwei gesonderte Fouriertransformationen definieren könn
 hier nicht weiter stören. Außerdem kann man halt mit einer Exponentialfunktion schöner rechnen 
 (z.B. ist die Stammfunktion der Exponentialfunktion wieder die Exponentialfunktion). Das ist 
 eigentlich alles, was dahinter steckt. Will man die imaginäre Einheit ganz wegbekommen, geht man 
-im diskreten Fall einfach über zur \emph{Diskreten Cosinus-Transformation}.
+im diskreten Fall einfach über zur \emph{Diskreten CoSinus-Transformation}.
 \item Wichtig: Mit der Fouriertransformation finden wir zwar heraus, welche Frequenzen im Singal 
 stecken,
 aber wir wissen nicht, an welcher Stelle bzw. zu welchem Zeitpunkt die entsprechende Frequenz 
@@ -84,7 +84,7 @@ Funktion $ f $ ist definiert als
     \draw [color=red] plot (\x,{sin(deg(2 * \x))});
     \draw [color=green] plot (\x,{sin(deg(0.5 * \x))});
   \end{tikzpicture}
-	\caption{Skalierung der sinus-Funktion (blau) mit dem Faktor $ 2 $ führt zu doppelt so schneller
+	\caption{Skalierung der Sinus-Funktion (blau) mit dem Faktor $ 2 $ führt zu doppelt so schneller
   	Schwingung (roter Graph). Skalierung mit dem Faktor $ 0.5 $ bewirkt halb so schnelle
   	Schwingung (grüner Graph).}
 	\label{fig:skalierung}
@@ -110,7 +110,7 @@ sogar an der $ y $-Achse spiegeln:\par
 \begin{center}
   \begin{tabular}{rl} \toprule
   Wert von $ h $ & Effekt auf $ f $ \\ \midrule
-  $ h > 1 $ & Stachung \\
+  $ h > 1 $ & Stauchung \\
   $ h = 1 $ & Kein Effekt \\
   $ 0 < h < 1 $ & Streckung \\ \midrule
   $ h = 0 $ & Um Gottes Willen! Das ist pfui-gack. \\ \midrule
@@ -264,8 +264,8 @@ Fouriertransformierte besonders schnell berechnen wollen.
         \centering
         \includegraphics[width=\linewidth]{Bilder/FT_Linear2}
       \end{minipage}
-      \caption{Links: Änderung der Amplitude der sinus-Funktion bei gleichbleibender Frequenz.
-        Rechts: Bei Addition der sinus- und cosinus-Funktion addieren sich auch die Frequenzen.}
+      \caption{Links: Änderung der Amplitude der Sinus-Funktion bei gleichbleibender Frequenz.
+        Rechts: Bei Addition der Sinus- und coSinus-Funktion addieren sich auch die Frequenzen.}
       \label{fig:FT_Linear}
     \end{figure}
     
@@ -334,7 +334,7 @@ Fouriertransformierte besonders schnell berechnen wollen.
   	Rechtecksfunktion, sowie deren Fouriertransformierte. Wir stellen zunächst fest, dass die
   	Rechtecksfunktion eine vollständig reelle Fouriertransformierte besitzt und die verschobene
   	Rechtecksfunktion eine reell- und komplexwertige Fouriertransformierte. Dies zeigt ganz 
-  	deutlich, dass sich die Aufteilung der Frequenzen zwischen sinus und cosinus verschoben hat. Die
+  	deutlich, dass sich die Aufteilung der Frequenzen zwischen Sinus und coSinus verschoben hat. Die
   	interessante Frage ist aber nun: Hat sich an den Anteilen der Frequenzen im Ganzen etwas 
   	geändert? Die Antwort liefert Abbildung~\ref{fig:Rechteck34}. Im Absolutbetrag sind nämlich 
   	beide Fouriertransformationen identisch. D.h.\ die Frequenzanteile sind im Ganzen gleich
@@ -351,8 +351,8 @@ Fouriertransformierte besonders schnell berechnen wollen.
   	Frequenzbereich.
   	
   	Übrigens: Der Realteil der Fouriertransformierten ist immer achsensymmetrisch zur $ y $-Achse,
-  	weil der cosinus achsensymmetrisch zur $ y $-Achse ist, und der Imaginärteil ist 
-  	punktsymmetrisch um den Ursprung, weil der sinus punktsymmetrisch um den Ursprung ist.
+  	weil der coSinus achsensymmetrisch zur $ y $-Achse ist, und der Imaginärteil ist 
+  	punktsymmetrisch um den Ursprung, weil der Sinus punktsymmetrisch um den Ursprung ist.
  
 		\item [(Zeit-)Skalierung] Sei $ f \in L_{1}(\R) $ und $ h \neq 0 $. Dann gilt
   		\[
@@ -363,7 +363,7 @@ Fouriertransformierte besonders schnell berechnen wollen.
   	Durch den Skalierungsoperator wird eine Funktion im Zeit-/Ortsbereich in Richtung der $x$-Achse 
   	gestaucht oder gestreckt (anders ausgedrückt: Die Periodenlänge ändert sich). Damit ändern sich
   	auch die im Signal enthaltenen Frequenzen. Beispiel anhand des Sinus: Wird die Periodenlänge 
-    halbiert, so verdoppelt sich doch die Frequenz, denn der sinus schwingt jetzt doppelt so 
+    halbiert, so verdoppelt sich doch die Frequenz, denn der Sinus schwingt jetzt doppelt so 
     schnell. In diesem Kontext ist die Frequenz der Reziprokwert der Periodenlänge.
     
     \begin{figure}[ht]
@@ -414,14 +414,21 @@ Fouriertransformierte besonders schnell berechnen wollen.
       (c * d)^{\wedge}(\xi) = \widehat{c}(\xi) \widehat{d}(\xi)  \quad \text{und} \quad
       (f * c)^{\wedge}(\xi) = \widehat{f}(\xi) \widehat{c}(\xi).
     \]
-    Eine Faltung im Zeitbereich wird also überführt in eine Multiplikation im Frequenzbereich.
-    \TODO{Manuel: Du hattest da so eine schöne Erklärung hierfür, kannst du das hier kurz 
-    beschrieben?}
-    Dies ist eine extrem wichtige Eigenschaft der Fouriertransformation. Denn: Die Berechnung einer
-    Faltung zweier Funktionen ist normalerweise viel aufwendiger als die beiden Funktionen einfach
-    punktweise zu multiplizieren. Diese Eigenschaft kann man sich zunutze machen, um Filter mithilfe
-    der Schnellen Fouriertransformation (FFT) effizient zu implementieren.
-    \TODO{Stimmt das? Gibt es hier eine bessere Argumentation, warum diese Eigenschaft wichtig ist?}
+    Eine Faltung im Zeitbereich gibt ja so etwas wie die Übereinstimmung zwischen den beiden 
+    Funktionen an, und die Multiplikation im Frequenzbereich kann man sich nun vorstellen als
+    Übereinstimmung der Frequenzen der beiden Funktionen.
+    
+    \emph{Eine Faltung im Zeitbereich wird also überführt in eine Multiplikation im   
+    Frequenzbereich.} Dies ist eine extrem wichtige Eigenschaft der Fouriertransformation. Dies hat
+    im Wesentlichen zwei Gründe:
+    \begin{enumerate}
+    \item Die Berechnung einer Faltung zweier Funktionen ist normalerweise viel aufwendiger als die 
+        beiden Funktionen einfach punktweise zu multiplizieren (es sind hier weniger Operationen
+        auszuführen).
+    \item Außerdem weist das Produkt eine höhere numerische Stabilität auf als die Faltung.
+    \end{enumerate}
+    Diese Eigenschaften kann man sich zunutze machen, um Filter effizient zu implementieren, und
+    dabei ist von der Schnellen Fouriertransformation (FFT) noch gar nicht die Rede.
         
 		\item [Ableitungseigenschaften] Sind $ f, f' \in L_{1}(\R) $, dann gilt
     \[
@@ -431,6 +438,7 @@ Fouriertransformierte besonders schnell berechnen wollen.
     \[
       \dod{\widehat{f}(\xi)}{\xi} = (-ix f)^{\wedge}(\xi).
     \]
+    Diese Eigenschaften sind vor allem nützlich fürs Rechnen.
     
 		\item [Inverse Fouriertransformation] Sind $ f, \widehat{f} \in L_{1}(\R) $, dann ist
 		\[
@@ -438,6 +446,8 @@ Fouriertransformierte besonders schnell berechnen wollen.
     		\frac{1}{2\pi} \int_{\R} \widehat{f}(\vartheta) \ e^{i \xi \vartheta} \dif \vartheta.
 		\]
 		Die Operation $ f \mapsto f^{\vee} \coloneqq \frac{1}{2\pi} f^{\wedge}(-\bullet) $ bezeichnet
-		man als inverse Fouriertransformation.
+		man als inverse Fouriertransformation. Dass sich die Nützlichkeit einer Transformation auch
+		daraus ergibt, die Transformation wieder umkehren zu können, braucht an dieser Stelle nicht
+		weiter betont zu werden.
 	\end{description}
 \end{remark}
