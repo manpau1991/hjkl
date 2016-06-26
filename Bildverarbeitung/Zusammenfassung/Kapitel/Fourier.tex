@@ -443,7 +443,7 @@ Fouriertransformierte besonders schnell berechnen wollen.
 		\item [Inverse Fouriertransformation] Sind $ f, \widehat{f} \in L_{1}(\R) $, dann ist
 		\[
   		f(x) = (\widehat{f})^{\vee}(x) \coloneqq 
-    		\frac{1}{2\pi} \int_{\R} \widehat{f}(\vartheta) \ e^{i \xi \vartheta} \dif \vartheta.
+    		\frac{1}{2\pi} \int_{\R} \widehat{f}(\vartheta) \ e^{i x \vartheta} \dif \vartheta.
 		\]
 		Die Operation $ f \mapsto f^{\vee} \coloneqq \frac{1}{2\pi} f^{\wedge}(-\bullet) $ bezeichnet
 		man als inverse Fouriertransformation. 
@@ -463,4 +463,120 @@ Fouriertransformierte besonders schnell berechnen wollen.
 		$ 1 / \sqrt{2\pi} $ normieren können, dann wäre dieser Faktor jetzt auch bei der Inversen
 		Fouriertransformation aufgetaucht und wir hätten eine schöne Isometrie.
 	\end{description}
+\end{remark}
+
+\begin{example}[Inverse Fouriertransformation]
+Wir berechnen die Fouriertransformation der Gauß-Funktion
+\[
+  f(x) = \exp(-x^{2}), \quad x \in \R.
+\]
+Der Nachweis $ f \in L_{1}(\R) $ sei dabei dem Leser zur Übung überlassen. Es sei aber soviel 
+gesagt, dass
+\[
+  \int_{\R} f(x) \dif x = \sqrt{\pi}.
+\]
+Es gilt
+\begin{align*}
+   \widehat{f}(\xi)
+&= \int_{\R} f(x) \exp(-i\xi x) \dif x
+ = \int_{\R} \exp(-x^{2}) \exp(-i\xi x) \dif x
+ = \int_{\R} \exp(-(x^{2} + i\xi x)) \dif x \\
+&= \int_{\R} \exp(-(x^{2} + i\xi x - \xi^{2} / 4) - \xi^{2}/4 ) \dif x
+ = \int_{\R} \exp(-(x + i\xi / 2)^{2}) \exp(-\xi^{2}/4) \dif x.
+\end{align*}
+Die Substitution $ u \coloneqq x + i\xi / 2 $, $ \dif u = \dif x $ liefert weiter
+\[
+    \exp(-\xi^{2}/4) \underbrace{ \int_{\R} \exp(-u^{2}) \dif u }_{=\sqrt{\pi}}
+  = \sqrt{\pi} \exp(-\xi^{2}/4).
+\]
+Wir haben also gezeigt, dass $ \widehat{f}(\xi) = \sqrt{\pi} \exp(-\xi^{2}/4) $. Die
+Fouriertransformierte der Gauß-Funktion ist also i.W.\ bis auf Normierung die Gauß-Funktion selbst.
+Man kann sich leicht überlegen, dass auch $ \widehat{f}(\xi) \in L_{1}(\R) $. Damit können wir
+die Inverse Fouriertransformation berechnen. Dabei sollte wieder die ursprüngliche Funktion $ f $
+herauskommen. Also:
+\begin{align*}
+   \left( \widehat{f} \right)^{\vee}(x)
+&= \frac{1}{2\pi} \int_{\R} \widehat{f}(\xi) \exp(i\xi x) \dif \xi
+ = \frac{1}{2\pi} \int_{\R} \sqrt{\pi} \exp(-\xi^{2}/4) \exp(i\xi x) \dif \xi \\
+&= \frac{1}{2\sqrt{\pi}} \int_{\R} \exp(-\xi^{2}/4 + i\xi x) \dif \xi
+ = \frac{1}{2\sqrt{\pi}} \int_{\R} \exp(- (\xi^{2}/4 - i\xi x - x^{2}) - x^{2}) \dif \xi \\
+&= \frac{1}{2\sqrt{\pi}} \int_{\R} \exp(-(\xi/2 - ix)^{2}) \exp(-x^{2}) \dif \xi \\
+&= \frac{1}{2\sqrt{\pi}} \exp(-x^{2}) \int_{\R} \exp(-(\xi/2 - ix)^{2}) \dif \xi.
+\end{align*}
+Die Variablensubstitution $ u \coloneqq \xi / 2 - ix $, $ \dif \xi = 2 \dif u $ liefert 
+daraus schließlich
+\[
+    \frac{1}{2\sqrt{\pi}} \exp(-x^{2}) \underbrace{ \int_{\R} 2\exp(-u^{2}) \dif u }_{=\sqrt{\pi}}
+  = \frac{1}{\sqrt{\pi}} \sqrt{\pi} \exp(-x^{2})
+  = \exp(-x^{2}) = f(x),
+\]
+wie behauptet.
+\end{example}
+
+\begin{proposition}[Riemann-Lebesgue-Lemma]\label{prop:Riemann-Lebesgue}
+Ist $ f \in L_{1}(\R) $, so ist
+\[
+  \lim\limits_{\xi \to \infty} f(\xi) = 0.
+\]
+\end{proposition}
+
+\begin{remark}[Riemann-Lebesgue-Lemma]
+Die Kernessenz von Lemma~\ref{prop:Riemann-Lebesgue} ist, dass die Fouriertransformation 
+$ \widehat{f} $ einer Funktion $ f $ im Unendlichen verschwindet. Der Anteil der sehr großen
+Frequenzen nimmt immer weiter ab, je größer die Frequenzen werden.
+\end{remark}
+
+\begin{proposition}[Parseval/Plancherel]
+Für $ f, g \in L_{1}(\R) \cap L_{2}(\R) $ ist
+\[
+    \int_{\R} f(t) \ g(t) \dif t 
+  = \frac{1}{2\pi} \int_{\R} \widehat{f}(\vartheta) \ \overline{\widehat{g}(\vartheta)}
+      \dif \vartheta.
+\]
+Insbesondere gilt mit $ f = g $
+\[
+  \norm{f}_{2} = \frac{1}{\sqrt{2\pi}} \norm{\widehat{f}}_{2}.
+\]
+\end{proposition}
+
+\begin{remark}[Parseval/Plancherel]
+Aus dem vorherigen Satz lassen sich gleich mehrere interessante Schlüsse ziehen:
+\begin{itemize}
+\item Die Fouriertransformation ist bis auf Normierung eine Isometrie auf $ L_{2} $. Hätten wir in 
+  Definition~\ref{def:Fouriertransformation} die Normierung $ 1 / \sqrt{2\pi} $ verwendet, so
+  könnten wir nun schreiben:
+  \[
+    \norm{f}_{2} = \norm{\widehat{f}}_{2}
+  \]
+  und wir hätten die perfekte Symmetrie. Dies ließe auch die Interpretation zu, dass die 
+  Fouriertransformation energieerhaltend ist (die Zwei-Norm wird ja auch als Energienorm 
+  bezeichnet). Da lacht der Physiker \smiley.
+\item Der Satz von Parseval/Plancherel liefert ein Skalarprodukt von Funktionen
+  $ f, g \in L_{1}(\R) \cap L_{2}(\R) $:
+  \[
+      \langle f, g \rangle 
+    = \int_{\R} f(t) \ g(t) \dif t
+    = \frac{1}{2\pi} \int_{\R} \widehat{f}(\vartheta) \ \overline{\widehat{g}(\vartheta)}
+          \dif \vartheta.
+  \]
+  Das bedeutet, wir dürfen uns insbesondere der schönen Rechenregeln für Skalarprodukte bedienen
+  (Linearität, Symmetrie usw.).
+\item Wie wir bereits gesehen haben, gibt es Funktionen in $ L_{1}(\R) $, für die die 
+  Inversionsformel der Fouriertransformation nicht gilt. Daher wäre es schön, die
+  Fouriertransformation auf andere Funktionenräume wie den $ L_{2}(\R) $ zu verallgemeinern. Dabei
+  können wir ausnutzen, dass $ L_{1}(\R) \cap L_{2}(\R) $ dicht in $ L_{2}(\R) $ liegt. Wir
+  definieren zu $ f \in L_{2}(\R) $ eine Folge
+  \[
+    f_{n} \coloneqq \chi_{[-n,n]} \cdot f \quad \in L_{1}(\R) \cap L_{2}(\R), \qquad n \in \N,
+  \]
+  welche für $ n \to \infty $ in der Norm $ \norm{\bullet}_{2} $ gegen $ f $ konvergiert.
+  $ \widehat{f_{n}} $ ist eine Cachy-Folge, die wegen der Dichtheit von $ L_{1}(\R) \cap L_{2}(\R) $
+  in $ L_{2}(\R) $ gegen eine Funktion in $ L_{2}(\R) $ konvergiert. Diese Funktion nennen wir
+  $ \widehat{f} $:
+  \[
+      \widehat{f} \coloneqq \lim\limits_{n \to \infty} \widehat{f_{n}}
+    = \lim\limits_{n \to \infty} \left( \chi_{[-n,n]} \cdot f \right)^{\wedge}, 
+      \qquad f \in L_{2}(\R).
+  \]
+\end{itemize}
 \end{remark}
