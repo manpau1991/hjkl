@@ -1,6 +1,6 @@
 \section{Fourier}
 
-\begin{definition}[Fourier-Transformation] \label{def:Fouriertransformation}
+\begin{definition}[Fourier-Transformation] \label{def:Fourier-Transformation}
 Für Funktionen $ f \in L_{1}(\R) $ definieren wir mit
 \[
   \widehat{f} : \R \rightarrow \C, \qquad
@@ -32,13 +32,13 @@ Einheit $ i $ mit drin haben, liegt halt einfach daran, dass wir die Identität
 \[
   e^{ix} = \cos(x) + i \sin(x)
 \]
-ausgenutzt haben, um die Fouriertransformation besonders elegant zu schreiben. Man hätte auch für
-Real- und Imaginärteil zwei gesonderte Fouriertransformationen definieren können. Aber das soll uns
+ausgenutzt haben, um die Fourier-Transformation besonders elegant zu schreiben. Man hätte auch für
+Real- und Imaginärteil zwei gesonderte Fourier-Transformationen definieren können. Aber das soll uns
 hier nicht weiter stören. Außerdem kann man halt mit einer Exponentialfunktion schöner rechnen 
 (z.B. ist die Stammfunktion der Exponentialfunktion wieder die Exponentialfunktion). Das ist 
 eigentlich alles, was dahinter steckt. Will man die imaginäre Einheit ganz wegbekommen, geht man 
 im diskreten Fall einfach über zur \emph{Diskreten Cosinus-Transformation}.
-\item Wichtig: Mit der Fouriertransformation finden wir zwar heraus, welche Frequenzen im Singal 
+\item Wichtig: Mit der Fourier-Transformation finden wir zwar heraus, welche Frequenzen im Singal 
 stecken,
 aber wir wissen nicht, an welcher Stelle bzw. zu welchem Zeitpunkt die entsprechende Frequenz 
 auftritt! Wir haben keine Lokalität, da wir ja über ganz $ \R $ integrieren. Das ist ein wichtiger 
@@ -223,16 +223,16 @@ beiden Funktionen ab, die miteinander gefaltet werden, siehe Abbildung~\ref{fig:
 \end{example}
 
 Nun kommen wir zu einem sehr wichtigen Teil der Vorlesung, nämlich zu den Eigenschaften der
-Fouriertransformation. Insbesondere wollen wir uns mit deren graphischer Deutung beschäftigen.
+Fourier-Transformation. Insbesondere wollen wir uns mit deren graphischer Deutung beschäftigen.
 Faltungen werden in diesem Kontext auch eine sehr wichtige Rolle spielen, wenn wir die
-Fouriertransformierte besonders schnell berechnen wollen.
+Fourier-Transformierte besonders schnell berechnen wollen.
 
-\begin{remark}[Eigenschaften der Fouriertransformation und deren graphische Deutung] \leavevmode
+\begin{remark}[Eigenschaften der Fourier-Transformation und deren graphische Deutung] \leavevmode
 	 %%Hier könnten wir zu jeder Eigenschaft kurz schreiben was sie bedeuten und falls nötig oder 
 	 %%möglich durch Bilder
 	%%veranschaulichen
 	\begin{description}
-  	\item [Linearität] Die Fouriertransformierte ist linear. Dies folgt sofort aus der Linearität 
+  	\item [Linearität] Die Fourier-Transformierte ist linear. Dies folgt sofort aus der Linearität 
   	des Integrals. Seien also $ f, g \in L_{1}(\R) $ und $ a, b \in \R $. Dann gilt:
     	\[
       	(a \cdot f + b \cdot g)^{\wedge} = a \cdot \widehat{f} + b \cdot \widehat{g}.
@@ -278,7 +278,7 @@ Fouriertransformierte besonders schnell berechnen wollen.
 		Wie bereits oben erwähnt verschiebt eine Translation eine Funktion um den Wert $ y $. 
 		Verschiebt man nun die ursprüngliche Funktion des Signal, sollte sich an den Anteilen der 
 		Frequenzen $ \xi $ nichts ändern. Wo kommt aber nun dieser seltsame Faktor $ e^{iy\xi} $ her? 
-		Dazu müssen wir uns wieder in Erinnerung rufen, dass sich die Fouriertransformation auch so 
+		Dazu müssen wir uns wieder in Erinnerung rufen, dass sich die Fourier-Transformation auch so 
 		schreiben lässt: $ \int_{\R} f(t) \cos(\xi t) \dif t - i \int_{\R} f(t) \sin(\xi t) \dif t $.\\
 		$ \rightarrow $ Es gibt einen Imaginärteil und einen Realteil. Durch die Translation ändert 
 		sich nur die Aufteilung zwischen diesen zwei Teilen. Der Gesamtanteil bleibt gleich. Diese 
@@ -295,8 +295,8 @@ Fouriertransformierte besonders schnell berechnen wollen.
         \centering
         \includegraphics[width=\linewidth]{Bilder/Rechteck2}
       \end{minipage}
-      \caption{Links: Rechtecksfunktion und deren Fouriertransformierte. Rechts: Die um $ 1 $
-        nach links verschobene Rechtecksfunktion und deren Fouriertransformierte mit Real- und 
+      \caption{Links: Rechtecksfunktion und deren Fourier-Transformierte. Rechts: Die um $ 1 $
+        nach links verschobene Rechtecksfunktion und deren Fourier-Transformierte mit Real- und 
         Imaginärteil separat geplottet (Realteil rot, Imaginärteil grün).}
       \label{fig:Rechteck12}
     \end{figure}
@@ -310,8 +310,8 @@ Fouriertransformierte besonders schnell berechnen wollen.
         \centering
         \includegraphics[width=\linewidth]{Bilder/Rechteck4}
       \end{minipage}
-      \caption{Links: Fouriertransformierte der Rechtecksfunktion (blau) und der verschobenen
-        Rechtecksfunktion (Realteil rot, Imaginärteil grün). Rechts: Fouriertransformation der
+      \caption{Links: Fourier-Transformierte der Rechtecksfunktion (blau) und der verschobenen
+        Rechtecksfunktion (Realteil rot, Imaginärteil grün). Rechts: Fourier-Transformation der
         Rechtecksfunktion (blau) und der verschobenen Rechtecksfunktion im Absolutbetrag (rot).}
       \label{fig:Rechteck34}
     \end{figure}
@@ -322,8 +322,9 @@ Fouriertransformierte besonders schnell berechnen wollen.
 		der Frequenzen ändert sich im Absolutbetrag nichts. Schließlich ist ja auch $ |e^{iy\xi}| = 1 $.
 		
 		Als veranschaulichendes Beispiel diene hier die Rechtecks-Funktion $ \chi_{[-1,1]} $ mit
-		ihrer Fouriertransformierten $ 2\sin(x) / x $. Wird die Rechtecks-Funktion um eine Einheit nach 
-		links verschoben, so wird die Fouriertransformierte mit dem Vorfaktor $ e^{i\xi} $ versehen,
+		ihrer Fourier-Transformierten $ 2\sin(x) / x $. Wird die Rechtecks-Funktion um eine Einheit 
+		nach 
+		links verschoben, so wird die Fourier-Transformierte mit dem Vorfaktor $ e^{i\xi} $ versehen,
 		also
 		\[   (\tau_{1}\chi_{[-1,1]})^{\wedge}(\xi)
   		 = \left( \chi_{[-1,1]}(\bullet + 1) \right)^{\wedge}(\xi)
@@ -331,13 +332,13 @@ Fouriertransformierte besonders schnell berechnen wollen.
   		 = e^{i\xi} \cdot \frac{2 \sin(\xi)}{\xi}.
   	\]
   	Abbildung~\ref{fig:Rechteck12} zeigt die Rechtecksfunktion und die verschobene 
-  	Rechtecksfunktion, sowie deren Fouriertransformierte. Wir stellen zunächst fest, dass die
-  	Rechtecksfunktion eine vollständig reelle Fouriertransformierte besitzt und die verschobene
-  	Rechtecksfunktion eine reell- und komplexwertige Fouriertransformierte. Dies zeigt ganz 
+  	Rechtecksfunktion, sowie deren Fourier-Transformierte. Wir stellen zunächst fest, dass die
+  	Rechtecksfunktion eine vollständig reelle Fourier-Transformierte besitzt und die verschobene
+  	Rechtecksfunktion eine reell- und komplexwertige Fourier-Transformierte. Dies zeigt ganz 
   	deutlich, dass sich die Aufteilung der Frequenzen zwischen Sinus und Cosinus verschoben hat. Die
   	interessante Frage ist aber nun: Hat sich an den Anteilen der Frequenzen im Ganzen etwas 
   	geändert? Die Antwort liefert Abbildung~\ref{fig:Rechteck34}. Im Absolutbetrag sind nämlich 
-  	beide Fouriertransformationen identisch. D.h.\ die Frequenzanteile sind im Ganzen gleich
+  	beide Fourier-Transformationen identisch. D.h.\ die Frequenzanteile sind im Ganzen gleich
   	geblieben. Dies hätte man auch schon so sehen können:
   	\[
     	  \left| (\tau_{1}\chi_{[-1,1]})^{\wedge}(\xi) \right|
@@ -350,7 +351,7 @@ Fouriertransformierte besonders schnell berechnen wollen.
   	Also ganz kurz und knapp: Verschiebung im Zeit-/Ortsbereich führt zu Modulation im
   	Frequenzbereich.
   	
-  	Übrigens: Der Realteil der Fouriertransformierten ist immer achsensymmetrisch zur $ y $-Achse,
+  	Übrigens: Der Realteil der Fourier-Transformierten ist immer achsensymmetrisch zur $ y $-Achse,
   	weil der Cosinus achsensymmetrisch zur $ y $-Achse ist, und der Imaginärteil ist 
   	punktsymmetrisch um den Ursprung, weil der Sinus punktsymmetrisch um den Ursprung ist.
  
@@ -378,13 +379,13 @@ Fouriertransformierte besonders schnell berechnen wollen.
           \end{minipage}
           \caption{Links: Rechtecksfunktion (blau) und gestauchte Rechtecksfunktion (rot). 
           Rechts:
-            Fouriertransformationen zu den Rechtecksfunktionen (in gleicher Farbe).}
+            Fourier-Transformationen zu den Rechtecksfunktionen (in gleicher Farbe).}
           \label{fig:FT_Skalierung}
         \end{figure}
     
-    Können wir diese Analogie auch auf die Fouriertransformation übertragen? Betrachten wir ein
+    Können wir diese Analogie auch auf die Fourier-Transformation übertragen? Betrachten wir ein
     weiteres Mal die Rechtecksfunktion. Skalieren wir diese mit einem Faktor von $ h = 2 $ und 
-    bilden davon die Fouriertransformation, so erhalten wir:
+    bilden davon die Fourier-Transformation, so erhalten wir:
     \[
         (\sigma_{2} \ \chi_{[-1,1]})^{\wedge}(\xi)
       = \frac{1}{2} \widehat{\chi}_{[-1,1]} \left( \frac{\xi}{2} \right) 
@@ -392,19 +393,19 @@ Fouriertransformierte besonders schnell berechnen wollen.
     \]
     Abbildung~\ref{fig:FT_Skalierung} zeigt die eben angesprochenen Funktionen. Das 
     $ \xi /2 $ im Argument von $ (\sigma_{2} \ \chi_{[-1,1]})^{\wedge} $ führt dazu, dass die
-    Fouriertransformation auseinander gezogen wird. Durch den Vorfaktor $ 2 / \xi $ verringert sich
+    Fourier-Transformation auseinander gezogen wird. Durch den Vorfaktor $ 2 / \xi $ verringert sich
     zudem die Amplitude. Dies macht auch Sinn, denn durch das Zusammenstauchen einer Funktion im
     Ortsbereich schwingt sie ja schneller, sie wird hochfrequenter. Das entspricht genau dem
-    Auseinanderziehen der Fouriertransformation. Es wird mehr Anteil in den hochfrequenten Bereich
+    Auseinanderziehen der Fourier-Transformation. Es wird mehr Anteil in den hochfrequenten Bereich
     verlagert. Gleichzeitig wird der Anteil der niedrigen Frequenzen (die sich im Frequenzbereich 
-    um den Ursprung konzentrieren) geringer, was dem Plattdrücken der Fouriertransformierten 
+    um den Ursprung konzentrieren) geringer, was dem Plattdrücken der Fourier-Transformierten 
     entspricht.
     
     Man stellt fest: Für große Werte von $ h $ konzentriert sich die Funktion im Zeitbereich stark 
     um den Ursprung, sie wird gestaucht und hochfrequenter. Im Frequenzbereich führt dies dazu,
-    dass die Fouriertransformation gestreckt (auseinander gezogen) und platt gedrückt wird.
+    dass die Fourier-Transformation gestreckt (auseinander gezogen) und platt gedrückt wird.
     Umgekehrt führen kleine Werte von $ h $ dazu, dass die Funktion im Ortsbereich gestreckt wird,
-    also niederfrequenter wird. Die Fouriertransformation wird um den Ursprung zusammengedrückt und
+    also niederfrequenter wird. Die Fourier-Transformation wird um den Ursprung zusammengedrückt und
     schlägt stärker aus.
     
 		\item [Faltung] Für $ f, g \in L_{1}(\R) $ bzw.\ $ c, d \in l_{1}(\Z) $ sind 
@@ -419,7 +420,7 @@ Fouriertransformierte besonders schnell berechnen wollen.
     Übereinstimmung der Frequenzen der beiden Funktionen.
     
     \emph{Eine Faltung im Zeitbereich wird also überführt in eine Multiplikation im   
-    Frequenzbereich.} Dies ist eine extrem wichtige Eigenschaft der Fouriertransformation. Dies hat
+    Frequenzbereich.} Dies ist eine extrem wichtige Eigenschaft der Fourier-Transformation. Dies hat
     im Wesentlichen zwei Gründe:
     \begin{enumerate}
     \item Die Berechnung einer Faltung zweier Funktionen ist normalerweise viel aufwendiger als die 
@@ -428,7 +429,7 @@ Fouriertransformierte besonders schnell berechnen wollen.
     \item Außerdem weist das Produkt eine höhere numerische Stabilität auf als die Faltung.
     \end{enumerate}
     Diese Eigenschaften kann man sich zunutze machen, um Filter effizient zu implementieren, und
-    dabei ist von der Schnellen Fouriertransformation (FFT) noch gar nicht die Rede.
+    dabei ist von der Schnellen Fourier-Transformation (FFT) noch gar nicht die Rede.
         
 		\item [Ableitungseigenschaften] Sind $ f, f' \in L_{1}(\R) $, dann gilt
     \[
@@ -440,33 +441,33 @@ Fouriertransformierte besonders schnell berechnen wollen.
     \]
     Diese Eigenschaften sind vor allem nützlich fürs Rechnen.
     
-		\item [Inverse Fouriertransformation] Sind $ f, \widehat{f} \in L_{1}(\R) $, dann ist
+		\item [Inverse Fourier-Transformation] Sind $ f, \widehat{f} \in L_{1}(\R) $, dann ist
 		\[
   		f(x) = (\widehat{f})^{\vee}(x) \coloneqq 
     		\frac{1}{2\pi} \int_{\R} \widehat{f}(\vartheta) \ e^{i x \vartheta} \dif \vartheta.
 		\]
 		Die Operation $ f \mapsto f^{\vee} \coloneqq \frac{1}{2\pi} f^{\wedge}(-\bullet) $ bezeichnet
-		man als inverse Fouriertransformation. 
+		man als inverse Fourier-Transformation. 
 		
 		Dass die Nützlichkeit einer Transformation stark
 		davon abhängt, ob bzw.\ unter welchen Voraussetzungen diese wieder rückgängig gemacht werden 
 		kann, braucht an dieser Stelle nicht weiter betont zu werden. In unserem Fall müssen beide
 		Funktionen $ f, \widehat{f} \in L_{1}(\R) $ sein. Setzen wir beispielsweise
-		$ f = \chi_{[-1,1]} $, so erhalten wir i.W.\ die $ \sinc $-Funktion als Fouriertransformierte.
-		Diese ist aber keine $ L_{1}(\R) $-Funktion mehr und deshalb ist die Fouriertransformation hier
+		$ f = \chi_{[-1,1]} $, so erhalten wir i.W.\ die $ \sinc $-Funktion als Fourier-Transformierte.
+		Diese ist aber keine $ L_{1}(\R) $-Funktion mehr und deshalb ist die Fourier-Transformation hier
 		insbesondere nicht invertierbar! Aber das kommt Gott sei Dank nicht so häufig vor.
 		
-		Dass die Formel für die Inverse Fouriertransformation den Vorfaktor $ 1 / 2\pi $ beinhaltet,
-		liegt daran, dass wir die Formel für die Fouriertransformation in 
-		Definition~\ref{def:Fouriertransformation} mit keinen Vorfaktor versehen haben. Dies ist aber 
-		nur Normierung. Wir hätten auch in Definition~\ref{def:Fouriertransformation} mit
+		Dass die Formel für die Inverse Fourier-Transformation den Vorfaktor $ 1 / 2\pi $ beinhaltet,
+		liegt daran, dass wir die Formel für die Fourier-Transformation in 
+		Definition~\ref{def:Fourier-Transformation} mit keinen Vorfaktor versehen haben. Dies ist aber 
+		nur Normierung. Wir hätten auch in Definition~\ref{def:Fourier-Transformation} mit
 		$ 1 / \sqrt{2\pi} $ normieren können, dann wäre dieser Faktor jetzt auch bei der Inversen
-		Fouriertransformation aufgetaucht und wir hätten eine schöne Isometrie.
+		Fourier-Transformation aufgetaucht und wir hätten eine schöne Isometrie.
 	\end{description}
 \end{remark}
 
-\begin{example}[Inverse Fouriertransformation]
-Wir berechnen die Fouriertransformation der Gauß-Funktion
+\begin{example}[Inverse Fourier-Transformation]
+Wir berechnen die Fourier-Transformation der Gauß-Funktion
 \[
   f(x) = \exp(-x^{2}), \quad x \in \R.
 \]
@@ -490,9 +491,9 @@ Die Substitution $ u \coloneqq x + i\xi / 2 $, $ \dif u = \dif x $ liefert weite
   = \sqrt{\pi} \exp(-\xi^{2}/4).
 \]
 Wir haben also gezeigt, dass $ \widehat{f}(\xi) = \sqrt{\pi} \exp(-\xi^{2}/4) $. Die
-Fouriertransformierte der Gauß-Funktion ist also i.W.\ bis auf Normierung die Gauß-Funktion selbst.
+Fourier-Transformierte der Gauß-Funktion ist also i.W.\ bis auf Normierung die Gauß-Funktion selbst.
 Man kann sich leicht überlegen, dass auch $ \widehat{f}(\xi) \in L_{1}(\R) $. Damit können wir
-die Inverse Fouriertransformation berechnen. Dabei sollte wieder die ursprüngliche Funktion $ f $
+die Inverse Fourier-Transformation berechnen. Dabei sollte wieder die ursprüngliche Funktion $ f $
 herauskommen. Also:
 \begin{align*}
    \left( \widehat{f} \right)^{\vee}(x)
@@ -521,7 +522,7 @@ Ist $ f \in L_{1}(\R) $, so ist
 \end{proposition}
 
 \begin{remark}[Riemann-Lebesgue-Lemma]
-Die Kernessenz von Lemma~\ref{prop:Riemann-Lebesgue} ist, dass die Fouriertransformation 
+Die Kernessenz von Lemma~\ref{prop:Riemann-Lebesgue} ist, dass die Fourier-Transformation 
 $ \widehat{f} $ einer Funktion $ f $ im Unendlichen verschwindet. Der Anteil der sehr großen
 Frequenzen nimmt immer weiter ab, je größer die Frequenzen werden.
 \end{remark}
@@ -542,14 +543,14 @@ Insbesondere gilt mit $ f = g $
 \begin{remark}[Parseval/Plancherel]
 Aus dem vorherigen Satz lassen sich gleich mehrere interessante Schlüsse ziehen:
 \begin{itemize}
-\item Die Fouriertransformation ist bis auf Normierung eine Isometrie auf $ L_{2} $. Hätten wir in 
-  Definition~\ref{def:Fouriertransformation} die Normierung $ 1 / \sqrt{2\pi} $ verwendet, so
+\item Die Fourier-Transformation ist bis auf Normierung eine Isometrie auf $ L_{2} $. Hätten wir in 
+  Definition~\ref{def:Fourier-Transformation} die Normierung $ 1 / \sqrt{2\pi} $ verwendet, so
   könnten wir nun schreiben:
   \[
     \norm{f}_{2} = \norm{\widehat{f}}_{2}
   \]
   und wir hätten die perfekte Symmetrie. Dies ließe auch die Interpretation zu, dass die 
-  Fouriertransformation energieerhaltend ist (die Zwei-Norm wird ja auch als Energienorm 
+  Fourier-Transformation energieerhaltend ist (die Zwei-Norm wird ja auch als Energienorm 
   bezeichnet). Da lacht der Physiker \smiley.
 \item Der Satz von Parseval/Plancherel liefert ein Skalarprodukt von Funktionen
   $ f, g \in L_{1}(\R) \cap L_{2}(\R) $:
@@ -562,8 +563,8 @@ Aus dem vorherigen Satz lassen sich gleich mehrere interessante Schlüsse ziehen
   Das bedeutet, wir dürfen uns insbesondere der schönen Rechenregeln für Skalarprodukte bedienen
   (Linearität, Symmetrie usw.).
 \item Wie wir bereits gesehen haben, gibt es Funktionen in $ L_{1}(\R) $, für die die 
-  Inversionsformel der Fouriertransformation nicht gilt. Daher wäre es schön, die
-  Fouriertransformation auf andere Funktionenräume wie den $ L_{2}(\R) $ zu verallgemeinern. Dabei
+  Inversionsformel der Fourier-Transformation nicht gilt. Daher wäre es schön, die
+  Fourier-Transformation auf andere Funktionenräume wie den $ L_{2}(\R) $ zu verallgemeinern. Dabei
   können wir ausnutzen, dass $ L_{1}(\R) \cap L_{2}(\R) $ dicht in $ L_{2}(\R) $ liegt. Wir
   definieren zu $ f \in L_{2}(\R) $ eine Folge
   \[
