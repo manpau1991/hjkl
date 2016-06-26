@@ -1,6 +1,6 @@
 \section{Fourier}
 
-\begin{definition}[Fourier-Transformation]
+\begin{definition}[Fourier-Transformation] \label{def:Fouriertransformation}
 Für Funktionen $ f \in L_{1}(\R) $ definieren wir mit
 \[
   \widehat{f} : \R \rightarrow \C, \qquad
@@ -37,7 +37,7 @@ Real- und Imaginärteil zwei gesonderte Fouriertransformationen definieren könn
 hier nicht weiter stören. Außerdem kann man halt mit einer Exponentialfunktion schöner rechnen 
 (z.B. ist die Stammfunktion der Exponentialfunktion wieder die Exponentialfunktion). Das ist 
 eigentlich alles, was dahinter steckt. Will man die imaginäre Einheit ganz wegbekommen, geht man 
-im diskreten Fall einfach über zur \emph{Diskreten CoSinus-Transformation}.
+im diskreten Fall einfach über zur \emph{Diskreten Cosinus-Transformation}.
 \item Wichtig: Mit der Fouriertransformation finden wir zwar heraus, welche Frequenzen im Singal 
 stecken,
 aber wir wissen nicht, an welcher Stelle bzw. zu welchem Zeitpunkt die entsprechende Frequenz 
@@ -446,12 +446,21 @@ Fouriertransformierte besonders schnell berechnen wollen.
     		\frac{1}{2\pi} \int_{\R} \widehat{f}(\vartheta) \ e^{i \xi \vartheta} \dif \vartheta.
 		\]
 		Die Operation $ f \mapsto f^{\vee} \coloneqq \frac{1}{2\pi} f^{\wedge}(-\bullet) $ bezeichnet
-		man als inverse Fouriertransformation. Dass die Nützlichkeit einer Transformation stark
+		man als inverse Fouriertransformation. 
+		
+		Dass die Nützlichkeit einer Transformation stark
 		davon abhängt, ob bzw.\ unter welchen Voraussetzungen diese wieder rückgängig gemacht werden 
 		kann, braucht an dieser Stelle nicht weiter betont zu werden. In unserem Fall müssen beide
 		Funktionen $ f, \widehat{f} \in L_{1}(\R) $ sein. Setzen wir beispielsweise
 		$ f = \chi_{[-1,1]} $, so erhalten wir i.W.\ die $ \sinc $-Funktion als Fouriertransformierte.
 		Diese ist aber keine $ L_{1}(\R) $-Funktion mehr und deshalb ist die Fouriertransformation hier
 		insbesondere nicht invertierbar! Aber das kommt Gott sei Dank nicht so häufig vor.
+		
+		Dass die Formel für die Inverse Fouriertransformation den Vorfaktor $ 1 / 2\pi $ beinhaltet,
+		liegt daran, dass wir die Formel für die Fouriertransformation in 
+		Definition~\ref{def:Fouriertransformation} mit keinen Vorfaktor versehen haben. Dies ist aber 
+		nur Normierung. Wir hätten auch in Definition~\ref{def:Fouriertransformation} mit
+		$ 1 / \sqrt{2\pi} $ normieren können, dann wäre dieser Faktor jetzt auch bei der Inversen
+		Fouriertransformation aufgetaucht und wir hätten eine schöne Isometrie.
 	\end{description}
 \end{remark}
