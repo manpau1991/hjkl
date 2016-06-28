@@ -19,6 +19,95 @@ Mit den Ergebnissen, dass $C_0 \subset L_2$ dicht, $C_0 \subset L_1 \cap L_2$ di
 $L_1 \cap L_2 \subset L_2$ ist, so folgt, dass $L_1 \cap L_2$ dicht in $L_2$ liegt.
 \end{proof}
 
+\section{Sinus Cardinalis}\label{sec:sincproofs}
 
+\subsection{Integrierbarkeit}
+Es wird gezeigt, dass die $ \sinc $-Funktion nicht integrierbar ist.
+\begin{proof}
+Wir stellen zunächst fest, dass der $ \sinc $ symmetrisch um die $ y $-Achse ist. Außerdem besitzt
+er seine Nullstellen nur an den ganzzahligen Werten. Dies rechtfertigt
+\[
+    \norm{\sinc}_{1}
+  = \int_{\R} |\sinc(x)| \dif x
+  = 2 \int_{0}^{\infty} |\sinc(x)| \dif x
+  = 2 \sum_{k = 0}^{\infty} \int_{k}^{k + 1} |\sinc(x)| \dif x.
+\]
+Wir schätzen das Integral
+\begin{align*}
+    \int_{k}^{k + 1} |\sinc(x)| \dif x
+ &= \int_{k}^{k + 1} \left| \frac{\sin(\pi x)}{\pi x} \right|  \dif x
+  = \int_{k}^{k + 1} \frac{|\sin(\pi x)|}{\pi x} \dif x \\
+ &\geq \int_{k}^{k + 1} \frac{|\sin(\pi x)|}{\pi(k + 1)} \dif x
+\end{align*}
+nach unten ab und erhalten mit der Substitution $ t \coloneqq \pi x $, $ \dif t = \pi \dif x $
+\begin{align*}
+   \int_{k}^{k + 1} \frac{|\sin(\pi x)|}{\pi(k + 1)} \dif x
+&= \frac{1}{\pi^{2}(k + 1)} \int_{k\pi}^{(k + 1)\pi} |\sin(t)| \dif t \\
+&= \frac{1}{\pi^{2}(k + 1)} 
+      \eval[3]{ \left( -\cos(x) \sgn(\sin(x) \right) }_{t = k\pi}^{(k + 1)\pi} \\
+&= \frac{1}{\pi^{2}(k + 1)} (\underbrace{\cos(k\pi) + \cos((k + 1)\pi)}_{= 1 + 1 = 2})\\
+&= \frac{2}{\pi^{2}(k + 1)}.
+\end{align*}
+Die Reihe
+\[
+    \sum_{k = 0}^{\infty} \frac{2}{\pi^{2}(k + 1)}
+  = \frac{2}{\pi^{2}} \sum_{k = 1}^{\infty} \frac{1}{k}
+  > \infty
+\]
+divergiert und damit ist auch $ \norm{\sinc}_{1} > \infty $, also $ \sinc \notin L_{1}(\R) $.
+\end{proof}
+Auf ähnliche Weise lässt sich übrigens zeigen, dass $ \sinc \in L_{2}(\R) $.
 
-
+\subsection{Flächeninhalt}
+Gesucht ist der Wert des Integrals
+\[
+  \int_{\R} \sinc(x) \dif x,
+\]
+also der Flächeninhalt, der zwischen der $ x $-Achse und der $ \sinc $-Funktion eingeschlossen wird.
+Dazu machen wir uns zuerst klar, dass für beliebige $ x \in \R \setminus \{ 0 \} $ gilt
+\[
+    \int_{0}^{\infty} e^{-xt} \dif t 
+  = \eval{ \left( -\frac{e^{-xt}}{x} \right) }_{t = 0}^{\infty}
+  = 0 - \left( -\frac{1}{x} \right) 
+  = \frac{1}{x}.
+\]
+Danach verwenden wir den Satz von Fubini, um zu erhalten:
+\[
+    \int_{\R} \frac{\sin(x)}{x} \dif x
+  = 2 \int_{0}^{\infty} \frac{\sin(x)}{x} \dif x
+  = 2 \int_{0}^{\infty} \int_{0}^{\infty} e^{-xt} \sin(x) \dif x \dif t.
+\]
+Partielle Integration liefert uns
+\begin{align*}
+   \int_{0}^{\infty} e^{-xt} \sin(x) \dif x 
+&= \eval{ \left( -\frac{e^{-xt}}{t} \sin(x) \right) }_{x = 0}^{\infty}
+      - \int_{0}^{\infty} -\frac{e^{-xt}}{t} \cos(x) \dif x \\
+&= 0 + 0 + \int_{0}^{\infty} \frac{e^{-xt}}{t} \cdot \frac{e^{ix} + e^{-ix}}{2} \dif x \\
+&= \frac{1}{2t} \left( 
+      \int_{0}^{\infty} e^{-x(t - i)} \dif x + \int_{0}^{\infty} e^{-x(t + i)} \dif x
+   \right) \\
+&= \frac{1}{2t} \left(
+      \eval{ - \frac{e^{-x(t-i)}}{t-i} }_{x = 0}^{\infty}
+      + \eval{ \frac{e^{-x(t-i)}}{t+i} }_{x = 0}^{\infty}
+   \right) \\
+&= \frac{1}{2t} \left( 0 + \frac{1}{t - i} + 0 + \frac{1}{t + i} \right)
+ = \frac{1}{2t} \cdot \frac{2t}{t^{2} + 1} \\
+&= \frac{1}{t^{2} + 1}.
+\end{align*}
+Folglich ist
+\[
+   \int_{\R} \frac{\sin(x)}{x} \dif x
+= 2 \int_{0}^{\infty} \frac{1}{t^{2} + 1} \dif t
+= 2 \eval[2]{\arctan(t)}_{t=0}^{\infty}
+= 2 \left( \frac{\pi}{2} - 0 \right)
+= \pi.
+\]
+Schließlich erhält man
+\[
+    \int_{\R} \sinc(x) \dif x
+  = \int_{\R} \frac{\sin(\pi x)}{\pi x} \dif x
+  = \frac{1}{\pi} \int_{\R} \frac{\sin(t)}{t} \dif t
+  = \frac{1}{\pi} \cdot \pi
+  = 1
+\]
+mit Substitution von $ t \coloneqq \pi x $, $ \dif t = \pi \dif x $.
