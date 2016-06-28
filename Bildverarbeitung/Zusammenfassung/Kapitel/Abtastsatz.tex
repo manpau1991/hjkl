@@ -24,15 +24,29 @@ Ist eine Funktion $ T $-bandbeschränkt, dann ist sie auch gleichzeitig $ T + n 
 jedes $ n > 0 $.
 \end{remark}
 
-\begin{remark}[Sinus Cardinalis]
-Der Name stammt daher, dass die Funktion an allen ganzzahligen Stellen entweder den Wert $ 0 $ oder
-$ 1 $ annimmt. Abbildung~\ref{fig:sinc} zeigt den Verlauf der $ \sinc $-Funktion.
-\begin{figure}[ht]
-\centering
-\includegraphics[width=0.7\textwidth]{Bilder/sinc}
-\caption{Plot der $ \sinc $-Funktion auf dem Intervall $ [-7,7] $.}
-\label{fig:sinc}
-\end{figure}
+\begin{remark}[Sinus Cardinalis]\leavevmode
+\begin{itemize}
+\item Der Name stammt daher, dass die Funktion an allen ganzzahligen Stellen entweder den Wert 
+  $ 0 $ oder $ 1 $ annimmt. Abbildung~\ref{fig:sinc} zeigt den Verlauf der $ \sinc $-Funktion.
+  \begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Bilder/sinc}
+  \caption{Plot der $ \sinc $-Funktion auf dem Intervall $ [-7,7] $.}
+  \label{fig:sinc}
+  \end{figure}
+\item Fun fact: Es gilt
+  \[
+    \int_{\R} \sinc(x) \dif x = 1 \quad \text{und damit} \quad
+    \int_{\R} \sinc(x / \pi) \dif x = \pi.
+  \]
+\item Die $ \sinc $-Funktion ist i.W.\ bis auf Normierung die Fourier-Transformierte der
+  Rechtecksfunktion. Damit ist der $ \sinc $ der ideale Tiefpassfilter (aus Sicht des
+  Frequenzbereichs).
+\item Es kann aber gezeigt werden, dass $ \sinc \notin L_{1}(\R) $, weswegen der ideale 
+  Tiefpassfilter nur näherungsweise implementiert werden kann. Es gilt aber
+  $ \sinc \in L_{2}(\R) $, was u.a.\ ein Grund dafür ist, die Fourier-Transformation auf dem
+  $ L_{2}(\R) $ einzuführen. Für Beweis siehe Anhang~\ref{sec:sincproofs}.
+\end{itemize}
 \end{remark}
 
 \begin{proposition}[Abtastsatz von Shannon]

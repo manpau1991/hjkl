@@ -571,14 +571,16 @@ Aus dem vorherigen Satz lassen sich gleich mehrere interessante Schlüsse ziehen
     f_{n} \coloneqq \chi_{[-n,n]} \cdot f \quad \in L_{1}(\R) \cap L_{2}(\R), \qquad n \in \N,
   \]
   welche für $ n \to \infty $ in der Norm $ \norm{\bullet}_{2} $ gegen $ f $ konvergiert.
-  $ \widehat{f_{n}} $ ist dann eine Cachy-Folge, die wegen der Dichtheit von $ L_{1}(\R) \cap 
+  $ \widehat{f_{n}} $ ist dann eine Cauchy-Folge, die wegen der Dichtheit von $ L_{1}(\R) \cap 
   L_{2}(\R) $ in $ L_{2}(\R) $ gegen eine Funktion in $ L_{2}(\R) $ konvergiert. Diese Funktion 
   nennen wir $ \widehat{f} $:
   \[
       \widehat{f} \coloneqq \lim\limits_{n \to \infty} \widehat{f_{n}}
-    = \lim\limits_{n \to \infty} \left( \chi_{[-n,n]} \cdot f \right)^{\wedge}, 
+    = \lim\limits_{n \to \infty} \left( \chi_{[-n,n]} \cdot f \right)^{\wedge}
+    = \lim\limits_{n \to \infty} \int_{-n}^{n} f(x) \exp(-i\xi x) \dif x,
       \qquad f \in L_{2}(\R).
   \]
+  
 \end{itemize}
 \end{remark}
 
