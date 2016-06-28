@@ -21,7 +21,7 @@
 
 \begin{remark}[Bandbeschränktheit]
 Ist eine Funktion $ T $-bandbeschränkt, dann ist sie auch gleichzeitig $ T + n $-bandbeschränkt für
-jedes $ n > 0 $.
+jedes $ n > 0 $. D.h.\ es gibt eigentlich gar nicht \emph{die} Bandbreite einer Funktion.
 \end{remark}
 
 \begin{remark}[Sinus Cardinalis]\leavevmode
@@ -50,7 +50,7 @@ jedes $ n > 0 $.
 \end{remark}
 
 \begin{proposition}[Abtastsatz von Shannon]
-Ist $ f \in L_{1}(\R) $ eine $ T $-bandbeschränkte Funktion und ist $ h < \pi / T $, dann ist
+Ist $ f \in L_{1}(\R) $ eine $ T $-bandbeschränkte Funktion und ist $ h < h* = \pi / T $, dann ist
 \[
   f(x) = \left( (S_{h} \ f) * \sinc \right) \left( \frac{x}{h} \right) 
        = \sum_{k \in \Z} f(hk) 
@@ -58,3 +58,22 @@ Ist $ f \in L_{1}(\R) $ eine $ T $-bandbeschränkte Funktion und ist $ h < \pi /
                 {\pi \left( \frac{x}{h} - k \right)}.
 \]
 \end{proposition}
+
+\begin{remark}[Abtastsatz von Shannon]
+Ein paar Anmerkungen dazu:
+\begin{itemize}
+\item Der Abtastsatz liefert uns eine Formel, wie man das ursprüngliche Signal $ f $ aus einer
+  Abtastung $ S_{h} \ f $ mithilfe der $ \sinc $-Funktion rekonstruieren kann.
+\item Voraussetzung dafür, dass die Rekonstruktion wie gewünscht funktioniert, ist aber, dass\dots
+  \begin{itemize}
+  \item $ f $ nicht zu große Frequenzen enthalten darf (das ist die Forderung der
+    $ T $-Bandbeschränktheit).
+  \item die Schrittweite $ h $ an den Parameter $ T $ angepasst wird, um eine ausreichend große 
+    Zahl an Abtastpunkten zu erreichen. Sonst hat man zu wenig Information, um $ f $ rekonstruieren 
+    zu können.
+  \end{itemize}
+\item Die Abtastfrequenz $ 1 / h $ wird auch als \emph{Nyquist-Frequenz} bezeichnet.
+\item Wählt man die Abtastfrequenz $ k $-mal so hoch wie nötig, so spricht man auch von
+  $ k $-fachem Oversampling.
+\end{itemize}
+\end{remark}
