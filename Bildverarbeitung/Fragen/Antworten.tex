@@ -299,6 +299,24 @@
       Kreismittelpunktes, was insgesamt also quadratischen Aufwand verursacht.
 	\item[Welcher Filter spielt dabei eine Rolle?]
 	\item[Gibt es weitere Filter zur Kantenerkennung?]
+      Der wohl einfachste (und schnellste) Filter zur Kantenerkennung ist ein Bildshift. Damit shiftet man das Bild
+      in die Richtung, in der man Kanten finden möchte um eine Position. Ist der Unterschied hoch, so unterscheiden
+      sich die Farbwerte signifikant, also liegt vmtl eine Kante vor.\\
+
+      Eine andere Möglichkeit ist die Betrachtung eines Differenzbildes.\\
+
+      Eine nette Alternative, die sich massivst parallelisieren lässt, ist der Sobel-Operator. Dieser Filter nimmt die
+      Farbwerte benachbarter Pixel gewichtet und errechnet daraus einen neuen Wert\footnote{Stencil und so.} und findet
+      so Kanten.\\
+
+      Eine weitere, jedoch ziemlich unbrauchbare Möglichkeit ist die Verwendung der Fouriertransformation. Dabei erhält
+      man zwar die Information, dass es Kanten im Bild gibt, aber nicht wo, da man keine Lokalitätsinformationen 
+      hat\footnote{Das ist ein Statement vom Matheman, das ich für ziemlich unbrauchbar halte, aber der Vollständigkeit
+      halber sei es hier erwähnt.}.\\
+
+      Eine weitere, moderne Alternative ist die Verwendung von Wavelets. Damit erkennt man Kanten durch die schnellen
+      Änderungen von Frequenzen. Zusätzlich weiß man auch, wo sich diese Kanten befinden, da man bei der Wavelettransformation
+      ja Lokalitätsinformationen hat.
 \end{description}
 \subsection{Gabor-Transformation}
 \begin{description}
