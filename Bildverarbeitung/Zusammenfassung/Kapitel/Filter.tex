@@ -11,7 +11,7 @@ Kategorien von Filtern:
     \norm{F}_{2} \coloneqq \sup_{\norm{c}_{2} = 1} \norm{Fc}_{2} = 1.
   \]
 \item [Linearer Filter]
-  Der Filter ist linearer Operator, d.h.\
+  Der Filter ist ein linearer Operator, d.h.\
   \[
     F(\alpha c + \beta c') = \alpha Fc + \beta Fc', \qquad \alpha, \beta \in \R, 
                                                     \quad c, c' \in l(\Z).
@@ -75,3 +75,19 @@ der Fourier-Transformierten des Signals implementieren. Konkret:
 ist sehr schnell!
 \end{itemize}
 \end{remark}
+
+Von jetzt an soll die Bezeichnung \emph{digitaler Filter} immer für einen LTI-Filter stehen.
+
+\begin{definition}[Weitere Filtertypen]
+Ein digitaler Filter $ F $ heißt
+\begin{enumerate}
+\item \emph{FIR-Filter} (Finite Impulse Response, Filter mit endlicher Impulsantwort), wenn die
+  Impulsantwort endlichen Träger hat, d.h.\ $ F\delta \in l_{00}(\Z) $.
+\item \emph{IIR-Filter} (Infinite Impulse Response, Filter mit unendlicher Impulsantwort), wenn die
+  Impulsantwort keinen endlichen Träger hat.
+\end{enumerate}
+\end{definition}
+
+\begin{example}[FIR-Filter in der Praxis]
+\TODO{Hier gehört dann das Schaltbild erklärt}
+\end{example}
