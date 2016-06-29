@@ -1,0 +1,77 @@
+\section{Filter}
+
+\begin{definition}[Filter und Filtertypen]
+Ein Filter $ F $ ist eine Abbildung von einem Signalraum in einen anderen, oder anders formuliert, 
+ein Operator, der eine Folge $ c \in l(\Z) $ in $ Fc \in l(\Z) $ abbildet. Es gibt verschiedene
+Kategorien von Filtern:
+\begin{description}
+\item [Energieerhaltender Filter]
+  In diesem Fall ist $ F : l_{2}(\Z) \rightarrow l_{2}(\Z) $ so, dass
+  \[
+    \norm{F}_{2} \coloneqq \sup_{\norm{c}_{2} = 1} \norm{Fc}_{2} = 1.
+  \]
+\item [Linearer Filter]
+  Der Filter ist linearer Operator, d.h.\
+  \[
+    F(\alpha c + \beta c') = \alpha Fc + \beta Fc', \qquad \alpha, \beta \in \R, 
+                                                    \quad c, c' \in l(\Z).
+  \]
+\item [Zeitinvarianter Filter]
+  Der Operator ist \emph{stationär}, d.h.\ es ist egal, ob
+  \begin{itemize}
+  \item das Signal zuerst in der Zeit verschoben wird und dann Operator darauf angewendet wird,
+  \item oder zuerst das Signal gefiltert und das Resultat in der Zeit verschoben wird.
+  \end{itemize}
+  Formal:
+  \[
+    F(c(\bullet + k)) = (Fc)(\bullet + k), \qquad c \in l(\Z), \quad k \in \Z.
+  \]
+  Oder kürzer über die Kommutativität
+  \[
+    F\tau_{k} = \tau_{k}F.
+  \]
+\item [Kausaler Filter]
+  Das Ergebnis des Filters zum Zeitpunkt $ k $ hängt nur von den Eingaben in der Vergangenheit
+  (also $ c(j) $ mit $ j \leq k $) ab. Der Filter kann nicht in die Zukunft sehen.
+\end{description}
+\end{definition}
+
+\begin{definition}[Impulsantwort]
+Die Impulsantwort eines Filters $ F $ ist definiert als
+\[
+  f(k) \coloneqq (F \delta)(k), \qquad k \in \Z.
+\]
+\end{definition}
+
+\begin{remark}[Lineare und zeitinvariante Filter]\leavevmode
+\begin{itemize}
+\item Lineare und zeitinvariante Filter (sog.\ \emph{LTI-Filter}) können immer realisiert 
+werden als \emph{Faltungen mit der Impulsantwort}. Sei also $ c \in l(\R) $ ein gegebenes diskretes 
+Signal, dann gilt
+\[
+  Fc = c * f,
+\]
+wie man mit ein wenig Rechnerei nachweisen kann: Unser gegebenes Signal lässt sich auch schreiben
+als
+\[
+  c = \sum_{k \in \Z} c(k) \ \delta(\bullet - k) = \sum_{k \in \Z} c(k) \ \tau_{-k} \ \delta
+\]
+und unter Verwendung der Linearität und Zeitinvarianz ergibt sich schließlich
+\begin{align*}
+   Fc
+&= F \left( \sum_{k \in \Z} c(k) \ \tau_{-k} \ \delta \right) 
+ = \sum_{k \in \Z} c(k) \ F(\tau_{-k} \ \delta)
+ = \sum_{k \in \Z} c(k) \ \tau_{-k} \ F \delta
+ = \sum_{k \in \Z} c(k) \ \tau_{-k} \ f \\
+&= \sum_{k \in \Z} c(k) \ f(\bullet - k) = c * f.
+\end{align*}
+\item Das Tolle daran ist: Dank der Faltung lassen sich LTI-Filter effizient am Rechner über eine 
+Multiplikation der Fourier-Transformierten des Filters, der sog.\ \emph{Transferfunktion}, mit
+der Fourier-Transformierten des Signals implementieren. Konkret:
+\[
+  Fc = \left( (Fc)^{\wedge} \right)^{\vee} = \left( (f * c)^{\wedge} \right)^{\vee}
+     = \left( \widehat{f} \cdot \widehat{c} \right)^{\vee}
+\]
+ist sehr schnell!
+\end{itemize}
+\end{remark}
