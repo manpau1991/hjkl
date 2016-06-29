@@ -50,7 +50,8 @@ jedes $ n > 0 $. D.h.\ es gibt eigentlich gar nicht \emph{die} Bandbreite einer 
 \end{remark}
 
 \begin{proposition}[Abtastsatz von Shannon]
-Ist $ f \in L_{1}(\R) $ eine $ T $-bandbeschränkte Funktion und ist $ h < h* = \pi / T $, dann ist
+Ist $ f \in L_{1}(\R) $ eine $ T $-bandbeschränkte Funktion und ist $ h < h^{*} = \pi / T $, dann 
+ist
 \[
   f(x) = \left( (S_{h} \ f) * \sinc \right) \left( \frac{x}{h} \right) 
        = \sum_{k \in \Z} f(hk) 
@@ -63,17 +64,35 @@ Ist $ f \in L_{1}(\R) $ eine $ T $-bandbeschränkte Funktion und ist $ h < h* = 
 Ein paar Anmerkungen dazu:
 \begin{itemize}
 \item Der Abtastsatz liefert uns eine Formel, wie man das ursprüngliche Signal $ f $ aus einer
-  Abtastung $ S_{h} \ f $ mithilfe der $ \sinc $-Funktion rekonstruieren kann.
-\item Voraussetzung dafür, dass die Rekonstruktion wie gewünscht funktioniert, ist aber, dass\dots
+  Abtastung $ S_{h} \ f $ mithilfe der $ \sinc $-Funktion\footnote{Der $ \sinc $ ist schließlich 
+  der ideale Interpolationskern für ganzzahlige Stützstellen. Sagt zumindest Wikipedia.} 
+  rekonstruieren kann. Allerdings besitzt der $ \sinc $ unendlichen Träger und fällt nur linear ab, 
+  sodass man in der Praxis wohl lieber mit anderen Funktionen arbeiten sollte. 
+\item Voraussetzung dafür, dass die Rekonstruktion wie gewünscht funktioniert, ist, dass\dots
   \begin{itemize}
   \item $ f $ nicht zu große Frequenzen enthalten darf (das ist die Forderung der
-    $ T $-Bandbeschränktheit).
+    $ T $-Bandbeschränktheit). Sonst könnte es potentiell unendlich hohe Frequenzen geben und dann
+    müsste die Schrittweite für die Abtastung unendlich nahe bei der $ 0 $ liegen, was nicht
+    wirklich Sinn macht.
   \item die Schrittweite $ h $ an den Parameter $ T $ angepasst wird, um eine ausreichend große 
-    Zahl an Abtastpunkten zu erreichen. Sonst hat man zu wenig Information, um $ f $ rekonstruieren 
-    zu können.
+    Zahl an Abtastpunkten zu erreichen. Sonst hat man zu wenig Information, um $ f $ eindeutig 
+    rekonstruieren zu können (siehe Abbildung~\ref{fig:aliasing}). Die unerwünschten Effekte, die 
+    aus einer Unterabtastung resultieren, bezeichnet man als \emph{Aliasing}. Bei Bildern können 
+    dadurch z.B.\ neue Strukturen auftreten, die im Original gar nicht enthalten sind.
   \end{itemize}
+  Die Kopplung von Bandbreite und Abtastfrequenz ist also wirklich essentiell. 
 \item Die Abtastfrequenz $ 1 / h $ wird auch als \emph{Nyquist-Frequenz} bezeichnet.
 \item Wählt man die Abtastfrequenz $ k $-mal so hoch wie nötig, so spricht man auch von
   $ k $-fachem Oversampling.
+\item \TODO{Skript S.33f. und Bild auf Seite 34}
 \end{itemize}
 \end{remark}
+
+\begin{figure}[ht]
+	\centering
+  \includegraphics[width=0.7\textwidth]{Bilder/Aliasing}
+	\caption{Aus der gegebenen Menge an äquidistanten Abtastpunkten kann die hochfrequente 
+	grüne Funktion nicht rekonstruiert werden, da auch eine zweite Funktion (rot) gefunden werden 
+	kann, welche den Punkten genau entspricht. Die Abtastweite wurde zu groß gewählt.}
+	\label{fig:aliasing}
+\end{figure}
