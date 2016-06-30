@@ -23,7 +23,14 @@
 \maketitle
 \section{Allgemein} 
 \begin{description}
-	\item[Erkläre Operationen: Skalierung, Translation]      
+	\item[Erkläre Operationen: Skalierung, Translation]\leavevmode
+  	\begin{itemize}
+  	\item Translation: $ \tau_{k}f = f(\bullet + k) $ verschiebt die Funktion $ f $ um $ k $ 
+  	Einheiten in $ x $-Richtung ($ k < 0 $ Verschiebung nach rechts, $ k > 0 $ Verschiebung nach 
+  	links).
+    \item Skalierung: $ \sigma_{h}f = \sigma(h \cdot \bullet) $ Multiplikation der Frequenz mit
+    Faktor $ h $ ($ h > 1 $ bedeutet Stauchung, $ h < 1 $ bedeutet Streckung)
+  	\end{itemize}
 	\item[Erkläre das Prinzip einer Lochkamera]
       Eine Lochkamera ist der Vorläufer einer modernen Kamera. Dabei fällt
       das natürliche Licht durch ein kleines Loch (die Blende) ein. Das Bild
@@ -31,6 +38,28 @@
       steht das Bild auf dem Kopf, dessen Höhe/Breite wird dabei durch den
       Abstand des Objektes zur Blende, des Abstandes der Blende zur Rückwand
       und von der Größe des Objektes und der Blende bestimmt.
+  \item [Wie kann man das Bild einer Lochkamera modellieren?] Ein Bild ist zunächst ein
+    zweidimensionales diskretes Signal. Es gibt genau drei Möglichkeiten, dies zu modellieren:
+    \begin{itemize}
+    \item Volldiskret: Abbildung 
+      $ I \colon \{ 0, \dots, w \} \times \{ 0, \dots, h \} \rightarrow \{ 0, \dots, 255 \} $.
+      Das ist genau das Modell, wie wir z.B.\ Bilder in der Realität messen. Jedes Bild besitzt
+      die Ausmaße $ w \times h $ Pixel und $ I $ bildet Pixel z.B.\ auf einen Farbwert von $ 0 $
+      bis $ 255 $ ab (Grauwertbild).
+    \item Semidiskret:
+      $ I \colon \{ 0, \dots, w \} \times \{ 0, \dots, h \} \rightarrow \R $. Bei diesem Modell
+      arbeitet man weiterhin mit diskret vielen Pixeln, besitzt aber kontinuierlich viele Werte,
+      die die Farbe angegeben können. Unserer Meinung nach ist dieses Modell nicht sehr sinnvoll
+      für unsere Anwendungszwecke.
+    \item Kontinuierlich: $ I \colon \R^{2} \rightarrow \R^{2} $. Dieses Modell ist besonders gut
+      geeignet, um Mathematik damit zu machen. Die ganze Theorie aus der Analysis greift hier
+      (Stetigkeit von Funktionen usw.). Hier besitzen wir kontinuierlich viele Bildpunkte und
+      kontinuierlich viele Farbwerte. Durch Interpolation (Spline-Interpolation,
+      Polynom-Interpolation) können wir unser diskretes Bild in den kontinuierlichen Raum 
+      hochliften, dort unsere mathematische Theorie anwenden, und z.B.\ durch Diskretisierung
+      wieder diskretisieren (wobei die genauen Verfahren dazu natürlich von der konkreten
+      Problemstellung abhängen).
+    \end{itemize}
 \end{description}	
 
 \section{Fourier}
@@ -45,42 +74,56 @@
       Die resultierende Fouriertransformierte liegt dann in $L_1(\R) \cap L_2(\R)$.\\
       Formal beruht dies darauf, dass der Raum $L_1(\R)\cap L_2(\R)$ dicht in $L_2(\R)$ liegt. Deshalb
       lässt sich also immer eine Funktionenfolge aus $L_1(\R)\cap L_2(\R)$ finden, die im Grenzwert
-      gegen unsere gesuchte Fouriertransformierte konvergiert\footnote{Geht immer, zwecks Banachraum und so.}.
+      gegen unsere gesuchte Fouriertransformierte konvergiert\footnote{Geht immer, zwecks 
+      Banachraum und so (d.h.\ vollständiger Raum, der Grenzwert zu jeder Folge in diesem Raum sit 
+      wieder in diesem Raum).}.
 	\item[Wie sieht das Ergebnis der FT bei einer reellwertigen Funktion aus?]
-    \item[Was sagt der Satz von Parseval/Plancherel?]
-      Der Satz von Parseval/Plancherel beschreibt den Wechsel zwischen einem 
-      Skalarprodukt im Zeit- und einem Skalarprodukt im Frequenzbereich.\\
-      Formal gilt für Funktionen $f, g \in L_1(\R)$:
-      $$ \int_\R f(t)g(t)\INT{t} = \frac{1}{2\pi}\int_\R\hat f(\theta)\overline{\hat g(\theta)}\INTM{\theta} $$
-      Im Speziellen für $f=g$ folgt, dass
-      $$ \|f\|_2^2 = \frac{1}{2\pi}\|\hat f\|_2^2 $$
-      gilt, also dass hier (bis auf Normierung) eine Isometrie vorliegt.
-    \item[Sie sprachen von Isometrie, warum ist dann der konstante Faktor vor dem rechten Term?]
-      Dieser Faktor kommt daher, weil wir bei der Definition der Fouriertransformation keinen Faktor
-      dabei hatten. Hätte man dort einen Faktor $1/\sqrt{2\pi}$ hinzugefügt, so hätte man hier eine
-      perfekte Isometrie, was man ja mit Energieerhaltung\footnote{Die $2$-Norm $\|\cdot\|_2$ beschreibt ja
-      i.W. Energie.} identifizieren kann.
-	\item[Wie sieht die inverse Fouriertransformation aus?]
-      Unter der Voraussetzung, dass sowohl für $f$ als auch für $\hat f$ gilt, dass
-      diese Funktionen aus $L_1$ sind, ist die inverse Fouriertransformation 
-      definiert als
-      $$ f(\xi) = \left(\hat f\right)^{\lor{}}(\xi) = \frac{1}{2\pi}\int_\R \hat f(t)e^{i\xi t}\INT{t} $$      
-	\item[Zusammenhang zwischen Faltung und Fouriertransformation]
-      Ein wichtiger Zusammenhang ist, dass sich die Faltung zweier Funktion als Produkt ihrer 
-      Fouriertransformierten darstellen lässt (vorausgesetzt deren Existenz).\\
-      Es gilt also:
-      
-      \begin{equation*}
-        \begin{split}
-          (f*c)^{\widehat{}}(\xi) &\stackrel{\mathrm{def}}= \int_\R (f*c)(t) e^{-i\xi t}\INT{t} \\
-          &\stackrel{\mathrm{def}}= \int_\R \int_\R f(t-x)c(x)\INT{x} e^{-i\xi t} \INT{t} \\
-          &\stackrel{\mathrm{Tonelli}}= \int_\R \int_\R f(t-x)c(x) e^{-i\xi t} \INT{x}\INT{t} \\
-          &\stackrel{t=t+x}= \int_\R \int_\R f(t)c(x) e^{-i\xi (t+x)} \INT{x}\INT{t} \\
-          &= \int_\R \int_\R f(t)e^{-i\xi t} c(x) e^{-i\xi x} \INT{x}\INT{t} \\
-          &\stackrel{\mathrm{Tonelli}}= \int_\R f(t)e^{-i\xi t} \INT{t}\int_\R c(x) e^{-i\xi x} \INT{x} \\ 
-          &= \hat f(\xi) \hat c(\xi)
-        \end{split}
-      \end{equation*}
+  	Die Fourier-Transformierte ist wieder reell. Denn: Sei $ f \colon \R \rightarrow \R $, dann ist
+    \[
+    	 \widehat{f}(\xi)
+  	= \int_{\R} f(x) e^{-i\xi x} \dif x \\
+  	= \int_{\R} f(x) \big(
+          \cos(\xi x) - \underbrace{i \sin(\xi x)}_{= 0, \text{ da $ f $ reell}}
+       \big)  \dif x \\
+    = \int_{\R} f(x) \cos(\xi x) \dif x
+    \]
+  \item[Was sagt der Satz von Parseval/Plancherel?]
+    Der Satz von Parseval/Plancherel beschreibt den Wechsel zwischen einem 
+    Skalarprodukt im Zeit- und einem Skalarprodukt im Frequenzbereich.\\
+    Formal gilt für Funktionen $f, g \in L_1(\R)$:
+    $$ \int_\R f(t)g(t)\INT{t} = \frac{1}{2\pi}\int_\R\hat f(\theta)\overline{\hat 
+    g(\theta)}\INTM{\theta} $$
+    Im Speziellen für $f=g$ folgt, dass
+    $$ \|f\|_2^2 = \frac{1}{2\pi}\|\hat f\|_2^2 $$
+    gilt, also dass hier (bis auf Normierung) eine Isometrie vorliegt.
+  \item[Sie sprachen von Isometrie, warum ist dann der konstante Faktor vor dem rechten Term?]
+    Dieser Faktor kommt daher, weil wir bei der Definition der Fouriertransformation keinen Faktor
+    dabei hatten. Hätte man dort einen Faktor $1/\sqrt{2\pi}$ hinzugefügt, so hätte man hier eine
+    perfekte Isometrie, was man ja mit Energieerhaltung\footnote{Die $2$-Norm $\|\cdot\|_2$ 
+    beschreibt ja i.W. Energie.} identifizieren kann.
+\item[Wie sieht die inverse Fouriertransformation aus?]
+    Unter der Voraussetzung, dass sowohl für $f$ als auch für $\hat f$ gilt, dass
+    diese Funktionen aus $L_1$ sind, ist die inverse Fouriertransformation 
+    definiert als
+    $$ f(\xi) = \left(\hat f\right)^{\lor{}}(\xi) = \frac{1}{2\pi}\int_\R \hat f(t)e^{i\xi 
+    t}\INT{t} $$      
+\item[Zusammenhang zwischen Faltung und Fouriertransformation]
+    Ein wichtiger Zusammenhang ist, dass sich die Faltung zweier Funktion als Produkt ihrer 
+    Fouriertransformierten darstellen lässt (vorausgesetzt deren Existenz).\\
+    Es gilt also:
+    
+    \begin{equation*}
+      \begin{split}
+        (f*c)^{\widehat{}}(\xi) &\stackrel{\mathrm{def}}= \int_\R (f*c)(t) e^{-i\xi t}\INT{t} \\
+        &\stackrel{\mathrm{def}}= \int_\R \int_\R f(t-x)c(x)\INT{x} e^{-i\xi t} \INT{t} \\
+        &\stackrel{\mathrm{Tonelli}}= \int_\R \int_\R f(t-x)c(x) e^{-i\xi t} \INT{x}\INT{t} \\
+        &\stackrel{t=t+x}= \int_\R \int_\R f(t)c(x) e^{-i\xi (t+x)} \INT{x}\INT{t} \\
+        &= \int_\R \int_\R f(t)e^{-i\xi t} c(x) e^{-i\xi x} \INT{x}\INT{t} \\
+        &\stackrel{\mathrm{Tonelli}}= \int_\R f(t)e^{-i\xi t} \INT{t}\int_\R c(x) e^{-i\xi x} 
+        \INT{x} \\ 
+        &= \hat f(\xi) \hat c(\xi)
+      \end{split}
+    \end{equation*}
 
 	\item[Erkläre den Weg zur FFT]
       Der Weg von der DFT zur FFT ist der, dass man einen Baumalgorithmus implementiert. Konkret arbeitet
@@ -126,6 +169,9 @@
 	\item[Wo liegen die Informationsmaxima?]
       Die Informationsmaxima liegen am Rand, da die höherfrequenten Anteile dort liegen.
 	\item[Nenne die Formel der DFT]
+  	\[
+    	\widehat{c_{n}}(\xi) = \sum_{k \in \Z} c(k) e^{-2}
+  	\]
 	\item[Fouriertransformation im $\R^2$]
       Die Fouriertransformation im zweidimensionalen Raum ist entsprechend die Variante für Bilder.\\
       Hierbei hat man also Punkte $p = (x, y) \in \Z^2$, entsprechen betrachtet man auch die Fouriertransformation
@@ -157,6 +203,7 @@
 	\item[Was ist ein Filter?]
       Ein Filter ist ein Operator, der ein gegebenes Signal in ein anderes Signal transformiert.
 	\item[Wie sieht ein Filter allgemein aus?]
+    	Ich verstehe die Frage nicht, was ist damit gemeint?
 	\item[Wie sieht ein Tiefpass-Filter aus? Zeichne den Graph]
       Ein Tiefpass-Filter $f$ lässt wie der Name sagt die tiefen Frequenzen durch, entsprechen wir sich für die 
       obere Frequenz $\xi$ ergeben, dass $\hat f([0,\xi])>0$ ist, während er für die höheren Frequenzen sperrt, also
@@ -181,7 +228,9 @@
         \item Zeitinvarianter Filter, wenn es egal ist, ob zuerst gefiltert und translatiert
           oder ob zuerst translatiert und anschließend gefiltert wird.
         \item Kausale Filter, wenn der Filter nicht \emph{in die Zukunft sehen} kann, also
-          wenn das Ergebnis nur von den reinen Eingabedaten abhängt.
+          wenn das Ergebnis nur von den reinen Eingabedaten abhängt. Dementsprechend gibt es auch 
+          anti-kausale Filter, die nicht in die Vergangenheit schauen können, sondern nur in die 
+          Zukunft.
         \item FIR-Filter, wenn die Impulsantwort des Filters endlich ist.
         \item IIR-Filter, wenn die Impulsantwort des Filters unendlich ist.
       \end{enumerate}
@@ -198,12 +247,24 @@
               |                   +->          +->
               +---------------------> A ---------> A --- ....
       \end{lstlisting}
-	\item[Welchen Filter zur Kantenerkennung?]
 	\item[Was ist eine Impulsantwort?]
+  	Der Filter angewandt auf den Dirac-Puls. Man kann nachweisen, dass jeder Filter nur durch den 
+  	Dirac-Puls beschrieben werden kann und man dadurch Informationen über das Verhalten des Filters 
+  	hat.
 	\item[Spielt die Laufzeit von Filtern in der Praxis eine Rolle?]
+  	Das kommt natürlich immer auf die Anwendung an. Will ich z.B.\ ein Audio- oder Videosignal in 
+  	Echtzeit filtern, so muss der Filter natürlich sehr schnell arbeiten. Ein anderes Beispiel ist, 
+  	wenn Video- und Audiosignal miteinander synchronisiert werden müssen.
 \end{description}
 \subsection{Was ist ein Gradientenfilter?}
 \begin{description}
+  \item [Was ist ein Gradientenfilter?]
+    Das ist ein Filter, der die Differenzen in den Farbwerten der Pixeln erkennt. Im 
+    kontinuierlichen Fall könnte man sagen, er erkennt die Steigung zwischen zwei Pixeln.
+    Nachteil: Anfällig auf Rauschen, wenn sehr feine Strukturen in den Bildern vorhanden sind.
+    Abhilfe: Erst entrauschen, um die feinen Strukturen loszuwerden, und dann 
+    Laplace-Filter: Gradientenfilter, der mit Mittelwertfilter kombiniert wurde und dann 
+    diskretisiert wurde.
 	\item[Wozu ist er gut?]
       Mit einem Gradientenfilter können Kanten in Bildern erkannt/hervorgehoben werden.
 	\item[Wie funktioniert er?]
@@ -218,8 +279,9 @@
       $$ \nabla f = \begin{pmatrix} \frac{\partial}{\partial x_1}f\\ \vdots\\ \frac{\partial}{\partial x_n}f \end{pmatrix} $$
       ist. Um diesen nun auf ein diskretes Signal (z.B. ein Bild) anwenden zu können, muss
       man diesen geeignet diskretisieren. Dies ergibt die Filtermatrizen in $x$- und $y$-Richtung
-      $$ \begin{pmatrix}0&0&0\\0&-1&1\\0&0&0\end{pmatrix},\qquad\begin{pmatrix}0&1&0\\0&-1&0\\0&0&0\end{pmatrix}. $$
-	\item[Wie kommt man auf die Impulsantwort?]
+      $$ 
+      \begin{pmatrix}0&0&0\\0&-1&1\\0&0&0\end{pmatrix},\qquad\begin{pmatrix}0&1&0\\0&-1&0\\0&0&0\end{pmatrix}.
+       $$
 	\item[Nachteile + mögliche Gegenmaßnahmen]
       Ein wesentlicher Nachteil eines reinen Gradientenfilters ist, dass dieser gegen Rauschen extrem empfindlich ist, da
       auch diese feinen Unterschiede unterschiedliche Farbwerte und damit potenzielle Kanten liefern.\\
@@ -235,15 +297,63 @@
       $$ \begin{pmatrix} 1&1&1\\1&-8&1\\1&1&1 \end{pmatrix}.$$
 \end{description}
 \subsection{Filterbänke}
+
 \begin{description}
 	\item[Skizziere eine Filterbank und beschreibe den Vorgang]
 	\item[Nenne 3 typische Filter]
+  	Binomialfilter (Glättung), Medianfilter (Glättung), Laplace-Filter (Kantendetektion).
 	\item[Was ist die zentrale Eigenschaft von Filterbänken? Welche Voraussetzung muss dazu gelten?]
+  	Man startet mit einen Signal $ c $, generiert daraus den Polyphase-Vektor $ P $, stecke diesen 
+  	in die Analyse-Filterbank. Das Ergebnis davon kommt in die Synthese-Filterbank, daraus bekomme 
+  	ich einen weiteren Polyphase-Vektor, den ich dann ein Ausgangssignal $ c' $ umwandeln kann.
+  	Der Polyphase-Vektor ist sozusagen eine vektorwertige Abtastung des Signals auf dem 
+  	Einheitsmatrix. Die Modulationsmatrix $ M $ ist eine darstellende Matrix der 
+  	Analyse-Filterbank, und $ \widetilde{M} $ die darstellende Matrix der Synthese-Filterbank.
+  	Soll Perfect Reconstruction gelten, d.h.\ dass $ c = c' $ gilt, dann muss ich alle Änderungen, 
+  	die $ M $ gemacht hat, auch wieder rückgängig machen können durch $ \widetilde{M} $. 
+  	Mathematisch: $ M \widetilde{M} = I $. Voraussetzungen an die Filter in der Filterbank werden 
+  	bereits durch die Modulationsmatrizen $ M $ und $ \widetilde{M} $ gegeben.
+  	
+  	Mathematische Formeln:
+  	\begin{itemize}
+    	\item Polyphase-Vektor
+    	\[
+      	P = \left( c^{*}(e^{2i\pi k/n}z) \colon k \in \Z_{n} \right) \in \C^{n}.
+    	\]
+    	\item Darstellende Matrix
+    	\[
+      	M(z) =
+      	\frac{1}{n} \left( f^{*}_{j}(e^{2\pi i k / n}) \colon j,k \in \Z_{n} \right) 
+      	= \frac{1}{n} \begin{pmatrix}
+      	f^{*}_{0}(z) & \hdots
+      	\end{pmatrix} \in \C^{n \times n}.
+    	\]
+    	Dabei ist $ f_{j} $ jeweils die Impulsantwort eines Filters $ F_{j} $
+  	\end{itemize}
 	\item[Kann man Filterbänke hierarchisch aufbauen?]
+  	Natürlich kann man das! Dieses Ding nennt man dann Subband-Coding. Beispiel: $ n = 2 $. Dann 
+  	starte ich mit meinem Signal, filtere das mit einem Tiefpassfilter $ F_{0} $ und Hochpassfilter 
+  	$ F_{1} $. Dann mache ich ein Downsampling um den Faktor $ 2 $. Dies liefert mir im Falle des 
+  	Tiefpassfilters ein Singal $ c_{0} $. Dieses Signal kann ich nun auf die gleiche Art und Weise 
+  	wieder rekursiv zerlegen. Dabei verwende ich wieder den Filter $ F_{0} $ (Tiefpass) und ein 
+  	Downsampling um Faktor $ 2 $, um ein Singal $ c_{00} $ zu bekommen. Analog erhalte ich $ c_{01} 
+  	$ durch den Hochpassfilter. Das war die Analysephase.
+  	
+  	In der Synthesephase nehme ich meine Signale $ c_{00} $ und $ c_{01} $, wende den 
+  	Upsampling-Operator um Faktor $ 2 $ an, wende dann die Filter $ G_{0} $ und $ G_{1} $ an, fasse 
+  	die beiden Ergebnisse zu einem Signal $ c_{0} $ zusammen. Und mit $ c_{0} $ und $ c_{1} $ kann 
+  	ich dann das gleiche wieder rekursiv machen. Zum Schluss erhalte ich das Signal $ c $, welches 
+  	mit dem ursprünglichen Eingabesignal übereinstimmen kann, aber nicht muss.
+  	Signal 
+  \item [Wie funktioniert die Diskrete Wavelet-Transformation mit Filterbänken?] 
+    $ \rightarrow $ siehe Fotos
 \end{description}
 \section{Abtastsatz}
 \begin{description}
 	\item[Welche Eigenschaften müssen für eine Abtastung gelten?]
+  	Funktion muss integrierbar sein. Schrittweite der Abtastung muss kleiner sein als $ h^{*} $, um 
+  	Unterabtastung zu vermeiden, und die Funktion muss bandbeschränkt sein, weil man nicht 
+  	unendlich viele Frequenzen rekonstruieren kann.
 	\item[Erkläre den Shannonschen Abtastsatz]
       Der Shannon'sche Abtastsatz sagt, dass wenn man eine $T$-bandbeschränkte $L_1$-Funktion fein genug
       abtastet, dann kann man aus dieser Abtastung durch eine semi-diskrete Faltung mit der \emph{sinc}-Funktion
@@ -298,6 +408,7 @@
       nur nach Kreisen mit einem festen Radius, so besteht die einzige Variationsmöglichkeit in den Koordinaten des
       Kreismittelpunktes, was insgesamt also quadratischen Aufwand verursacht.
 	\item[Welcher Filter spielt dabei eine Rolle?]
+  	Man muss das Bild vorher z.B.\ durch einen entsprechenden Filter binarisieren.
 	\item[Gibt es weitere Filter zur Kantenerkennung?]
       Der wohl einfachste (und schnellste) Filter zur Kantenerkennung ist ein Bildshift. Damit shiftet man das Bild
       in die Richtung, in der man Kanten finden möchte um eine Position. Ist der Unterschied hoch, so unterscheiden
@@ -338,8 +449,8 @@
     Ein Wavelet $\Psi$ ist eine beliebige $L_2$-Funktion, die die Eigenschaft der Mittelwertfreiheit erfüllt, also dass gilt
     $$ \int_\R \Psi(t) \INT{t} = 0. $$ Der Name kommt daher, dass diese Funktionen wie Wellen aussehen müssen (also Anteile
     über und unter der $x$-Achse), um in der Fläche $0$ zu sein.
-  \item[Was bedeutet Zuverlässigkeit bei Wavelets?]
-    Die Zuverlässigkeit bei Wavelets ist eine mathematische Bedingung, dass 
+  \item[Was bedeutet Zulässigkeit bei Wavelets?]
+    Die Zulässigkeit bei Wavelets ist eine mathematische Bedingung, dass 
     $$ C_\Psi := \int_\R \frac{\left|\hat \Psi(\xi)\right|^2}{|\xi|}\INTM{\xi} < \infty $$
     gelten muss. Um dies zu gewährleisten sollte die Funktion an der $0$ insbesondere $0$ sein, weil man selten
     gut durch Null dividieren kann.
@@ -403,4 +514,3 @@
 
 
 \end{document}
-
