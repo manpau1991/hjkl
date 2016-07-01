@@ -65,6 +65,7 @@ und unter Verwendung der Linearität und Zeitinvarianz ergibt sich schließlich
  = \sum_{k \in \Z} c(k) \ \tau_{-k} \ f \\
 &= \sum_{k \in \Z} c(k) \ f(\bullet - k) = c * f.
 \end{align*}
+Das bedeutet, ein LTI-Filter lässt sich vollständig durch seine Impulsantwort charakterisieren.
 \item Das Tolle daran ist: Dank der Faltung lassen sich LTI-Filter effizient am Rechner über eine 
 Multiplikation der Fourier-Transformierten des Filters, der sog.\ \emph{Transferfunktion}, mit
 der Fourier-Transformierten des Signals implementieren. Konkret:
@@ -72,7 +73,10 @@ der Fourier-Transformierten des Signals implementieren. Konkret:
   Fc = \left( (Fc)^{\wedge} \right)^{\vee} = \left( (f * c)^{\wedge} \right)^{\vee}
      = \left( \widehat{f} \cdot \widehat{c} \right)^{\vee}
 \]
-ist sehr schnell!
+ist sehr schnell! Denn eine Multiplikation ist wesentlich schneller und vor allem auch numerisch
+stabiler durchzuführen als eine Faltung. Weiteren Zeitgewinn kann man durch Vorberechnen der
+Fourier-Transformation der Impulsantwort herausschlagen. Und nicht zuletzt ist die Darstellung im
+Frequenzbereich nützlich (Filterdesign funktioniert so).
 \end{itemize}
 \end{remark}
 
@@ -89,5 +93,8 @@ Ein digitaler Filter $ F $ heißt
 \end{definition}
 
 \begin{example}[FIR-Filter in der Praxis]
+In der Praxis sind kausale, digitale FIR-Filter weit verbreitet. Was eigentlich nicht sehr 
+verwunderlich ist, wenn man bedenkt, dass man ohne all diese Eigenschaften den Filter gar nicht
+realisieren könnte.
 \TODO{Hier gehört dann das Schaltbild erklärt}
 \end{example}

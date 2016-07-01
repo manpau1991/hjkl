@@ -81,10 +81,79 @@ Ein paar Anmerkungen dazu:
     dadurch z.B.\ neue Strukturen auftreten, die im Original gar nicht enthalten sind.
   \end{itemize}
   Die Kopplung von Bandbreite und Abtastfrequenz ist also wirklich essentiell. 
-\item Die Abtastfrequenz $ 1 / h $ wird auch als \emph{Nyquist-Frequenz} bezeichnet.
+\item Die Abtastfrequenz $ 1 / h $ wird auch als \emph{Nyquist-Frequenz} bezeichnet. Da $ f $ laut
+  Voraussetzung bandbeschränkt ist, können wir $ \widehat{f} $ periodisieren. Jede periodische
+  Funktion lässt sich \emph{ohne Informationsverlust} als $ 2\pi $-periodische Funktion darstellen, 
+  indem man geeignet skaliert (in unserem Fall mit $ h $). Auf den passenden Wert von $ h $ kommt 
+  man durch eine sehr einfache Rechnung:
+  \[
+    h [-T, T] \subseteq [-\pi, \pi] \quad \Leftrightarrow \quad 
+    [-hT, hT] \subseteq [-\pi, \pi] \quad \Leftrightarrow \quad 
+    ht \leq \pi \quad \Leftrightarrow \quad 
+    h \leq \pi / T.
+  \]
+  Darüber hinaus kann jede $ 2\pi $-periodische Funktion durch eine Fourier-Reihe approximiert 
+  werden. Der Clou beim Beweis und auch im Verständnis des Abtastsatzes ist nun folgende Formel:
+  \[
+      \sum_{k \in \Z} (\sigma_{h} \ f)^{\wedge}(\theta + 2 \pi k)
+    = \sum_{k \in \Z} \frac{\widehat{f} \left( \frac{\theta + 2\pi k}{h} \right)}{h}
+    = \sum_{k \in \Z} f(hk) e^{-ik\theta} 
+    = (S_{h} \ f)^{\wedge}(\theta),
+      \qquad \theta \in \T.
+  \]
+  Sie verknüpft unsere $ 2\pi $-Periodisierung von $ \widehat{f} $ mit der Fourier-Transformation 
+  der Abtastfolge, $ (S_{h} \ f)^{\wedge} $, welche genau eine Fourier-Reihe ist. 
+  Abbildung~\ref{fig:shannon} erklärt den Fall, wenn $ h $ ungeeignet gewählt ist.
+  \begin{figure}[ht]
+  \centering
+  \begin{minipage}{0.49\linewidth}
+  \begin{tikzpicture}
+  \draw [very thin, gray, dotted] (-3.5,0) grid (3.5,3);
+  \draw [->] (-3.5,0) -- (3.5,0);
+  \draw [->] (0,-0.25) -- (0,3);
+  
+  \draw [dashed] (-2,0) -- (-2,2);
+  \draw [dashed] (2,0) -- (2,2);
+  
+  \draw (-2,-0.1) node [below] {$ -\pi $} -- (-2,0.1);
+  \draw (2,-0.1) node [below] {$ \pi $} -- (2,0.1);
+  
+  \draw (-2,-0.1) node [below] {$ -\pi $} -- (-2,0.1);
+  \draw (2,-0.1) node [below] {$ \pi $} -- (2,0.1);
+  
+  \draw [red, thick] (-2.5,0) -- (0,2.5) -- (2.5,0);
+  \draw [red, dashed] (-1.5,0) -- (-3.5,2);
+  \draw [red, dashed] (1.5,0) -- (3.5,2);
+  \end{tikzpicture}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.49\linewidth}
+  \begin{tikzpicture}
+  \draw [very thin, gray, dotted] (-3.5,0) grid (3.5,3);
+  \draw [->] (-3.5,0) -- (3.5,0);
+  \draw [->] (0,-0.25) -- (0,3);
+  
+  \draw [dashed] (-2,0) -- (-2,2);
+  \draw [dashed] (2,0) -- (2,2);
+  
+  \draw (-2,-0.1) node [below] {$ -\pi $} -- (-2,0.1);
+  \draw (2,-0.1) node [below] {$ \pi $} -- (2,0.1);
+  
+  \draw (-2,-0.1) node [below] {$ -\pi $} -- (-2,0.1);
+  \draw (2,-0.1) node [below] {$ \pi $} -- (2,0.1);
+  
+  \draw [red, thick] (-3.5,2) -- (-2.5,1) -- (-1.5,1) -- (0,2.5) -- (1.5,1) -- (2.5,1) -- (3.5,2);
+  \end{tikzpicture}
+  \end{minipage}
+  \caption{Links: Der Träger der skalierten Fourier-Transformation (fetter roter Graph) von $ f $ 
+  ragt über das Intervall $ [-\pi, \pi] $ hinaus. Rot gestrichelt dargestellt ist die $ 2\pi $-
+  Periodisierung der skalierten Fourier-Transformation. Rechts: Da Frequenzen modulo $ 2\pi $ 
+  betrachtet werden, summieren sich Frequenzen auf, die eigentlich nichts miteinander zu tun haben, 
+  und verfälschen damit unser Ergebnis. Das Resultat ist der rot eingezeichnete Graph.}
+  \label{fig:shannon}
+  \end{figure}
 \item Wählt man die Abtastfrequenz $ k $-mal so hoch wie nötig, so spricht man auch von
   $ k $-fachem Oversampling.
-\item \TODO{Skript S.33f. und Bild auf Seite 34}
 \end{itemize}
 \end{remark}
 
