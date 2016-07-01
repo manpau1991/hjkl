@@ -1,4 +1,34 @@
 
+\section{Satz von Tonelli}
+Der Satz von Fubini-Tonelli ist eine Verallgemeinerung des Satzes von Fubini.
+
+Die Aussage hier ist, dass wir für integrierbare Funktionen (was also für Funktionen
+aus Signalräumen immer gilt) die Reihenfolge der Integralauswertungen vertauschen können.
+
+Formal:
+
+Sei $f(x, y)$ eine reelle\footnote{Da der Körper $\C$ ein zweidimensionaler
+$\R$-Vektorraum ist (reelle und komplexe Ebene), gilt dies auch für komplexwertige Funktionen.}
+meßbare\footnote{Dafür braucht man natürlich geeignete $\sigma$-endliche Maßräume, die wir hier
+mal als gegeben hinnehmen, da unsere Signalräume die geforderten Eigenschaften erfüllen müssten.
+Es ist mir aber deutlich zu anstrengend dies nachzuweisen, und es interessiert anscheinend sowieso
+niemanden.} Funktion.
+
+Falls eines der Integrale
+
+\begin{equation*}
+  \begin{split}
+    &\int_{\Omega_2}\int_{\Omega_1} |f(x, y)| \INTM{\mu_1(x)}\INTM{\mu_2(y)},\\
+    &\int_{\Omega_1}\int_{\Omega_2} |f(x, y)| \INTM{\mu_2(y)}\INTM{\mu_1(x)}\\
+  \end{split}
+\end{equation*}
+
+existiert, dann existiert auch das andere und $f(x, y)$ ist bezüglich des Produktmaßes integrierbar
+und es gilt:
+
+$$ \int_{\Omega_1\times\Omega_2}f\INTM{(\mu_1 \otimes \mu_2)} = \int_{\Omega_2}\int_{\Omega_1} f(x, y) \INTM{\mu_1(x)}\INTM{\mu_2(y)}
+ = \int_{\Omega_1}\int_{\Omega_2} f(x, y) \INTM{\mu_2(y)\INTM{\mu_1(x)}} $$
+
 \section{Dichtheit von $L_p$-Räumen}\label{seq:densityoflebesguespaces}
 Wir zeigen nun, dass speziell für unsere Zwecke gilt, dass
 $ L_1(\R) \cap L_2(\R) $ dicht in $L_2(\R)$ liegt.
