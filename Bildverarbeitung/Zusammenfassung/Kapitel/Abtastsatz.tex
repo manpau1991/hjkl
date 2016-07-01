@@ -2,7 +2,7 @@
 
 \begin{definition}\leavevmode
 \begin{enumerate}
-\item Eine Funktion $ f \in L_{1}(\R) $ heißt \emph{bandbeschränkt} mit \emph{Bandbreite $ t $} oder
+\item Eine Funktion $ f \in L_{1}(\R) $ heißt \emph{bandbeschränkt} mit \emph{Bandbreite $ T $} oder
   kurz \emph{$ T $-bandbeschränkt}, wenn
   \[
     \widehat{f}(\xi) = 0, \qquad \xi \notin [-T,T].
@@ -81,7 +81,16 @@ Ein paar Anmerkungen dazu:
     dadurch z.B.\ neue Strukturen auftreten, die im Original gar nicht enthalten sind.
   \end{itemize}
   Die Kopplung von Bandbreite und Abtastfrequenz ist also wirklich essentiell. 
-\item Die Abtastfrequenz $ 1 / h $ wird auch als \emph{Nyquist-Frequenz} bezeichnet. Da $ f $ laut
+  \begin{figure}[ht]
+  	\centering
+    \includegraphics[width=0.7\textwidth]{Bilder/Aliasing}
+  	\caption{Aus der gegebenen Menge an äquidistanten Abtastpunkten kann die hochfrequente 
+  	grüne Funktion nicht rekonstruiert werden, da auch eine zweite Funktion (rot) gefunden werden 
+  	kann, welche den Punkten genau entspricht. Die Abtastweite wurde zu groß gewählt.}
+  	\label{fig:aliasing}
+  \end{figure}
+\item Die Abtastfrequenz $ 1 / h^{*} $ wird auch als \emph{Nyquist-Frequenz} bezeichnet. Da $ f $ 
+laut
   Voraussetzung bandbeschränkt ist, können wir $ \widehat{f} $ periodisieren. Jede periodische
   Funktion lässt sich \emph{ohne Informationsverlust} als $ 2\pi $-periodische Funktion darstellen, 
   indem man geeignet skaliert (in unserem Fall mit $ h $). Auf den passenden Wert von $ h $ kommt 
@@ -89,11 +98,12 @@ Ein paar Anmerkungen dazu:
   \[
     h [-T, T] \subseteq [-\pi, \pi] \quad \Leftrightarrow \quad 
     [-hT, hT] \subseteq [-\pi, \pi] \quad \Leftrightarrow \quad 
-    ht \leq \pi \quad \Leftrightarrow \quad 
+    hT \leq \pi \quad \Leftrightarrow \quad 
     h \leq \pi / T.
   \]
-  Darüber hinaus kann jede $ 2\pi $-periodische Funktion durch eine Fourier-Reihe approximiert 
-  werden. Der Clou beim Beweis und auch im Verständnis des Abtastsatzes ist nun folgende Formel:
+  Darüber hinaus kann jede $ 2\pi $-periodische Funktion $ f $ der Gestalt
+  $ f(x) = \sum_{k \in \Z} \gamma_{k}e^{ikx} $ \emph{exakt} als Fourier-Reihe dargestellt werden. 
+  Der Clou beim Beweis und auch im Verständnis des Abtastsatzes ist nun folgende Formel:
   \[
       \sum_{k \in \Z} (\sigma_{h} \ f)^{\wedge}(\theta + 2 \pi k)
     = \sum_{k \in \Z} \frac{\widehat{f} \left( \frac{\theta + 2\pi k}{h} \right)}{h}
@@ -156,12 +166,3 @@ Ein paar Anmerkungen dazu:
   $ k $-fachem Oversampling.
 \end{itemize}
 \end{remark}
-
-\begin{figure}[ht]
-	\centering
-  \includegraphics[width=0.7\textwidth]{Bilder/Aliasing}
-	\caption{Aus der gegebenen Menge an äquidistanten Abtastpunkten kann die hochfrequente 
-	grüne Funktion nicht rekonstruiert werden, da auch eine zweite Funktion (rot) gefunden werden 
-	kann, welche den Punkten genau entspricht. Die Abtastweite wurde zu groß gewählt.}
-	\label{fig:aliasing}
-\end{figure}

@@ -1,9 +1,19 @@
 \section{Filter}
 
-\begin{definition}[Filter und Filtertypen]
+\begin{definition}[Filter]
 Ein Filter $ F $ ist eine Abbildung von einem Signalraum in einen anderen, oder anders formuliert, 
-ein Operator, der eine Folge $ c \in l(\Z) $ in $ Fc \in l(\Z) $ abbildet. Es gibt verschiedene
-Kategorien von Filtern:
+ein Operator, der eine Folge $ c \in l(\Z) $ in $ Fc \in l(\Z) $ abbildet.
+\end{definition}
+
+\begin{definition}[Impulsantwort]
+Die Impulsantwort eines Filters $ F $ ist definiert als
+\[
+  f(k) \coloneqq (F \delta)(k), \qquad k \in \Z.
+\]
+\end{definition}
+
+\begin{remark}[Filtertypen]
+Es gibt verschiedene Kategorien von Filtern:
 \begin{description}
 \item [Energieerhaltender Filter]
   In diesem Fall ist $ F : l_{2}(\Z) \rightarrow l_{2}(\Z) $ so, dass
@@ -32,16 +42,12 @@ Kategorien von Filtern:
   \]
 \item [Kausaler Filter]
   Das Ergebnis des Filters zum Zeitpunkt $ k $ hängt nur von den Eingaben in der Vergangenheit
-  (also $ c(j) $ mit $ j \leq k $) ab. Der Filter kann nicht in die Zukunft sehen.
+  (also $ c(j) $ mit $ j \leq k $) ab. Der Filter kann nicht in die Zukunft sehen. Kausalität
+  lässt sich auch auffassen als Anforderung an die Impulsantwort des Filters: Für alle $ k > 0 $
+  muss $ f(k) = (F\delta)(k) = 0 $ gelten. Einen Filter mit der Eigenschaft $ f(k) = 0 $ für alle
+  $ k < 0 $ bezeichnet man übrigens als \emph{antikausal}.
 \end{description}
-\end{definition}
-
-\begin{definition}[Impulsantwort]
-Die Impulsantwort eines Filters $ F $ ist definiert als
-\[
-  f(k) \coloneqq (F \delta)(k), \qquad k \in \Z.
-\]
-\end{definition}
+\end{remark}
 
 \begin{remark}[Lineare und zeitinvariante Filter]\leavevmode
 \begin{itemize}
@@ -94,7 +100,8 @@ Ein digitaler Filter $ F $ heißt
 
 \begin{example}[FIR-Filter in der Praxis]
 In der Praxis sind kausale, digitale FIR-Filter weit verbreitet. Was eigentlich nicht sehr 
-verwunderlich ist, wenn man bedenkt, dass man ohne all diese Eigenschaften den Filter gar nicht
-realisieren könnte.
-\TODO{Hier gehört dann das Schaltbild erklärt}
+verwunderlich ist, wenn man bedenkt, dass man ohne all diese Eigenschaften Filter gar nicht
+realisieren könnte\footnote{Na gut, das ist natürlich abhängig von der Domäne. So könnte man bei 
+Bildern, die man vollständig auf der Festplatte liegen hat, auch sehr gut auf Kausalität 
+verzichten. In diesem Fall wäre es sogar schlecht, einen kausalen Filter zu verwenden.}. 
 \end{example}

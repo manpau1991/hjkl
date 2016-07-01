@@ -441,35 +441,15 @@ Fourier-Transformierte besonders schnell berechnen wollen.
     &= \int_{\R} (f * g)(x) e^{-i\xi x} \dif x \tag{Def.\ Fourier-Transf.} \\
     &= \int_{\R} \left( \int_{\R} f(t) g(x - t) \dif t \right) e^{-i\xi x} \dif x 
         \tag{Def.\ Faltung} \\
-    &= \int_{\R} \int_{\R} f(t) g(x - t)  e^{-i\xi (x - t + t)} \dif x \dif t
-        \tag{Tonelli, $ 0 $ addieren} \\
-    &= \int_{\R} \int_{\R} f(t) e^{-i\xi t} g(x - t) e^{-i\xi (x - t)} \dif x \dif t 
-         \tag{Arithmetik} \\
-    &= \int_{\R} f(t) e^{-i\xi t} \left( \int_{\R} g(x - t) e^{-i\xi (x - t)} \dif x \right) \dif t 
-        \notag \\
-    &= \int_{\R} f(t) e^{-i\xi t} \left( \int_{\R} g(x) e^{-i\xi x} \dif x \right) \dif t 
-        \tag{Subst.\ $ x \coloneqq x + t $} \\
+    &= \int_{\R} \int_{\R} f(t) g(x - t)  e^{-i\xi x} \dif x \dif t
+        \tag{Tonelli} \\
+     &= \int_{\R} \int_{\R} f(t) g(s)  e^{-i\xi (t + s)} \dif s \dif t
+            \tag{Subst. $ s \coloneqq x - t $, $ \dif s = \dif x $} \\
     &= \left( \int_{\R} f(t) e^{-i\xi t} \dif t \right)
-       \left( \int_{\R} f(x) e^{-i\xi x} \dif x \right) \notag \\
-    &= \widehat{f}(\xi) \cdot \widehat{g}(\xi) \notag .
+       \left( \int_{\R} g(s) e^{-i\xi s} \dif s \right) \tag{Arithmetik \& Tonelli} \\
+    &= \widehat{f}(\xi) \cdot \widehat{g}(\xi). \tag{Def.\ Fourier-Transf.}
     \end{align}
 
-    HIER BEGINNT MEIN DAEMLICHER BEWEIS:
-
-    \begin{equation}\label{eq:faltungsbeweis}
-      \begin{split}
-        (f * g)^{\wedge}(\xi)
-        &\stackrel{\mathrm{def.}}= \int_\R (f*g)(t) e^{-i\xi t} \INT{t} \\
-        &\stackrel{\mathrm{def.}}= \int_\R \int_\R f(t-x)g(x)\INT{x}\; e^{-i\xi t}\INT{t} \\
-        &\stackrel{\mathrm{Tonelli}}= \int_\R \int_\R f(t-x)g(x)e^{-i\xi t}\INT{x}\INT{t} \\
-        &\stackrel{l = t-x}= \int_\R \int_\R f(l)g(x)e^{-i\xi (l+x)}\INT{x}\INT{l} \\
-        &\stackrel{\mathrm{Tonelli}}= \int_\R f(l)e^{-i\xi l}\INT{l} \int_\R g(x)e^{-i\xi x}\INT{x} \\
-        &\stackrel{\mathrm{def.}}= \hat f(\xi) \hat g(\xi)
-      \end{split}
-    \end{equation}
-
-    ENDE.
-        
 		\item [Ableitungseigenschaften] Sind $ f, f' \in L_{1}(\R) $, dann gilt
     \[
       \left( \dod{f}{x} \right)^{\wedge}(\xi) = i\xi \widehat{f}(\xi), \quad \xi \in \R.
