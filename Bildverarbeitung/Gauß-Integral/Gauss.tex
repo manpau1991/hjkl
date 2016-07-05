@@ -55,10 +55,10 @@ Abbildung~\ref{fig:gaussian} zeigt ausschnitthaft den Verlauf der Funktion.
     Für $ x \rightarrow \pm \infty $ strebt die Funktion gegen $ 0 $.}
   \label{fig:gaussian}
 \end{figure}
-Es ist offensichtlich, dass $ f $ stetig auf ganz $ \R $ ist unendlichen Träger besitzt, da die 
+Es ist offensichtlich, dass $ f $ stetig auf ganz $ \R $ ist und unendlichen Träger besitzt, da die 
 Funktion für alle $ x \in \R $ ungleich $ 0 $ ist. Die Frage, die sich nun stellt, ist: »Wie groß 
 ist die Fläche, die zwischen der $ x $-Achse und der Gauß-Funktion eingeschlossen wird?« Um dies 
-herauszufinden, müssen wir die Funktion uneigentlich integrieren. Es kann gezeigt werden, dass das 
+herauszufinden, müssen wir die Funktion uneigentlich integrieren. Es wird nun gezeigt, dass das 
 Integral $ I $ definiert durch
 \[
   I \coloneqq \int_{- \infty}^{\infty} f(x) \dif x = \int_{- \infty}^{\infty} \exp(-x^{2}) \dif x
@@ -73,8 +73,8 @@ Gauß-Funktion nach oben ab durch
   \end{cases}
   \qquad x \in \R.
 \]
-Abbildung~\ref{fig:approximation} veranschaulicht beispielhaft, dass $ f(x) \leq g(x) $ für alle
-$ x $ aus dem Intervall $ [-3,3] $.
+Für alle $ x \in \R $ gilt nun $ f(x) \leq g(x) $. Abbildung~\ref{fig:approximation} 
+veranschaulicht dies beispielhaft für die $ x $ aus dem Intervall $ [-3,3] $.
 \begin{figure}[ht]
   \centering
   \begin{tikzpicture}
@@ -106,15 +106,16 @@ Dieses konvergiert, da der Grenzwert
 &= \lim\limits_{n \to \infty} \frac{1}{2} \int_{1}^{n^{2}} \exp(-u) \dif u
  = \frac{1}{2} \lim\limits_{n \to \infty} \eval[3]{-\exp(-u)}_{1}^{n^{2}} \\
 &= \frac{1}{2} \lim\limits_{n \to \infty} - \exp(-n^{2}) - (-\exp(-1)) \\
-&= \frac{1}{2\exp(1)} \lim\limits_{n \to \infty} \underbrace{-\exp(-n^{2})}_{\to 0}
- = \frac{1}{2\exp(1)}
+&= \left( \frac{1}{2} + \exp(1) \right) 
+      \lim\limits_{n \to \infty} \underbrace{-\exp(-n^{2})}_{\to 0}
+ = \frac{1}{2} + \exp(1)
 \end{align*}
 existiert. Man beachte dabei die Substitution $ u \coloneqq x^{2} $, $ \dif u = 2x \dif x $. Daraus
 folgt nun
 \[
   \norm{f}_{1} < \infty.
 \]
-Also dürfen wir den Wert von $ I $ annähern durch die Berechnung
+Also ist $ f $ integrierbar und daher dürfen wir den Wert von $ I $ darstellen durch die Berechnung
 \[
   I = \lim\limits_{n \to \infty} I_{n} \coloneqq 
   \lim\limits_{n \to \infty} \int_{-n}^{n} f(x) \dif x.
@@ -195,14 +196,14 @@ $ x = r \cos(\vartheta) $ und
 $ y = r \sin(\vartheta) $ das Integral
 \begin{align*}
 V_{I}(n) \coloneqq{}& \int_{0}^{2\pi} \int_{0}^{n} |r|
-      \exp\left(- \left( r^{2} \cos^{2}(\phi) + r^{2} \sin^{2}(\phi) \right) \right) 
+      \exp\left(- \left( r^{2} \cos^{2}(\vartheta) + r^{2} \sin^{2}(\vartheta) \right) \right) 
       \dif r \dif \vartheta \\
 ={}& \int_{0}^{2\pi} \int_{0}^{n} r \exp(- r^{2} ) \dif r \dif \vartheta \\
 ={}& \left( \int_{0}^{2\pi} \dif \vartheta \right) 
             \left( \int_{0}^{n} r \exp(- r^{2} ) \dif r \right) \\
 ={}& 2\pi \int_{0}^{n} r \exp(- r^{2} ) \dif r .
 \end{align*}
-Um das verbleibende Integral auszuwerten, setze $ u = r^{2} $. Dann ist $ \dif u = r / 2 \dif r $. 
+Um das verbleibende Integral auszuwerten, setze $ u = r^{2} $. Dann ist $ \dif u = 2r \dif r $. 
 Substitution liefert weiter
 \begin{align*}
    2\pi \int_{0}^{n} r \exp(- r^{2} ) \dif r
