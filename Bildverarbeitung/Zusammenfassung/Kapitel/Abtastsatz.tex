@@ -103,14 +103,16 @@ laut
   \]
   Darüber hinaus kann jede $ 2\pi $-periodische Funktion $ f $ der Gestalt
   $ f(x) = \sum_{k \in \Z} \gamma_{k}e^{ikx} $ \emph{exakt} als Fourier-Reihe dargestellt werden. 
-  Der Clou beim Beweis und auch im Verständnis des Abtastsatzes ist nun folgende Formel:
-  \[
-      \sum_{k \in \Z} (\sigma_{h} \ f)^{\wedge}(\theta + 2 \pi k)
-    = \sum_{k \in \Z} \frac{\widehat{f} \left( \frac{\theta + 2\pi k}{h} \right)}{h}
-    = \sum_{k \in \Z} f(hk) e^{-ik\theta} 
+  Der Clou beim Beweis und auch im Verständnis des Abtastsatzes ist nun folgende Formel: Wegen
+  der $ \pi $-Bandbeschränktheit von $ (\sigma_{h} \ f) $ ist
+  \begin{align*}
+      (\sigma_{h} \ f)^{\wedge}(\theta)
+   &= \sum_{k \in \Z} (\sigma_{h} \ f)^{\wedge}(\theta + 2 \pi k)
+    = \sum_{k \in \Z} \frac{\widehat{f} \left( \frac{\theta + 2\pi k}{h} \right)}{h} \\
+   &= \sum_{k \in \Z} f(hk) e^{-ik\theta} 
     = (S_{h} \ f)^{\wedge}(\theta),
       \qquad \theta \in \T.
-  \]
+  \end{align*}
   Sie verknüpft unsere $ 2\pi $-Periodisierung von $ \widehat{f} $ mit der Fourier-Transformation 
   der Abtastfolge, $ (S_{h} \ f)^{\wedge} $, welche genau eine Fourier-Reihe ist. 
   Abbildung~\ref{fig:shannon} erklärt den Fall, wenn $ h $ ungeeignet gewählt ist.

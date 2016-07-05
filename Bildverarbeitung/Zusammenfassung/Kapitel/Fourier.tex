@@ -533,6 +533,39 @@ daraus schließlich
 wie behauptet.
 \end{example}
 
+\begin{remark}[Zusammenhang zwischen Symmetrie einer Funktion und deren Fourier-Transformierter]
+Ist $ f \in L_{1}(\R) $ eine symmetrische Funktion, d.h.\ $ f(x) = f(-x) $ für alle $ x \in \R $, 
+dann ist auch $ \widehat{f} $ symmetrisch und reell. Denn es gilt:
+\[
+   \widehat{f}(\xi)
+ = \int_{\R} f(x) e^{-i\xi x} \dif x
+ = \int_{\R} f(x) \cos(\xi x) \dif x - i \int_{\R} f(x) \sin(\xi x) \dif x.
+\]
+Für das rechte Integral gilt
+\begin{align}
+   \int_{\R} f(x) \sin(\xi x) \dif x \notag
+&= \int_{-\infty}^{0} f(x) \sin(\xi x) \dif x + \int_{0}^{\infty} f(x) \sin(\xi x) \dif x 
+     \notag \\
+&= - \int_{\infty}^{0} f(-t) \sin(-\xi t) \dif t + \int_{0}^{\infty} f(x) \sin(\xi x) \dif x
+     \tag{Subst.\ $ t \coloneqq -x $, $ \dif t = -\dif x $} \\
+&= \int_{0}^{\infty} f(t) \sin(-\xi t) \dif t + \int_{0}^{\infty} f(x) \sin(\xi x) \dif x
+     \tag{$ f(x) = f(-x) $} \\
+&= - \int_{0}^{\infty} f(x) \sin(\xi x) \dif x + \int_{0}^{\infty} f(x) \sin(\xi x) \dif x
+     \tag{$ \sin(-x) = -\sin(x) $} \\
+&= 0 \notag,
+\end{align}
+und damit
+\[
+   \widehat{f}(\xi)
+ = \int_{\R} f(x) \cos(\xi x) \dif x \in \R, \qquad
+   \widehat{f}(- \xi) = \widehat{f}(\xi),
+\]
+wie behauptet.
+
+Auf gleiche Weise lässt sich zeigen, dass die Fourier-Transformation zu einer antisymmetrischen 
+Funktion rein imaginär ist.
+\end{remark}
+
 \begin{proposition}[Riemann-Lebesgue-Lemma]\label{prop:Riemann-Lebesgue}
 Ist $ f \in L_{1}(\R) $, so ist
 \[
