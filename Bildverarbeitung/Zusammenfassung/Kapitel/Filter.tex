@@ -189,7 +189,8 @@ was genau die Definition eines trigonometrischen Polynoms ist.
 \begin{remark}[Best-Approximation einer Transferfunktion eines FIR-Filters]
 Da die Transferfunktion $ f $ eines FIR-Filters immer ein trigonometrisches Polynom ist, und die
 trigonometrischen Polynome dicht in $ L_{2}(\T) $ liegen, ist es auch immer möglich, $ f $ durch
-die $ n $-te Partialsumme einer Fourier-Reihe zu approximieren.
+die $ n $-te Partialsumme einer Fourier-Reihe zu approximieren und durch die Fourier-Reihe 
+\emph{exakt} darzustellen.
 \end{remark}
 
 \begin{example}[Sägezahn-Filter]
@@ -276,7 +277,7 @@ Fej\'{e}r'schen Mittel sind für Werte von $ n = 5, 10, 100 $ in Abbildung~\ref{
 dargestellt.
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.7\linewidth]{Bilder/sawtooth_fejer}
+\includegraphics[width=0.5\linewidth]{Bilder/sawtooth_fejer}
 \caption{Approximation von $ f $ (blau) durch die Fej\'{e}r'schen Mittel $ \mathcal{G}_{n}f $ für 
 $ n = 5, 10, 100 $ (rot, grün, lila).}
 \label{fig:sawtooth_fejer}
