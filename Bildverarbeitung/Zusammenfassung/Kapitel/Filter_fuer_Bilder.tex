@@ -23,7 +23,8 @@ für den Fall, dass $ c \in l(\R^{2}) $, bzw.
   \norm{f}_{p} \coloneqq \left( \int_{\R^{2}} |f(t)|^{p} \dif t \right)^{1/p}, \qquad
   \norm{f}_{\infty} \coloneqq \sup_{x \in \R^{2}} |f(x)|
 \]
-falls $ f \colon \R^{2} \rightarrow \R $, definieren.
+falls $ f \colon \R^{2} \rightarrow \R $, definieren. Damit sind insbesondere die Signalräume wie
+$ L_{1}(\R) $, $ l_{1}(\Z) $, usw.\ für Bilder wohldefiniert.
 \end{definition}
 
 \begin{remark}[Formeln für Bilder]
@@ -51,11 +52,28 @@ Folgenden $ f, g $ zwei Bilder (kontinuierlich modelliert).
   \]
 \item [Inverse Fourier-Transformation]
   \[
-    f = \left( \widehat{f} \right)^{\vee}
-      = \int_{\R^{2}} \widehat{f}(t) e^{i  }
+      f(x) 
+    = \left( \widehat{f} \right)^{\vee}(x)
+    = \frac{1}{(2\pi)^{2}} \int_{\R^{2}} \widehat{f}(t) e^{it^{\top}x} \dif t
+    = \frac{1}{2\pi} \int_{\R} \frac{1}{2\pi} \int_{\R} 
+        \widehat{f}(t) e^{it_{1}x_{1}} \dif t_{1} \ e^{it_{2}x_{2}} \dif t_{2}.
   \]
 \item [Parseval/Plancherel]
+\[
+    \int_{\R^{2}} f(t)g(t) \dif t
+  = \frac{1}{(2\pi)^{2}} \int_{\R^{2}} \widehat{f}(\xi) \overline{\widehat{g}(\xi)} \dif \xi
+\]
+und insbesondere mit $ f = g $
+\[
+  \norm{f}_{2} = \frac{1}{(2\pi)^{2}} \norm{\widehat{f}}_{2}.
+\]
 \item [Poisson'sche Summenformel]
+\[
+    \sum_{k \in \Z^{2}} f(2k\pi)
+  = \frac{1}{(2\pi)^{2}} \sum_{k \in \Z^{2}} \widehat{f}(k), \qquad
+    \sum_{k \in \Z^{2}} f(k)
+  = \sum_{k \in \Z^{2}} \widehat{f}(2k\pi).
+\]
 \end{description}
 Für die Beweise sei auf die entsprechenden Aufgaben auf den Übungsblättern verwiesen.
 \end{remark}
