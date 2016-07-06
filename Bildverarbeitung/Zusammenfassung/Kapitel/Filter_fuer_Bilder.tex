@@ -78,5 +78,97 @@ und insbesondere mit $ f = g $
 Für die Beweise sei auf die entsprechenden Aufgaben auf den Übungsblättern verwiesen.
 \end{remark}
 
-\begin{remark}[LTI-Filter für Bilder]
+\begin{remark}[LTI-Filter für Bilder]\leavevmode
+\begin{itemize}
+\item Verwenden wir das Kronecker-Delta als
+  \[
+    \delta(k) = \delta(k_{1}) \delta({k_{2}}), \qquad k = (k_{1}, k_{2}) \in \R^{2},
+  \]
+  dann können wir auch für Filter $ F $, die auf zweidimensionalen Signalen operieren, eine 
+  Impulsantwort definieren:
+  \[
+    f = F\delta \in l(\Z^{2}).
+  \]
+\item Dementsprechend kann man, falls $ F $ ein LTI-Filter ist, die Filterung eines Bildes $ c $ 
+  wieder schreiben als Faltung der Impulsantwort von $ F $ mit dem Bild:
+  \[
+      Fc 
+    = f * c
+    = \sum_{\alpha \in \Z^{2}} f(\bullet - \alpha) c(\alpha)
+    = \sum_{\alpha_{1} \in \Z} \sum_{\alpha_{2} \in \Z}
+        f(\bullet - (\alpha_{1}, \alpha_{2})) \ c(\alpha_{1}, \alpha_{2}).
+  \]
+\item Diese Formel kann man noch weiter vereinfachen, wenn $ f $ ein Tensorprodukt ist, d.h.\ falls
+  \[
+    f = f_{1} \otimes f_{2}, \quad f(\alpha) = f_{1}(\alpha_{1}) \cdot f_{2}(\alpha_{2})
+  \]
+  für $ f_{1}, f_{2} \in l(\Z) $ und $ \alpha = (\alpha_{1}, \alpha_{2}) \in \R^{2} $. Denn dann
+  gilt weiter
+  \begin{align*}
+     f * c
+  &= \sum_{\alpha_{1} \in \Z} \sum_{\alpha_{2} \in \Z}
+        f(\bullet - (\alpha_{1}, \alpha_{2})) \ c(\alpha_{1}, \alpha_{2}) \\
+  &= \sum_{\alpha_{1} \in \Z} \sum_{\alpha_{2} \in \Z} 
+        f_{1}(\bullet_{1} - \alpha_{1}) \ f_{2}(\bullet_{2} - \alpha_{2}) \ 
+        c(\alpha_{1}, \alpha_{2}) \\
+  &= \sum_{\alpha_{1} \in \Z} f_{1}(\bullet_{1} - \alpha_{1})
+        \sum_{\alpha_{2} \in \Z} f_{2}(\bullet_{2} - \alpha_{2}) \ c(\alpha_{1}, \alpha_{2}) \\
+  &= \sum_{\alpha_{1} \in \Z} f_{1}(\bullet_{1} - \alpha_{1})
+        \left( f_{2} * c(\alpha_{1}, \bullet) \right).
+  \end{align*}
+  Das bedeutet: Ist die Impulsantwort des LTI-Filters ein Tensorprodukt, dann erfolgt die Filterung
+  eines Bildes folgendermaßen: 
+  \begin{enumerate}
+  \item Zuerst werden die Zeilen $ c(\alpha_{1}, \bullet) $ des Bildes für jedes feste
+    $ \alpha_{1} $ mit $ f_{2} $ gefiltert. Diese Operation reduziert das Bild auf einen
+    einzigen Ergebnisvektor, welchen wir als Spalte auffassen.
+  \item Diese Spalte wird anschließend mit $ f_{1} $ gefiltert. Das Resultat ist dann gerade 
+    $ f * c $.
+  \end{enumerate}
+  Als grafische Veranschaulichung sei auf Abbildung~\ref{fig:FIR-Filter-2D} verwiesen.
+\item Auch die Transferfunktion $ \widehat{f} $ lässt sich besonders elegant schreiben, falls
+  $ f = f_{1} \otimes f_{2} $:
+  \begin{align*}
+     \widehat{f}(\xi)
+  &= \sum_{\alpha \in \Z^{2}} f(\alpha) e^{-i \alpha^{\top} \xi}
+   = \sum_{\alpha \in \Z^{2}} f(\alpha) e^{-i (\alpha_{1}\xi_{1} + \alpha_{2}\xi_{2})} \\
+  &= \sum_{\alpha_{1} \in \Z} \sum_{\alpha_{2} \in \Z} 
+        f_{1}(\alpha_{1}) f_{2}(\alpha_{2}) e^{-i\alpha_{1}\xi_{1}} e^{-i\alpha_{2}\xi_{2}} \\
+  &= \left( \sum_{\alpha_{1} \in \Z} f_{1}(\alpha_{1}) e^{-i\alpha_{1}\xi_{1}} \right)
+        \left( \sum_{\alpha_{2} \in \Z} f_{2}(\alpha_{2}) e^{-i\alpha_{2}\xi_{2}} \right) \\
+  &= \widehat{f_{1}}(\xi_{1}) \cdot \widehat{f_{2}}(\xi_{2}).
+  \end{align*}
+  Und damit wird die Anwendung des Filters besonders einfach:
+  \[
+      Fc
+    = \left( (Fc)^{\wedge} \right)^{\vee}
+    = \left( (f * c)^{\wedge} \right)^{\vee}
+    = \left( \widehat{f} \cdot \widehat{c} \right)^{\vee}
+    = \left( \widehat{f_{1}} \cdot \widehat{f_{2}} \cdot \widehat{c} \right)^{\vee}.
+  \]
+\end{itemize}
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\matrix [matrix of math nodes] {
+  \ddots & \vdots & \vdots & \ddots & 																		& \vdots \\
+  \cdots & c(0,0) & c(0,1) & \cdots & \rightarrow f_{2} * c(0, \bullet) = & c'(0) \\
+  \cdots & c(1,0) & c(1,1) & \cdots & \rightarrow f_{2} * c(1, \bullet) = & c'(1) \\
+  \ddots & \vdots & \vdots & \ddots & 																		& \vdots \\
+         &			  &				 & 				&																			& \downarrow \\
+         &			  &				 & 				&																			& f_{1} * c' \\
+         &			  &				 & 				&																			& \downarrow \\
+         &			  &				 & 				&																			& f * c \\
+};
+\end{tikzpicture}
+\caption{Schematische Darstellung der Funktionsweise eines FIR-Filters für Bilder, wenn dessen
+  Impulsantwort eine Tensorproduktstruktur aufweist. Zuerst wird das Bild horizontal gefiltert
+  und so zu einer Spalte reduziert, welche dann vertikal gefiltert wird, um so das Endergebnis zu
+  erhalten.}
+\label{fig:FIR-Filter-2D}
+\end{figure}
 \end{remark}
+
+\begin{example}[Filter in der Bildverarbeitung]
+\TODO{Mittelwertfilter, Binomialfilter, Gradientenfilter, Laplacefilter}
+\end{example}
