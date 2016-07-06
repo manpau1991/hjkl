@@ -6,9 +6,17 @@ ein Operator, der eine Folge $ c \in l(\Z) $ in $ Fc \in l(\Z) $ abbildet.
 \end{definition}
 
 \begin{definition}[Impulsantwort]
-Die Impulsantwort eines Filters $ F $ ist definiert als
+Die \emph{Impulsantwort} eines Filters $ F $ ist definiert als
 \[
   f(k) \coloneqq (F \delta)(k), \qquad k \in \Z.
+\]
+\end{definition}
+
+\begin{definition}[Transferfunktion]
+Die \emph{Transferfunktion} $ \widehat{f} $ eines Filters $ F $ bezeichnet die
+Fourier-Transformiertes der Impulsantwort $ f $:
+\[
+  \widehat{f} = \widehat{F\delta}.
 \]
 \end{definition}
 
@@ -75,8 +83,8 @@ und unter Verwendung der Linearität und Zeitinvarianz ergibt sich schließlich
 \end{align*}
 Das bedeutet, ein LTI-Filter lässt sich vollständig durch seine Impulsantwort charakterisieren.
 \item Das Tolle daran ist: Dank der Faltung lassen sich LTI-Filter effizient am Rechner über eine 
-Multiplikation der Fourier-Transformierten des Filters, der sog.\ \emph{Transferfunktion}, mit
-der Fourier-Transformierten des Signals implementieren. Konkret:
+Multiplikation der Transferfunktion mit der Fourier-Transformierten des Signals implementieren. 
+Konkret:
 \[
   Fc = \left( (Fc)^{\wedge} \right)^{\vee} = \left( (f * c)^{\wedge} \right)^{\vee}
      = \left( \widehat{f} \cdot \widehat{c} \right)^{\vee}
@@ -134,8 +142,8 @@ eine gewisse Laufzeit.
 
 \begin{remark}[Vorgehen beim Filterdesign]
 Das Design eines Filters erfolgt normalerweise im Frequenzbereich. Das heißt, man stellt 
-Anforderungen an die Transferfunktion (die Fourier-Transformierte des Filters), z.B.\ ob hohe oder
-tiefe Frequenzen durchgelassen werden sollen usw.
+Anforderungen an die Transferfunktion (oder halt die Fourier-Transformierte des Filters), z.B.\ ob 
+hohe oder tiefe Frequenzen durchgelassen werden sollen usw.
 \begin{itemize}
 \item Eine reelle Transferfunktion erhält man nur dann, wenn man auf Kausalität des Filters 
 verzichtet. Sonst kann der Filter nicht symmetrisch sein. Die Transferfunktion eines kausalen 
@@ -164,7 +172,7 @@ Eine unendlich oft stetig differenzierbare Funktion $ f \in C^{\infty}(\T) $ der
 \[
   f(x) = \sum_{|k| \leq n} f_{k} e^{ikx} = \sum_{|k| \leq n} f_{k} \left(e^{ix}\right)^{k}
 \]
-mit Koeffizienten $ f_{k} \in \C $ und Argument $ x \in T $ bezeichnet man als trigonometrisches 
+mit Koeffizienten $ f_{k} \in \C $ und Argument $ x \in \T $ bezeichnet man als trigonometrisches 
 Polynom der Ordnung $ n $.
 \end{definition}
 
@@ -176,28 +184,32 @@ $ n $ auch darstellen als
   f(x) = a_{0} + \sum_{k = 1}^{n} \left( a_{k}\cos^{k}(x) + b_{k}\sin^{k}(x) \right),
 \]
 wobei die Koeffizienten $ a_{0}, \ldots, a_{n}, b_{1}, \ldots, b_{n} \in \C $ geeignet gewählt sind.
-\item Wir können daraus direkt folgern, dass die Transferfunktion $ f $ zu einem FIR-Filter
-$ F $ ein trigonometrisches Polynom sein muss. Denn $ f $ hat endlichen Träger, sagen wir
-$ \supp(f) \subseteq [-N, N] $ und dann gilt ja
+\item Wir können direkt folgern, dass die Transferfunktion $ \widehat{f} $ zu einem 
+FIR-Filter $ F $ ein trigonometrisches Polynom sein muss. Denn die Impulsantwort $ f $ hat 
+endlichen Träger, sagen wir $ \supp(f) \subseteq [-N, N] $ und dann gilt ja
 \[
-  f(x) = \widehat{F}(x) = \sum_{k = -N}^{N} F(k) e^{-ikx} = \sum_{|k| \leq N} F(k) e^{ikx},
+    \widehat{f}(x)
+  = \sum_{k \in \Z} f(k) e^{-ikx}
+  = \sum_{k = -N}^{N} f(k) e^{-ikx} 
+  = \sum_{|k| \leq N} f(k) e^{ikx},
 \]
-was genau die Definition eines trigonometrischen Polynoms ist.
+was genau der Definition eines trigonometrischen Polynoms entspricht, wenn man $ f(k) = f_{k} $
+setzt.
 \end{itemize}
 \end{remark}
 
 \begin{remark}[Best-Approximation einer Transferfunktion eines FIR-Filters]
-Da die Transferfunktion $ f $ eines FIR-Filters immer ein trigonometrisches Polynom ist, und die
-trigonometrischen Polynome dicht in $ L_{2}(\T) $ liegen, ist es auch immer möglich, $ f $ durch
-die $ n $-te Partialsumme einer Fourier-Reihe zu approximieren und durch die Fourier-Reihe 
-\emph{exakt} darzustellen.
+Da die Transferfunktion $ \widehat{f} $ eines FIR-Filters immer ein trigonometrisches Polynom ist, 
+und die trigonometrischen Polynome dicht in $ L_{2}(\T) $ liegen, ist es auch immer möglich,
+$ \widehat{f} $ durch die $ n $-te Partialsumme einer Fourier-Reihe zu approximieren und durch die 
+Fourier-Reihe \emph{exakt} darzustellen.
 \end{remark}
 
-\begin{example}[Sägezahn-Filter]
+\begin{example}[Approximation des Sägezahn-Filters]
 Anstatt das gleiche Beispiel wie im Skript abzudrucken (idealer Tiefpassfilter), betrachten wir nun
 eine Variation der Sägezahnfunktion als Transferfunktion. Diese sei definiert durch
 \[
-  f \colon \R \rightarrow \R, \quad f(x) = \begin{cases}
+  g \colon \R \rightarrow \R, \quad g(x) = \begin{cases}
     \dfrac{\pi - x}{2}, & x \in \T \setminus \{ 0 \} \\
     0, & x = 0.
   \end{cases}
@@ -207,15 +219,15 @@ Abbildung~\ref{fig:sawtooth} zeigt den Verlauf der Funktion auf dem Intervall $ 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.5\linewidth]{Bilder/sawtooth}
-\caption{Die Sägezahnfunktion $ f $ auf dem Intervall $ [-\pi, \pi] $.}
+\caption{Die Sägezahnfunktion $ g $ auf dem Intervall $ [-\pi, \pi] $.}
 \label{fig:sawtooth}
 \end{figure}
-Wir wollen also ein trigonometrisches Polynom finden, welches $ f $ besonders gut annähert. Dazu
+Wir wollen also ein trigonometrisches Polynom finden, welches $ g $ besonders gut annähert. Dazu
 verwenden wir Fourier-Reihen. Hierfür müssen zuerst die sog.\ Fourier-Koeffizienten berechnet 
 werden. Der erste Fourier-Koeffizient ist gegeben durch
 \begin{align*}
-   f_{0} 
-&= \frac{1}{2\pi} \int_{\T} f(x) e^{- i \cdot 0 \cdot x} \dif x
+   g_{0} 
+&= \frac{1}{2\pi} \int_{\T} g(x) e^{- i \cdot 0 \cdot x} \dif x
  = \frac{1}{2\pi} \int_{0}^{2\pi} \frac{\pi - x}{2} \dif x
  = \frac{1}{2\pi} \left( 
      \frac{\pi}{2} \int_{0}^{2\pi} \dif x - \int_{0}^{2\pi} \frac{x}{2} \dif x
@@ -226,8 +238,8 @@ werden. Der erste Fourier-Koeffizient ist gegeben durch
 \end{align*}
 Für $ k \in \Z \setminus \{ 0 \} $ hingegen ergibt sich mit partieller Integration
 \begin{align*}
-   f_{k}
-&= \frac{1}{2\pi} \int_{\T} f(x) e^{-ikx} \dif x
+   g_{k}
+&= \frac{1}{2\pi} \int_{\T} g(x) e^{-ikx} \dif x
  = \frac{1}{2\pi} \int_{0}^{2\pi} \frac{\pi - x}{2} e^{-ikx} \dif x \\
 &= \frac{1}{4\pi} \Bigg( 
       \pi \underbrace{ \int_{0}^{2\pi} e^{-ikx} \dif x }_{=0} - \int_{0}^{2\pi} xe^{-ikx} \dif x
@@ -240,23 +252,23 @@ Für $ k \in \Z \setminus \{ 0 \} $ hingegen ergibt sich mit partieller Integrat
  = \frac{1}{4\pi ik} \big( 2\pi \underbrace{ e^{-2\pi ik} }_{= 1} - 0 \big)
  = \frac{1}{2ik}.
 \end{align*}
-Damit ist die Fourier-Reihe von $ f $
+Damit ist die Fourier-Reihe von $ g $
 \[
-    \mathcal{F}f 
-  = \sum_{k \in \Z} f_{k} e^{ikx}
+    \mathcal{F}g
+  = \sum_{k \in \Z} g_{k} e^{ikx}
   = \sum_{k = 1}^{\infty} \frac{e^{ikx} - e^{-ikx}}{2ik}
   = \sum_{k = 1}^{\infty} \frac{\sin(kx)}{k}
 \]
 und deren $ n $-te Partialsumme definiert durch
 \[
-  \mathcal{F}_{n}f \coloneqq \sum_{k = 1}^{n} \frac{\sin(kx)}{k}.
+  \mathcal{F}_{n}g \coloneqq \sum_{k = 1}^{n} \frac{\sin(kx)}{k}.
 \]
 Diese $ n $-te Partialsumme verwenden wir für unseren näherungsweisen FIR-Filter. 
 Abbildung~\ref{fig:sawtooth_fourier} zeigt dies exemplarisch für die Werte $ n = 5, 10, 100 $.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.5\linewidth]{Bilder/sawtooth_fourier}
-\caption{Approximation von $ f $ (blau) durch die Partialsummen $ \mathcal{F}_{n}f $ für $ n = 5, 
+\caption{Approximation von $ g $ (blau) durch die Partialsummen $ \mathcal{F}_{n}g $ für $ n = 5, 
 10, 100 $ (rot, grün, lila).}
 \label{fig:sawtooth_fourier}
 \end{figure}
@@ -278,10 +290,10 @@ dargestellt.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.5\linewidth]{Bilder/sawtooth_fejer}
-\caption{Approximation von $ f $ (blau) durch die Fej\'{e}r'schen Mittel $ \mathcal{G}_{n}f $ für 
+\caption{Approximation von $ g $ (blau) durch die Fej\'{e}r'schen Mittel $ \mathcal{G}_{n}g $ für 
 $ n = 5, 10, 100 $ (rot, grün, lila).}
 \label{fig:sawtooth_fejer}
 \end{figure}
-Man sieht recht schön, dass diese zwar eine größere Abweichung von $ f $ aufweisen als die
-$ n $-ten Partialsummen der Fourier-Reihe von $ f $. Dafür vermeiden sie aber das Gibbs-Phänomen.
+Man sieht recht schön, dass diese zwar eine größere Abweichung von $ g $ aufweisen als die
+$ n $-ten Partialsummen der Fourier-Reihe von $ g $. Dafür vermeiden sie aber das Gibbs-Phänomen.
 \end{example}
