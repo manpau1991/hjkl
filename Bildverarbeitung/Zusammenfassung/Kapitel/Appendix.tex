@@ -141,3 +141,46 @@ Schließlich erhält man
   = 1
 \]
 mit Substitution von $ t \coloneqq \pi x $, $ \dif t = \pi \dif x $.
+
+\section{Faltungseigenschaften}
+Wir zeigen die folgenden Faltungseigenschaften nur für Funktionen, die
+Beweise lassen sich ganz analog im voll- bzw semidiskreten Fall führen.
+
+Seien also im Folgenden $f,g,h\in L_1(\R)$.
+
+\subsection{Kommutativität}
+Es gilt:
+
+\begin{equation}\label{eq:faltungkommutativitaet}
+  (f*g) = \int_\R f(\cdot - t)g(t)\INT{t} = \int_\R f(t)g(\cdot - t)\INT{t} = (g*f)
+\end{equation}
+
+Damit ist die Kommutativität auch schon bewiesen.
+
+\subsection{Assoziativität}
+Durch Umformen erreichen wir, dass gilt:
+
+\begin{equation}\label{eq:faltungassoziativitaet}
+  \begin{split}
+    (f*(g*h))(x) &= \left(f * \int_\R g(\cdot -u)h(u)\INT{u}\right)(x) \\
+    &= \int_\R f(x-t)\int_\R g(t-u)h(u)\INT{u}\INT{t} \\
+    &= \int_\R\int_\R f(x-t) g(t-u)h(u)\INT{u}\INT{t} \\
+    &= \int_\R\int_\R f(x-t-u) g(t)h(u)\INT{u}\INT{t} \\
+    &= \left(\int_\R f(\cdot-t) g(t)\INT{t} * h\right)(x) \\
+    &= ((f*g)*h)(x)
+  \end{split}
+\end{equation}
+
+\subsection{Distributivität}
+Die Distributivität folgt sehr schnell durch Umformen:
+
+\begin{equation}\label{eq:faltungdistributivitaet}
+  \begin{split}
+    (f*(g+h)) &= \int_\R f(\cdot - t)((g+h)(t))\INT{t} \\
+    &= \int_\R f(\cdot - t) g(t) + f(\cdot - t)h(t) \INT{t} \\
+    &= \int_\R f(\cdot - t)g(t) \INT{t} + \int_\R f(\cdot -t)h(t) \\
+    &= f*g + f*h
+  \end{split}
+\end{equation}
+
+
