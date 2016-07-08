@@ -202,8 +202,8 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
   
   Ein großer Vorteil des Mittelwertfilters ist, dass er Rauschen unterdrücken kann. Dazu modelliert
   man das gemessene Signal als $ \phi(x) = \psi(x) + \epsilon(x) $, wobei $ \psi $ die eigentlichen
-  Daten sind und $ \epsilon $ das Rauschen. Unter der Annahme, dass das Rauschen mittelwertfrei ist,
-  erhält man so
+  Daten sind und $ \epsilon $ das (häufig als mittelwertfrei angenommene) Rauschen. Insgesamt ergibt
+  sich so mit diesem Modell die Filterung
   \[
       F\phi (x)
     = \frac{1}{|\Omega|} \int_{x + \Omega} \psi(t) \dif t
@@ -213,8 +213,8 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
   Das Problem beim Design eines Mittelwertfilters ist die korrekte Wahl von $ \Omega $. Denn der 
   Filter angewandt auf die eigentlichen Daten $ \psi $ sollte diese weitestgehend unberührt lassen, 
   d.h.\ $ F\psi \sim \psi $. Dafür muss $ \Omega $ eine möglichst kleine Menge sein. Gleichzeitig 
-  soll aber auch das Rauschen möglichst gut ausgemittelt werden, und dafür muss $ \Omega $ groß
-  genug sein.
+  soll aber auch das Rauschen möglichst gut ausgemittelt werden, und dafür muss $ \Omega $ groß und
+  \enquote{symmetrisch} genug sein.
   
   Eine andere Möglichkeit, einen Mittelwertfilter zu realisieren, ist
   \[
@@ -222,7 +222,7 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
       = \frac{1}{2\pi\sigma^{2}} \exp\left( -\frac{x_{1}^{2} + x_{2}^{2}}{2\sigma^{2}} \right),
       \qquad \sigma > 0
   \]
-  zu setzten. Für die Diskretisierung tastet man $ f\chi_{[-N,N]^{2}} $ für ein $ N \in N $ ab. Die
+  zu setzten. Für die Diskretisierung tastet man $ f\chi_{[-N,N]^{2}} $ für ein $ N \in \N $ ab. Die
   charakteristische Funktion wird benötigt, um einen FIR-Filter zu erhalten, denn der Gaußkern
   besitzt ja unendlichen Träger.
 \item [Binomialfilter]
@@ -234,11 +234,14 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
       \qquad 0, \ldots, m, \quad 0, \ldots, n.
   \]
   Die Impulsantwort lässt sich auch als Matrix darstellen, wenn man $ j $ als Zeile und $ k $ als
-  Spalte auffasst. Beispielsweise erhält man für $ m,n = 2 $ die Matrix
+  Spalte auffasst. Geschickt ist es, $ m $ und $ n $ als gerade zahlen zu wählen, denn dann lässt 
+  sich die Matrix sogar zentrieren. Um etwas Terminologie aus der Informatik zu verwenden: Man 
+  erhält so einen $ m \cdot n $-Punkt-Stencil, der sukzessive über das Bild geschoben wird 
+  (mathemat.\ Faltung). Beispielsweise erhält man für $ m,n = 2 $
   \[
     \frac{1}{16} \begin{pmatrix}
     1 & 2 & 1 \\
-    2 & 4 & 2 \\
+    2 & \mathbf{4} & 2 \\
     1 & 2 & 1
     \end{pmatrix}
   \]
@@ -247,11 +250,15 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
     \frac{1}{256} \begin{pmatrix}
     1 &  4 & 6  & 4  & 1 \\
     4 & 16 & 24 & 16 & 4 \\
-    6 & 24 & 36 & 24 & 6 \\
+    6 & 24 & \mathbf{36} & 24 & 6 \\
     4 & 16 & 24 & 16 & 4 \\
     1 &  4 &  6 &  4 & 1
     \end{pmatrix}.
   \]
+  Der fett gedruckte Wert bezeichnet dabei jeweils die aktuelle Zelle des Stencils. Je größer nun 
+  die Werte für $ m $ und $ n $ gewählt, werden, desto mehr benachbarte Zellen werden für die
+  Berechnung hinzugezogen. Das Bild wird dadurch immer stärker geglättet.
+  
   Übrigens ist $ 2^{m + n} $ gerade die Summe aller Einträge in der Matrix, denn es gilt
   \begin{align*}
       \sum_{j = 0}^{m} \sum_{k = 0}^{n} \binom{m}{j} \binom{n}{k}
@@ -263,6 +270,32 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
     = 2^{m + n},
   \end{align*}
   sodass wir es wirklich mit einem Mittelwertfilter zu tun haben!
+\item [Gradientenfilter]
+  Der Gradientenfilter verwendet, wie der Name schon erahnen lässt, den Gradienten unseres
+  Signals $ \phi $. Allgemein ist der Gradient einer Funktion $ \phi $ definiert als
+  \[
+    \nabla \phi(x,y) = \begin{pmatrix}
+    \dpd{\phi}{x}(x,y) \\[1em]
+    \dpd{\phi}{y}(x,y)
+    \end{pmatrix}.
+  \]
+  Anschaulich: Wir bilden die partiellen Ableitungen zu $ \phi $ und stecken diese in einen Vektor 
+  (den Gradienten). Dieser zeigt dann in diejenige Richtung, in der $ \phi $ an der Stelle $ (x,y) $
+  am stärksten steigt oder fällt. So können wir Konturen und Kanten im Bild erkennen. Denn eine 
+  Kontur findet sich ja dort, wo der (Farb-)Unterschied zwischen benachbarten Pixeln groß ist und
+  damit die Steigung groß ist.
+  
+%  Den Gradienten für ein diskretes Signal $ c $ können wir definieren als
+%  \[
+%      \nabla c(x,y)
+%    = \begin{pmatrix}
+%      c(x + 1, y) - c(x, y) \\
+%      c(x, y + 1) - c(x, y)
+%    \end{pmatrix}.
+%  \]
+
+  Leider sind solche Gradientenverfahren inhärent empfindlich gegen Rauschen. Und je genauer man 
+  das Signal abtastet, umso mehr wird das Rauschen durch den Gradientenfilter noch verstärkt.
 \end{description}
-\TODO{Binomialfilter, Gradientenfilter, Laplacefilter}
+\TODO{Gradientenfilter, Laplacefilter, Medianfilter}
 \end{example}
