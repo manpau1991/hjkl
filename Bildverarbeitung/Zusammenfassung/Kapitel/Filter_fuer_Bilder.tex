@@ -65,7 +65,7 @@ Folgenden $ f, g $ zwei Bilder (kontinuierlich modelliert).
 \]
 und insbesondere mit $ f = g $
 \[
-  \norm{f}_{2} = \frac{1}{(2\pi)^{2}} \norm{\widehat{f}}_{2}.
+  \norm{f}_{2} = \frac{1}{2\pi} \norm{\widehat{f}}_{2}.
 \]
 \item [Poisson'sche Summenformel]
 \[
@@ -82,7 +82,14 @@ Für die Beweise sei auf die entsprechenden Aufgaben auf den Übungsblättern ve
 \begin{itemize}
 \item Verwenden wir das Kronecker-Delta als
   \[
-    \delta(k) = \delta(k_{1}) \delta({k_{2}}), \qquad k = (k_{1}, k_{2}) \in \R^{2},
+      \delta(k) 
+    = \delta_{(0,0), (k_{1}, k_{2})}
+    = \delta_{0, k_{1}} \delta_{0, k_{2}}
+    = \begin{cases}
+        1, & k_{1}, k_{2} = 0, \\
+        0, & \text{sonst},
+      \end{cases}
+     \qquad k = (k_{1}, k_{2}) \in \R^{2},
   \]
   dann können wir auch für Filter $ F $, die auf zweidimensionalen Signalen operieren, eine 
   Impulsantwort definieren:
@@ -125,13 +132,17 @@ Für die Beweise sei auf die entsprechenden Aufgaben auf den Übungsblättern ve
   \item Diese Spalte wird anschließend mit $ f_{1} $ gefiltert. Das Resultat ist dann gerade 
     $ f * c $.
   \end{enumerate}
-  Als grafische Veranschaulichung sei auf Abbildung~\ref{fig:FIR-Filter-2D} verwiesen.
+  Als grafische Veranschaulichung sei auf Abbildung~\ref{fig:FIR-Filter-2D} verwiesen. Man kann
+  sich leicht überlegen, dass die Filterung der Spalten mit $ f_{1} $ zuerst und anschließende
+  Filterung der Ergebniszeile mit $ f_{2} $ zum obigen Vorgehen äquivalent ist. Wenn man das Bild um
+  $ 90^{\circ} $ dreht, sollte sich ja schließlich nichts ändern, oder?
 \item Auch die Transferfunktion $ \widehat{f} $ lässt sich besonders elegant schreiben, falls
   $ f = f_{1} \otimes f_{2} $:
   \begin{align*}
      \widehat{f}(\xi)
   &= \sum_{\alpha \in \Z^{2}} f(\alpha) e^{-i \alpha^{\top} \xi}
-   = \sum_{\alpha \in \Z^{2}} f(\alpha) e^{-i (\alpha_{1}\xi_{1} + \alpha_{2}\xi_{2})} \\
+   = \sum_{\alpha_{1}, \alpha_{2} \in \Z} 
+       f(\alpha_{1}, \alpha_{2}) e^{-i (\alpha_{1}\xi_{1} + \alpha_{2}\xi_{2})} \\
   &= \sum_{\alpha_{1} \in \Z} \sum_{\alpha_{2} \in \Z} 
         f_{1}(\alpha_{1}) f_{2}(\alpha_{2}) e^{-i\alpha_{1}\xi_{1}} e^{-i\alpha_{2}\xi_{2}} \\
   &= \left( \sum_{\alpha_{1} \in \Z} f_{1}(\alpha_{1}) e^{-i\alpha_{1}\xi_{1}} \right)
@@ -170,5 +181,88 @@ Für die Beweise sei auf die entsprechenden Aufgaben auf den Übungsblättern ve
 \end{remark}
 
 \begin{example}[Filter in der Bildverarbeitung]
-\TODO{Mittelwertfilter, Binomialfilter, Gradientenfilter, Laplacefilter}
+Wir betrachten im Folgenden ein paar Beispiele für bekannte Filter in der Bildverarbeitung. Dabei
+ist es meistens so, dass die Filter für Signale der Form $ \phi \colon \R^{2} \rightarrow \R $, 
+also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werden.
+\begin{description}
+\item [Mittelwertfilter] Der Mittelwertfilter $ F $ mit Impulsantwort
+  \[
+    f = \frac{1}{|\Omega|}\chi_{\Omega}, \qquad \Omega \subset \R^{2},
+  \]
+  filtert das Signal $ \phi $ mittels
+  \[
+      \phi(x) \mapsto (f * \phi)(x)
+    = \frac{1}{|\Omega|} \int_{\R} \chi_{\Omega}(t) \phi(x - t) \dif t
+    = \frac{1}{|\Omega|} \int_{\Omega} \phi(x - t) \dif t
+    = \frac{1}{|\Omega|} \int_{x + \Omega} \phi(t) \dif t.
+  \]
+  Das heißt, er ordnet $ \phi(x) $ den Mittelwert der Menge $ x + \Omega $ zu. Um den Filter zu
+  diskretisieren, setzt man einfach $ f = S_{h}\chi_{\Omega} $ und normalisiert dann, indem man 
+  durch die Anzahl der in $ \Omega $ enthaltenen Abtastpunkte teilt.
+  
+  Ein großer Vorteil des Mittelwertfilters ist, dass er Rauschen unterdrücken kann. Dazu modelliert
+  man das gemessene Signal als $ \phi(x) = \psi(x) + \epsilon(x) $, wobei $ \psi $ die eigentlichen
+  Daten sind und $ \epsilon $ das Rauschen. Unter der Annahme, dass das Rauschen mittelwertfrei ist,
+  erhält man so
+  \[
+      F\phi (x)
+    = \frac{1}{|\Omega|} \int_{x + \Omega} \psi(t) \dif t
+        + \frac{1}{|\Omega|} \int_{x + \Omega} \epsilon(t) \dif t.
+  \]
+  
+  Das Problem beim Design eines Mittelwertfilters ist die korrekte Wahl von $ \Omega $. Denn der 
+  Filter angewandt auf die eigentlichen Daten $ \psi $ sollte diese weitestgehend unberührt lassen, 
+  d.h.\ $ F\psi \sim \psi $. Dafür muss $ \Omega $ eine möglichst kleine Menge sein. Gleichzeitig 
+  soll aber auch das Rauschen möglichst gut ausgemittelt werden, und dafür muss $ \Omega $ groß
+  genug sein.
+  
+  Eine andere Möglichkeit, einen Mittelwertfilter zu realisieren, ist
+  \[
+    f(x_{1},x_{2}) 
+      = \frac{1}{2\pi\sigma^{2}} \exp\left( -\frac{x_{1}^{2} + x_{2}^{2}}{2\sigma^{2}} \right),
+      \qquad \sigma > 0
+  \]
+  zu setzten. Für die Diskretisierung tastet man $ f\chi_{[-N,N]^{2}} $ für ein $ N \in N $ ab. Die
+  charakteristische Funktion wird benötigt, um einen FIR-Filter zu erhalten, denn der Gaußkern
+  besitzt ja unendlichen Träger.
+\item [Binomialfilter]
+  Die Binomalfilter sind spezielle Mittelwertfilter, denen wir in einem eigenen Punkt 
+  Aufmerksamkeit widmen wollen, und das diskrete Gegenstück zum oben erwähnten Gaußkern. Deren 
+  Impulsantwort ist gegeben durch
+  \[
+    f(j,k) = \frac{1}{2^{m + n}} \binom{m}{j} \binom{m}{k},
+      \qquad 0, \ldots, m, \quad 0, \ldots, n.
+  \]
+  Die Impulsantwort lässt sich auch als Matrix darstellen, wenn man $ j $ als Zeile und $ k $ als
+  Spalte auffasst. Beispielsweise erhält man für $ m,n = 2 $ die Matrix
+  \[
+    \frac{1}{16} \begin{pmatrix}
+    1 & 2 & 1 \\
+    2 & 4 & 2 \\
+    1 & 2 & 1
+    \end{pmatrix}
+  \]
+  und für $ m,n=4 $
+  \[
+    \frac{1}{256} \begin{pmatrix}
+    1 &  4 & 6  & 4  & 1 \\
+    4 & 16 & 24 & 16 & 4 \\
+    6 & 24 & 36 & 24 & 6 \\
+    4 & 16 & 24 & 16 & 4 \\
+    1 &  4 &  6 &  4 & 1
+    \end{pmatrix}.
+  \]
+  Übrigens ist $ 2^{m + n} $ gerade die Summe aller Einträge in der Matrix, denn es gilt
+  \begin{align*}
+      \sum_{j = 0}^{m} \sum_{k = 0}^{n} \binom{m}{j} \binom{n}{k}
+   &= \left( \sum_{j = 0}^{m} \binom{m}{j} \right) \left( \sum_{k = 0}^{n} \binom{n}{k} \right)
+    = \left( \sum_{j = 0}^{m} \binom{m}{j} 1^{m} 1^{m - j} \right) 
+        \left( \sum_{k = 0}^{n} \binom{n}{k} 1^{n} 1^{n - k} \right) \\
+   &= (1 + 1)^{m} (1 + 1)^{n}
+    = 2^{m} 2^{n}
+    = 2^{m + n},
+  \end{align*}
+  sodass wir es wirklich mit einem Mittelwertfilter zu tun haben!
+\end{description}
+\TODO{Binomialfilter, Gradientenfilter, Laplacefilter}
 \end{example}
