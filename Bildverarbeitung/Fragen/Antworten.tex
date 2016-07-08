@@ -170,7 +170,7 @@
       Die Informationsmaxima liegen am Rand, da die höherfrequenten Anteile dort liegen.
 	\item[Nenne die Formel der DFT]
   	\[
-    	\widehat{c_{n}}(\xi) = \sum_{k \in \Z} c(k) e^{-2}
+    	\widehat{c_{n}}(\xi) = \sum_{k \in \Z} c(k) e^{-2\pi i k \xi / n}.
   	\]
 	\item[Fouriertransformation im $\R^2$]
       Die Fouriertransformation im zweidimensionalen Raum ist entsprechend die Variante für Bilder.\\
@@ -452,8 +452,12 @@
   \item[Was bedeutet Zulässigkeit bei Wavelets?]
     Die Zulässigkeit bei Wavelets ist eine mathematische Bedingung, dass 
     $$ C_\Psi := \int_\R \frac{\left|\hat \Psi(\xi)\right|^2}{|\xi|}\INTM{\xi} < \infty $$
-    gelten muss. Um dies zu gewährleisten sollte die Funktion an der $0$ insbesondere $0$ sein, weil man selten
-    gut durch Null dividieren kann.
+    gelten muss. Um dies zu gewährleisten sollte die Funktion an der $0$ insbesondere $0$ sein, 
+    weil man selten gut durch Null dividieren kann.
+    
+    Die Zulässigkeit ist insbesondere eine Voraussetzung dafür, dass man die Inverse Wavelet-
+    Transformation berechnen kann, weil sonst der Term $ \frac{1}{C_{\psi}} $ null wäre und dann
+    würde man als Rekonstruktion die konstante Nullfunktion erhalten.
   \item[Was ist die Wavelet-Transformation?]
     Die Wavelet-Transformation ist eine integraltransformation, welche das Signal und das Wavelet quasi als Fensterfunktion
     miteinander in Beziehung setzt:
@@ -504,6 +508,8 @@
     dynamisch an die Frequenz oder Zeit anpasst. Bei Gabor legt man durch die Fensterfunktion aber eine
     fixe Frequenz-/Zeit-Auflösung fest. Man bekommt mit der Wavelet-Transformation also eine dynamische
     Zeit-/Frequenz-Auflösung mit einer gewissen Lokalitätseigenschaft.
+    Bei der Wavelet-Transformation gilt: Je \enquote{unglatter} die Funktion ist, desto höher ist
+    die Abklingrate der Wavelet-Koeffizienten.
   \item[Wo spiegelt sich bei der Wavelet-Transformation Redundanz wider?]
     Man kann\footnote{Man kann, ich kann es nicht ...} mathematisch nachweisen, dass man die Originalfunktion
     aus der Wavelet-Transformation mit nur einer einzigen Skala rekonstruieren kann.
