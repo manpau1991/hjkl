@@ -136,6 +136,26 @@ Für die Beweise sei auf die entsprechenden Aufgaben auf den Übungsblättern ve
   sich leicht überlegen, dass die Filterung der Spalten mit $ f_{1} $ zuerst und anschließende
   Filterung der Ergebniszeile mit $ f_{2} $ zum obigen Vorgehen äquivalent ist. Wenn man das Bild um
   $ 90^{\circ} $ dreht, sollte sich ja schließlich nichts ändern, oder?
+  \begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}
+  \matrix [matrix of math nodes] {
+    \ddots & \vdots & \vdots & \ddots & 																		& \vdots \\
+    \cdots & c(0,0) & c(0,1) & \cdots & \rightarrow f_{2} * c(0, \bullet) = & c'(0) \\
+    \cdots & c(1,0) & c(1,1) & \cdots & \rightarrow f_{2} * c(1, \bullet) = & c'(1) \\
+    \ddots & \vdots & \vdots & \ddots & 																		& \vdots \\
+           &			  &				 & 				&																			& \downarrow \\
+           &			  &				 & 				&																			& f_{1} * c' \\
+           &			  &				 & 				&																			& \downarrow \\
+           &			  &				 & 				&																			& f * c \\
+  };
+  \end{tikzpicture}
+  \caption{Schematische Darstellung der Funktionsweise eines FIR-Filters für Bilder, wenn dessen
+    Impulsantwort eine Tensorproduktstruktur aufweist. Zuerst wird das Bild horizontal gefiltert
+    und so zu einer Spalte reduziert, welche dann vertikal gefiltert wird, um so das Endergebnis zu
+    erhalten.}
+  \label{fig:FIR-Filter-2D}
+  \end{figure}
   
   Das ist zwar eine schöne Anschauung, aber die Darstellung von $ f $ als Tensorprodukt ist ein
   echtes Killer-Feature: Sie ermöglicht nämlich eine noch effizientere Berechnung der Filterung!
@@ -161,27 +181,11 @@ Für die Beweise sei auf die entsprechenden Aufgaben auf den Übungsblättern ve
     = \left( \widehat{f} \cdot \widehat{c} \right)^{\vee}
     = \left( \widehat{f_{1}} \cdot \widehat{f_{2}} \cdot \widehat{c} \right)^{\vee}.
   \]
+  Die beiden Transferfunktionen $ \widehat{f_{1}} $ und $ \widehat{f_{2}} $ kann man bereits vor
+  dem Anwenden des Filters berechnen, sodass wir nur noch eine schnelle Methode benötigen, um
+  $ \widehat{c} $ zu bestimmen. Diese werden wir im nächsten Kapitel mit der \emph{Schnellen
+  Fourier-Transformation (FFT)} kennenlernen.
 \end{itemize}
-\begin{figure}[ht]
-\centering
-\begin{tikzpicture}
-\matrix [matrix of math nodes] {
-  \ddots & \vdots & \vdots & \ddots & 																		& \vdots \\
-  \cdots & c(0,0) & c(0,1) & \cdots & \rightarrow f_{2} * c(0, \bullet) = & c'(0) \\
-  \cdots & c(1,0) & c(1,1) & \cdots & \rightarrow f_{2} * c(1, \bullet) = & c'(1) \\
-  \ddots & \vdots & \vdots & \ddots & 																		& \vdots \\
-         &			  &				 & 				&																			& \downarrow \\
-         &			  &				 & 				&																			& f_{1} * c' \\
-         &			  &				 & 				&																			& \downarrow \\
-         &			  &				 & 				&																			& f * c \\
-};
-\end{tikzpicture}
-\caption{Schematische Darstellung der Funktionsweise eines FIR-Filters für Bilder, wenn dessen
-  Impulsantwort eine Tensorproduktstruktur aufweist. Zuerst wird das Bild horizontal gefiltert
-  und so zu einer Spalte reduziert, welche dann vertikal gefiltert wird, um so das Endergebnis zu
-  erhalten.}
-\label{fig:FIR-Filter-2D}
-\end{figure}
 \end{remark}
 
 \begin{example}[Filter in der Bildverarbeitung]
@@ -276,9 +280,11 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
   
   Mittlerweile sollte auch aufgefallen sein, dass die Implementierung des Filters über die Faltung
   des $ m $-Punkt- mit dem $ n $-Punkt-Stencils um Größenordnungen effizienter ist als der
-  $ m \cdot n $-Punkt-Stencil. Denn im ersten Fall werden lediglich $ m + n $ Speicherzugriffe
-  benötigt, wohingegen im zweiten Fall $ m \cdot n $ Speicherzugriffe fällig sind. Dieser
-  Performance-Unterschied wird mit wachsenden $ n, m $ immer deutlicher. Genau hierin liegt der
+  $ m \cdot n $-Punkt-Stencil. Denn im ersten Fall werden lediglich $ \mathcal{O}(m + n) $ 
+  Speicherzugriffe benötigt (linearer Anstieg), wohingegen im zweiten Fall 
+  $ \mathcal{O}(m \cdot n) $ Speicherzugriffe fällig sind (quadratischer Anstieg). Auch die Zahl
+  der auszuführenden Operationen (Addition, Multiplikation) wird so verringert. Dieser 
+  Performance-Unterschied wird mit wachsenden $ n, m $ immer deutlicher. Genau hierin liegt der 
   Vorteil, wenn man es schafft, die Impulsantwort als Tensorprodukt darzustellen!
   
   Übrigens ist $ 2^{m + n} $ gerade die Summe aller Einträge in der Matrix, denn es gilt
@@ -292,6 +298,23 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
     = 2^{m + n},
   \end{align*}
   sodass wir es wirklich mit einem Mittelwertfilter zu tun haben!
+  
+  Abbildung~\ref{fig:binom} veranschaulicht die Wirkung des Binomialfilters an einem kleinen
+  Beispiel.
+  \begin{figure}[ht]
+  \centering
+  \begin{minipage}{0.4\textwidth}
+    \includegraphics[width=0.7\linewidth]{Bilder/noise}
+  \end{minipage}
+  \begin{minipage}{0.4\textwidth}
+    \includegraphics[width=0.7\linewidth]{Bilder/noise_binom}
+  \end{minipage}
+  \caption{Links: Ein ziemlich verrauschtes Bild eines Quadrats. Rechts: Anwendung des
+    Binomialfilters auf das Bild. Es wurde die oben gezeigte Faltungs-Matrix für $ m,n = 4 $ 
+    verwendet. Man erkennt, dass das Bild zwar deutlich entrauscht wurde, dafür sind die scharfen
+    Kanten um Einiges verschwommener.}
+  \label{fig:binom}
+  \end{figure}
 \item [Gradientenfilter]
   Der Gradientenfilter verwendet, wie der Name schon erahnen lässt, den Gradienten unseres
   Signals $ \phi $. Allgemein ist der Gradient einer Funktion $ \phi $ definiert als
@@ -307,17 +330,141 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
   Kontur findet sich ja dort, wo der (Farb-)Unterschied zwischen benachbarten Pixeln groß ist und
   damit die Steigung groß ist.
   
-%  Den Gradienten für ein diskretes Signal $ c $ können wir definieren als
-%  \[
-%      \nabla c(x,y)
-%    = \begin{pmatrix}
-%      c(x + 1, y) - c(x, y) \\
-%      c(x, y + 1) - c(x, y)
-%    \end{pmatrix}.
-%  \]
+  Den Gradienten für ein diskretes Signal $ c $ können wir definieren über den
+  Differenzen-Quotienten als
+  \[
+      \nabla c(x,y)
+    = \begin{pmatrix}
+        \nabla_{x} c(x,y) \\
+        \nabla_{y} c(x,y)
+      \end{pmatrix}
+    = \begin{pmatrix}
+        c(x + 1, y) - c(x, y) \\
+        c(x, y + 1) - c(x, y)
+      \end{pmatrix}.
+  \]
+  Die Impulsantwort lässt sich darstellen als Matrix von Vektoren
+  \[
+      \left( \nabla \delta(x,y) \right)_{-1 \leq x,y \leq 1}
+    = \begin{pmatrix}
+        \begin{pmatrix} 0 \\ 0 \end{pmatrix} &
+        \begin{pmatrix} 1 \\ 0 \end{pmatrix} & 
+        \begin{pmatrix} 0 \\ 0 \end{pmatrix} \\[1em]
+        \begin{pmatrix} 0 \\ 1 \end{pmatrix} &
+        \begin{pmatrix} \mathbf{-1} \\ \mathbf{-1} \end{pmatrix} &
+        \begin{pmatrix} 0 \\ 0 \end{pmatrix} \\[1em]
+        \begin{pmatrix} 0 \\ 0 \end{pmatrix} &
+        \begin{pmatrix} 0 \\ 0 \end{pmatrix} &
+        \begin{pmatrix} 0 \\ 0 \end{pmatrix}
+      \end{pmatrix},
+  \]
+  beziehungsweise
+  \[
+      \left( \nabla_{x} \delta(x,y) \right)_{-1 \leq x,y \leq 1}
+    = \begin{pmatrix}
+        0 & 1 & 0 \\
+        0 & \mathbf{-1} & 0 \\
+        0 & 0 & 0
+      \end{pmatrix}, \qquad
+      \left( \nabla_{y} \delta(x,y) \right)_{-1 \leq x,y \leq 1}
+    = \begin{pmatrix}
+        0 & 0 & 0 \\
+        1 & \mathbf{-1} & 0 \\
+        0 & 0 & 0
+      \end{pmatrix}.
+  \]
 
   Leider sind solche Gradientenverfahren inhärent empfindlich gegen Rauschen. Und je genauer man 
-  das Signal abtastet, umso mehr wird das Rauschen durch den Gradientenfilter noch verstärkt.
+  das Signal abtastet, umso mehr wird das Rauschen durch den Gradientenfilter noch verstärkt. Daher
+  kombiniert man den Gradienten mit einem Mittelwertfilter, z.B. den Mittelungsoperator
+  \[
+    m \coloneqq
+    \frac{1}{9} \begin{pmatrix}
+      1 & 1 & 1 \\
+      1 & \mathbf{1} & 1 \\
+      1 & 1 & 1
+    \end{pmatrix}.
+  \]
+  Die Faltungen $ m * \nabla_{x} $ und $ m * \nabla_{y} $ ergeben dann die Matrizen
+  \[
+      m * \nabla_{x}
+    = \frac{1}{9} \begin{pmatrix}
+        1 & 1 & 1 \\
+        0 & 0 & 0 \\
+        0 & \mathbf{0} & 0 \\
+        -1 & -1 & -1
+      \end{pmatrix}, \qquad
+      m * \nabla_{y}
+    = \frac{1}{9} \begin{pmatrix}
+        1 & 0 & 0 & -1 \\
+        1 & \mathbf{0} & 0 & -1 \\
+        1 & 0 & 0 & -1
+      \end{pmatrix}.
+  \]
+  Die linke Matrix erkennt dabei Kanten, die in $ x $-Richtung verlaufen, und die rechte Matrix
+  entsprechend Kanten in $ y $-Richtung. Siehe hierfür Abbildung~\ref{fig:Gradient}.
+  \begin{figure}[ht]
+  \centering
+    \begin{minipage}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{Bilder/Gradient}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{Bilder/Gradient_x}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{Bilder/Gradient_y}
+    \end{minipage}
+  \caption{Wirkung des Gradientenfilters. Links: Unser Testbild, welches nur aus einem schwarzen 
+    Quadrat besteht. Mitte: Anwendung von $ m * \nabla_{x} $ findet alle Kanten in $ x $-
+    Richtung. Rechts: Anwendung von $ m * \nabla_{y} $ findet alle Kanten in $ y $-Richtung.}
+  \label{fig:Gradient}
+  \end{figure}
+  Um Kanten in beide Richtungen gleichzeitig zu finden, kann man beispielsweise beide Matrizen über 
+  die $ 1 $-Norm des geglätteten Gradienten kombinieren:
+  \[
+    \norm{m * \nabla c}_{1} = |m * \nabla_{x} c| + |m * \nabla_{y} c|.
+  \]
+  Oder man verwendet den Laplace-Filter, welchen wir als Nächstes behandeln.
+\item [Laplace-Filter] Der Laplace-Filter verwendet den Laplace-Operator
+  \[
+      \Delta \phi(x,y) 
+    = \left\langle \nabla \phi(x,y), \nabla \phi(x,y) \right\rangle
+    = \dpd[2]{\phi}{x}(x,y) + \dpd[2]{\phi}{y}(x,y),
+  \]
+  welcher das Skalarprodukt des Gradienten eines kontinuierlichen Signals $ \phi $ mit sich selbst, 
+  also die Summe der zweiten Partiellen Ableitungen bildet. Die Idee dabei ist, dass die zweiten
+  Ableitungen lokale Extrema angeben. Am Beispiel von Bildern sind dies genau diejenigen Stellen,
+  an denen es die gravierendsten (Farb-)Unterschiede zwischen benachbarten Pixeln gibt. Und dies
+  sind häufig Kanten.
+  
+  Diskretisierungen des Laplace-Operators sind beispielsweise
+  \[
+    \begin{pmatrix}
+      0 & 1 & 0 \\
+      1 & \mathbf{-4} & 1 \\
+      0 & 1 & 0
+    \end{pmatrix}, \qquad
+    \begin{pmatrix}
+      1 & 1 & 1 \\
+      1 & \mathbf{-8} & 1 \\
+      1 & 1 & 1
+    \end{pmatrix}.
+  \]
+  
+  Wie die Gradientenfilter auch ist der Laplace-Operator sehr rauschempfindlich, sodass es sich
+  wieder empfiehlt, diesen mit einem Glättungsfilter zu kombinieren. Gut geeignet ist z.B.\ der
+  Medianfilter.
+\item [Medianfilter] Der Medianfilter
+  \[
+    Mc(j) = \Median\{ c(k) : k \in j + \Omega \}, \qquad \Omega \subset \Z^{2}
+  \]
+  sortiert alle Werte $ c(j + \Omega) $ der Größe nach und wählt daraus den Wert in mittlerer
+  Position aus. Da er Bilder entrauscht, Kanten erhält und unberührt von Ausreißern arbeitet, wird 
+  er häufig zur in Kombination mit anderen Filtern, z.B.\ zur Kantendetektion, eingesetzt.
+  Allerdings ist der Medianfilter kein linearer Operator und besitzt wegen des Sortierens einen
+  vergleichsweise hohen Rechenaufwand von $ \mathcal{O}(n \log n) $.
 \end{description}
-\TODO{Gradientenfilter, Laplacefilter, Medianfilter, Sobel-Operator}
+\TODO{Sobel-Operator}
 \end{example}
