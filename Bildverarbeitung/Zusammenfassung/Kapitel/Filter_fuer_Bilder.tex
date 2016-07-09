@@ -136,6 +136,10 @@ Für die Beweise sei auf die entsprechenden Aufgaben auf den Übungsblättern ve
   sich leicht überlegen, dass die Filterung der Spalten mit $ f_{1} $ zuerst und anschließende
   Filterung der Ergebniszeile mit $ f_{2} $ zum obigen Vorgehen äquivalent ist. Wenn man das Bild um
   $ 90^{\circ} $ dreht, sollte sich ja schließlich nichts ändern, oder?
+  
+  Das ist zwar eine schöne Anschauung, aber die Darstellung von $ f $ als Tensorprodukt ist ein
+  echtes Killer-Feature: Sie ermöglicht nämlich eine noch effizientere Berechnung der Filterung!
+  Wir werden dies am Beispiel des Binomialfilters weiter unten kurz besprechen.
 \item Auch die Transferfunktion $ \widehat{f} $ lässt sich besonders elegant schreiben, falls
   $ f = f_{1} \otimes f_{2} $:
   \begin{align*}
@@ -209,6 +213,8 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
     = \frac{1}{|\Omega|} \int_{x + \Omega} \psi(t) \dif t
         + \frac{1}{|\Omega|} \int_{x + \Omega} \epsilon(t) \dif t.
   \]
+  Feine Strukturen (hohe Frequenzen) gehen so verloren, grobe Strukturen (kleine Frequenzen)
+  bleiben erhalten. So gesehen verhält sich ein Mittelwertfilter wie ein Tiefpassfilter.
   
   Das Problem beim Design eines Mittelwertfilters ist die korrekte Wahl von $ \Omega $. Denn der 
   Filter angewandt auf die eigentlichen Daten $ \psi $ sollte diese weitestgehend unberührt lassen, 
@@ -222,42 +228,58 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
       = \frac{1}{2\pi\sigma^{2}} \exp\left( -\frac{x_{1}^{2} + x_{2}^{2}}{2\sigma^{2}} \right),
       \qquad \sigma > 0
   \]
-  zu setzten. Für die Diskretisierung tastet man $ f\chi_{[-N,N]^{2}} $ für ein $ N \in \N $ ab. Die
-  charakteristische Funktion wird benötigt, um einen FIR-Filter zu erhalten, denn der Gaußkern
-  besitzt ja unendlichen Träger.
+  zu setzten. So steht sogar noch der freie Parameter $ \sigma $ (die Standardabweichung) zur 
+  Verfügung, um das Verhalten des Filters zu spezialisieren. Für die Diskretisierung tastet man
+  $ f\chi_{[-N,N]^{2}} $ für ein $ N \in \N $ ab. Die charakteristische Funktion wird benötigt, um 
+  einen FIR-Filter zu erhalten, denn der Gaußkern besitzt ja unendlichen Träger. Diese 
+  Diskretisierung führt uns sogleich zum nächsten Filter.
 \item [Binomialfilter]
   Die Binomalfilter sind spezielle Mittelwertfilter, denen wir in einem eigenen Punkt 
   Aufmerksamkeit widmen wollen, und das diskrete Gegenstück zum oben erwähnten Gaußkern. Deren 
   Impulsantwort ist gegeben durch
   \[
-    f(j,k) = \frac{1}{2^{m + n}} \binom{m}{j} \binom{m}{k},
+      f(j,k)
+    = \frac{1}{2^{m + n}} \binom{m}{j} \binom{n}{k}
+    = \left( \frac{1}{2^{m}} \binom{m}{j} \right) \left( \frac{1}{2^{n}} \binom{n}{k} \right),
       \qquad 0, \ldots, m, \quad 0, \ldots, n.
   \]
-  Die Impulsantwort lässt sich auch als Matrix darstellen, wenn man $ j $ als Zeile und $ k $ als
-  Spalte auffasst. Geschickt ist es, $ m $ und $ n $ als gerade zahlen zu wählen, denn dann lässt 
-  sich die Matrix sogar zentrieren. Um etwas Terminologie aus der Informatik zu verwenden: Man 
-  erhält so einen $ m \cdot n $-Punkt-Stencil, der sukzessive über das Bild geschoben wird 
-  (mathemat.\ Faltung). Beispielsweise erhält man für $ m,n = 2 $
+  Wie man sieht, besitzt die Impulsantwort Tensorproduktstruktur. $ f $ lässt sich auch 
+  als Matrix darstellen, wenn man $ j $ als Zeile und $ k $ als Spalte auffasst. Geschickt ist es, 
+  $ m $ und $ n $ als gerade zahlen zu wählen, denn dann lässt sich die Matrix sogar zentrieren. Um 
+  etwas Terminologie aus der Informatik zu verwenden: Man erhält so einen $ m \cdot n $-%
+  Punkt-Stencil, der sukzessive über das Bild geschoben wird (mathemat.\ Faltung). Beispielsweise 
+  erhält man für $ m,n = 2 $
   \[
-    \frac{1}{16} \begin{pmatrix}
-    1 & 2 & 1 \\
-    2 & \mathbf{4} & 2 \\
-    1 & 2 & 1
-    \end{pmatrix}
+      \frac{1}{4} \begin{pmatrix} 1 \\ \mathbf{2} \\ 1 \end{pmatrix} *
+        \frac{1}{4} \begin{pmatrix} 1 & \mathbf{2} & 1 \end{pmatrix}
+    = \frac{1}{16} \begin{pmatrix}
+        1 & 2 & 1 \\
+        2 & \mathbf{4} & 2 \\
+        1 & 2 & 1
+      \end{pmatrix}
   \]
   und für $ m,n=4 $
   \[
-    \frac{1}{256} \begin{pmatrix}
-    1 &  4 & 6  & 4  & 1 \\
-    4 & 16 & 24 & 16 & 4 \\
-    6 & 24 & \mathbf{36} & 24 & 6 \\
-    4 & 16 & 24 & 16 & 4 \\
-    1 &  4 &  6 &  4 & 1
-    \end{pmatrix}.
+      \frac{1}{16} \begin{pmatrix} 1 \\ 4 \\ \mathbf{6} \\ 4 \\ 1 \end{pmatrix} *
+        \frac{1}{16} \begin{pmatrix} 1 & 4 & \mathbf{6} & 4 & 1 \end{pmatrix}
+    = \frac{1}{256} \begin{pmatrix}
+        1 &  4 & 6  & 4  & 1 \\
+        4 & 16 & 24 & 16 & 4 \\
+        6 & 24 & \mathbf{36} & 24 & 6 \\
+        4 & 16 & 24 & 16 & 4 \\
+        1 &  4 &  6 &  4 & 1
+      \end{pmatrix}.
   \]
   Der fett gedruckte Wert bezeichnet dabei jeweils die aktuelle Zelle des Stencils. Je größer nun 
   die Werte für $ m $ und $ n $ gewählt, werden, desto mehr benachbarte Zellen werden für die
-  Berechnung hinzugezogen. Das Bild wird dadurch immer stärker geglättet.
+  Berechnung hinzugezogen und umso stärker wird das Bild dadurch geglättet.
+  
+  Mittlerweile sollte auch aufgefallen sein, dass die Implementierung des Filters über die Faltung
+  des $ m $-Punkt- mit dem $ n $-Punkt-Stencils um Größenordnungen effizienter ist als der
+  $ m \cdot n $-Punkt-Stencil. Denn im ersten Fall werden lediglich $ m + n $ Speicherzugriffe
+  benötigt, wohingegen im zweiten Fall $ m \cdot n $ Speicherzugriffe fällig sind. Dieser
+  Performance-Unterschied wird mit wachsenden $ n, m $ immer deutlicher. Genau hierin liegt der
+  Vorteil, wenn man es schafft, die Impulsantwort als Tensorprodukt darzustellen!
   
   Übrigens ist $ 2^{m + n} $ gerade die Summe aller Einträge in der Matrix, denn es gilt
   \begin{align*}
@@ -297,5 +319,5 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
   Leider sind solche Gradientenverfahren inhärent empfindlich gegen Rauschen. Und je genauer man 
   das Signal abtastet, umso mehr wird das Rauschen durch den Gradientenfilter noch verstärkt.
 \end{description}
-\TODO{Gradientenfilter, Laplacefilter, Medianfilter}
+\TODO{Gradientenfilter, Laplacefilter, Medianfilter, Sobel-Operator}
 \end{example}
