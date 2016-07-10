@@ -9,9 +9,9 @@ Für Funktionen $ f \in L_{1}(\R) $ definieren wir mit
 \]
 die Fourier-Transformierte von $ f $ und für Folgen $ c \in l_{1}(\Z) $
 \[
-  \widehat{c} : \Z \rightarrow \C, \qquad
+  \widehat{c} : \R \rightarrow \C, \qquad
   \widehat{c}(\xi) \coloneqq c^{\wedge}(\xi) \coloneqq 
-  \sum_{k \in \Z} c(k) e^{-i\xi t}, \quad \xi \in \R
+  \sum_{k \in \Z} c(k) e^{-i\xi k}, \quad \xi \in \R
 \]
 die Fourier-Transformierte von $ c $.
 \end{definition}
@@ -53,6 +53,20 @@ hinreichende Bedingung, dass $ \widehat{f} $ überhaupt existiert:
   \leq \int_{\R} |f(t)| \underbrace{|e^{-i\xi t}|}_{= 1} \dif t = \int_{\R} |f(t)| \dif t < \infty.
 \]
 Das Argument lässt sich analog auf $ l_{1}(\Z) $-Folgen übertragen.
+\item Der Fourier-Transformation einer Folge $ c $ sollte an dieser Stelle noch besondere 
+  Aufmerksamkeit gewidmet werden. Sie überführt $ c $ zum einen in eine \emph{Funktion
+  $ \widehat{c} $} (und nicht wieder in eine Folge) und ist zum anderen auch noch $ 2\pi $-% 
+  periodisch:
+  \[
+      \widehat{c}(\xi + 2\pi) 
+    = \sum_{k \in \Z} c(k) e^{-i(\xi + 2\pi)k}
+    = \sum_{k \in \Z} c(k) e^{-i\xi k} \underbrace{e^{-i 2\pi k}}_{= 1}
+    = \sum_{k \in \Z} c(k) e^{-i\xi k}
+    = \widehat{c}(\xi).
+  \]
+  Die Fourier-Transformation zu einer Funktion ist \emph{nicht} $ 2\pi $-periodisch! Diese Tatsache 
+  bewirkt z.B., dass die Inverse Fourier-Transformation einer Folge eine völlig andere Struktur
+  besitzt als die einer Funktion, wie wir später sehen werden.
 \end{itemize}
 \end{remark}
 
@@ -463,10 +477,19 @@ Fourier-Transformierte besonders schnell berechnen wollen.
 		\item [Inverse Fourier-Transformation] Sind $ f, \widehat{f} \in L_{1}(\R) $, dann ist
 		\[
   		f(x) = (\widehat{f})^{\vee}(x) \coloneqq 
-    		\frac{1}{2\pi} \int_{\R} \widehat{f}(\vartheta) \ e^{i x \vartheta} \dif \vartheta.
+    		\frac{1}{2\pi} \int_{\R} \widehat{f}(\vartheta) \ e^{i x \vartheta} \dif \vartheta,
+    		\qquad x \in \R.
 		\]
 		Die Operation $ f \mapsto f^{\vee} \coloneqq \frac{1}{2\pi} f^{\wedge}(-\bullet) $ bezeichnet
-		man als inverse Fourier-Transformation. 
+		man als inverse Fourier-Transformation.
+		
+		Sind $ c \in l_{1}(\R) $ und $ \widehat{c} \in L_{1}(\T) $, dann ist
+		\[
+		  c(k) = (\widehat{c})^{\vee}(k) \coloneqq
+  		  \frac{1}{2\pi} \int_{\T} \widehat{c}(\xi) e^{ik\xi} \dif \xi,
+  		  \qquad k \in \Z.
+		\]
+		Die Operation $ c \mapsto c^{\vee} $ bezeichnet man als inverse Fourier-Transformation.
 		
 		Dass die Nützlichkeit einer Transformation stark
 		davon abhängt, ob bzw.\ unter welchen Voraussetzungen diese wieder rückgängig gemacht werden 
@@ -475,6 +498,19 @@ Fourier-Transformierte besonders schnell berechnen wollen.
 		$ f = \chi_{[-1,1]} $, so erhalten wir i.W.\ die $ \sinc $-Funktion als Fourier-Transformierte.
 		Diese ist aber keine $ L_{1}(\R) $-Funktion mehr und deshalb ist die Fourier-Transformation hier
 		insbesondere nicht invertierbar! Aber das kommt Gott sei Dank nicht so häufig vor.
+		
+		Ist $ c \in l_{1}(\Z) $, dann gilt auch $ \widehat{c} \in L_{1}(\T) $, denn
+		\begin{align*}
+  		 \norm{\widehat{c}}_{\T, 1}
+		&= \int_{\T} |\widehat{c}(t)| \dif t
+		 = \int_{\T} \left| \sum_{k \in \Z} c(k) e^{-ikt} \right| \dif t \\
+		&\leq \int_{\T} \sum_{k \in \Z} |c(k)| \underbrace{|e^{-ikt}|}_{= 1} \dif t
+		 = \int_{\T} \underbrace{\sum_{k \in \Z} |c(k)|}_{= \norm{c}_{1}} \dif t 
+		 = \int_{\T} \underbrace{\norm{c}_{1}}_{< \infty} \dif t \\
+		&< \infty.
+		\end{align*}
+		Mit anderen Worten, die Fourier-Transformation für Folgen ist im Gegensatz zu der für Funktionen
+		\emph{immer} invertierbar.
 		
 		Dass die Formel für die Inverse Fourier-Transformation den Vorfaktor $ 1 / 2\pi $ beinhaltet,
 		liegt daran, dass wir die Formel für die Fourier-Transformation in 
@@ -582,7 +618,35 @@ allgemeinen \emph{nicht}, dass $ \widehat{f} \in L_{1}(\R) $, wenn $ f \in L_{1}
 wir ja bereits gesehen anhand der charakteristischen Funktion.
 \end{remark}
 
-\TODO{Fourier-Reihen und Poisson'sche Summenformel}
+\begin{definition}[Fourier-Koeffizienten und Fourier-Reihe]
+Zu $ f \in L_{1}(\T) $ sind die \emph{Fourier-Koeffizienten} definiert als
+\[
+  f_{k} \coloneqq \frac{1}{2\pi} \int_{\T} f(t) e^{-ikt} \dif t, \qquad k \in \Z,
+\]
+und die \emph{Fourier-Reihe} zu $ f $ als
+\[
+    \mathcal{F}f \coloneqq \sum_{k \in \Z} f_{k} e^{ik\bullet}
+\]
+\end{definition}
+
+\begin{remark}[Fourier-Koeffizienten und Fourier-Reihe]\leavevmode
+\begin{itemize}
+\item Die Fourier-Reihe $ \mathcal{F}f $ ist $ 2\pi $-periodisch und unter bestimmten
+  Voraussetzungen die Fourier-Transformation der Folge der Fourier-Koeffizienten: 
+  $ \mathcal{F}f = \widehat{f_{k}} $.
+\item Es ist aber im allgemeinen nicht garantiert, dass die Fourier-Reihe von $ f $ konvergiert, 
+  oder dass sie im Falle der Konvergenz gegen $ \widehat{f} $ konvergiert.
+\end{itemize}
+\end{remark}
+
+\begin{proposition}[Poisson'sche Summenformel]
+Für $ f \in L_{1}(\R) $ ist
+\[
+  \sum_{k \in \Z} f(2k\pi) = \frac{1}{2\pi} \sum_{k \in \Z} \widehat{f}(k)
+  \qquad \text{und} \qquad
+  \sum_{k \in \Z} f(k) = \sum_{k \in \Z} \widehat{f}(2k\pi).
+\]
+\end{proposition}
 
 \begin{proposition}[Parseval/Plancherel]
 Für $ f, g \in L_{1}(\R) \cap L_{2}(\R) $ ist
@@ -642,28 +706,3 @@ Aus dem vorherigen Satz lassen sich gleich mehrere interessante Schlüsse ziehen
 \end{remark}
 
 \TODO{Sollen wir mal ein Beispiel rechnen zu einer FT in $ L_{2} $?}
-
-%\begin{definition}[Fourierkoeffizienten und Fourierreihe]
-%Zu $ f \in L_{1}(\T) $ sind die \emph{Fourierkoeffizienten} definiert als
-%\[
-%  f_{k} \coloneqq \frac{1}{2\pi} \int_{\T} f(t) e^{-ikt} \dif t, \qquad k \in \Z,
-%\]
-%und die \emph{Fourierreihe} zu $ f $ als
-%\[
-%  \mathcal{F}f \coloneqq \sum_{k \in \Z} f_{k} e^{ik\bullet}.
-%\]
-%\end{definition}
-%
-%\begin{remark}[Fourierkoeffizienten und Fourierreihe]
-%Die Folge der Partialsummen $ (\mathcal{F}_{n} f)_{n \in \N} $ von $ \mathcal{F}f $ definiert durch
-%\[
-%  \mathcal{F}_{n} f \coloneqq \sum_{k = -n}^{n} f_{k} e^{ik\bullet}, \qquad n \in \N
-%\]
-%ist die Fourier-Transformation der Folge der Fourierkoeffizienten $ (f_{k})_{k \in \Z} $. Die 
-%Operation
-%\[
-%  c \mapsto c^{\vee} \coloneqq \frac{1}{2\pi} c^{\wedge}(- \bullet)
-%\]
-%bezeichnet man als Inverse Fourier-Transformation zu einer Folge $ c \in l_{1}(\Z) $. Es ist nicht
-%garantiert, dass die Fourierreihe von $ f $ konvergiert.
-%\end{remark}
