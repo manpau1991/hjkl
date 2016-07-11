@@ -77,6 +77,13 @@
       gegen unsere gesuchte Fouriertransformierte konvergiert\footnote{Geht immer, zwecks 
       Banachraum und so (d.h.\ vollständiger Raum, der Grenzwert zu jeder Folge in diesem Raum sit 
       wieder in diesem Raum).}.
+
+      Es wäre - falls gewollt - folgende Formel zu verwenden:
+      $$ \hat f = \lim\limits_{n\to\infty} \int_{-n}^n f(t) e^{-it \cdot}\INT{t} $$
+
+      Jedoch ist zu beachten, dass sich das Resultat dieser Grenzwertbildung nicht notwendigerweise
+      wieder als Grenzwert formulieren lässt. D.h., im Allgemeinen gibt es keinen algebraischen 
+      Ausdruck für die Fouriertransformierte in $L_2$.
 	\item[Wie sieht das Ergebnis der FT bei einer reellwertigen Funktion aus?]
   	Die Fourier-Transformierte ist wieder reell. Denn: Sei $ f \colon \R \rightarrow \R $, dann ist
     \[
