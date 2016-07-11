@@ -461,10 +461,10 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
     Mc(j) = \Median\{ c(k) : k \in j + \Omega \}, \qquad \Omega \subset \Z^{2}
   \]
   sortiert alle Werte $ c(j + \Omega) $ der Größe nach und wählt daraus den Wert in mittlerer
-  Position aus. Da er Bilder entrauscht, Kanten erhält und unberührt von Ausreißern arbeitet, wird 
-  er häufig zur in Kombination mit anderen Filtern, z.B.\ zur Kantendetektion, eingesetzt.
-  Allerdings ist der Medianfilter kein linearer Operator und besitzt wegen des Sortierens einen
-  vergleichsweise hohen Rechenaufwand von $ \mathcal{O}(n \log n) $.
+  Position aus. Da er Bilder entrauscht, Kanten erhält und von wenigen Ausreißern unberührt
+  arbeitet, wird er häufig zur in Kombination mit anderen Filtern, z.B.\ zur Kantendetektion, 
+  eingesetzt. Allerdings ist der Medianfilter kein linearer Operator und besitzt wegen des 
+  Sortierens einen vergleichsweise hohen Rechenaufwand von mindestens $ \mathcal{O}(n \log n) $.
 \end{description}
 \TODO{Sobel-Operator}
 \end{example}

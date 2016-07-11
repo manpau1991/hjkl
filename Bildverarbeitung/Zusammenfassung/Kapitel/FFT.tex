@@ -1,4 +1,118 @@
 \section{Die Schnelle Fourier-Transformation (FFT)}
 
-Wir kommen nun zum Heiligen Gral in der Bildverarbeitung, der sogenannten Schnellen 
-Fourier-Transformation (FFT).
+Wir kommen nun zum Heiligen Gral in der Bildverarbeitung, nämlich der sogenannten \emph{Schnellen 
+Fourier-Transformation (FFT)}. Da es sich dabei im um eine schnelle Implementierung der Diskreten 
+Fourier-Transformation (DFT) handelt, wollen wir uns diese zunächst etwas genauer ansehen.
+
+\subsection{Die Diskrete Fourier-Transformation (DFT)}
+
+Wir werden nun kurz die Formel der Diskreten Fourier-Transformation herleiten. Die 
+(kontinuierliche) Fourier-Transformation einer Folge $ c \in l_{1}(\R) $ ist eine
+$ 2\pi $-periodische Funktion $ \widehat{c} \in L_{1}(\T) $. Die einfachste Möglichkeit
+$ \widehat{c} $ zu diskretisieren, ist $ \widehat{c} $ einfach an allen $ 2\pi / n $-ten Stellen 
+für ein vorher gewähltes $ n \in \N $ abzutasten. So erhalten wir
+\[
+    \DFT_{n}
+  \coloneq \widehat{c}_{n}
+  \coloneq S_{2\pi / n} \ \widehat{c}
+  = S_{2\pi / n} \ \sum_{k \in \Z} c(k) e^{-ik\bullet}
+  = \sum_{k \in \Z} c(k) \ S_{2\pi / n} \ e^{-ik\bullet}
+  = \sum_{k \in \Z} c(k) e^{-2\pi ik\bullet / n}.
+\]
+
+\begin{definition}[Diskrete Fourier-Transformation]
+Zu einer Folge $ c \in l_{1}(\Z) $ bezeichnet man
+\[
+  \widehat{c}_{n} \coloneq \sum_{k \in \Z} c(k) e^{-2\pi ik\bullet / n}, \qquad n \in \N
+\]
+als die \emph{Diskrete Fourier-Transformation} (DFT) der Ordnung $ n $ von $ c $.
+\end{definition}
+
+\begin{remark}\leavevmode
+\begin{itemize}
+\item Die DFT $ \widehat{c}_{n} $ ist wegen
+  \[
+      \widehat{c}_{n}(\bullet + n)
+    = \sum_{k \in \Z} c(k) e^{-2\pi ik(\bullet + n) / n}
+    = \sum_{k \in \Z} c(k) e^{-2\pi ik(\bullet / n + 1)}
+    = \sum_{k \in \Z} c(k) e^{-2\pi ik\bullet / n}
+  \]
+  $ n $-periodisch. Das heißt, sie ist durch die Werte
+  \[
+    \widehat{c}_{n}(k), \qquad k \in \Z_{n} = \Z / n\Z \simeq \{0, 1, \ldots, n - 1\}
+  \]
+  eindeutig festgelegt.
+\item Für $ m $-periodische oder $ m $-periodisierte Folgen $ c \in l(\Z_{m}) $ lässt sich die DFT 
+  der Ordnung $ n $ auch als Matrix darstellen:
+  \[
+    \widehat{c}_{n} = V_{n,m}c, \qquad
+    V_{n,m} \coloneq \left( e^{-2\pi i j k / n} : j \in \Z_{n}, k \in Z_{m} \right).
+  \]
+  Die Matrix $ V_{n,m} $ bezeichnen wir auch als \emph{Transformationsmatrix}.
+\item Ist $ m = n $, so schreiben wir statt $ V_{n,n} $ einfach $ V_{n} $. In diesem Fall definieren
+  wir die primitive $ n $-te Einheitswurzel
+  \[
+    \omega \coloneq e^{-2\pi i / n}, \qquad \omega^{n} = e^{-2\pi i} = 1.
+  \]
+  Dann gilt
+  \[
+      V_{n} 
+    = \left( \omega^{jk} : j,k \in \Z_{n} \right)
+    = \begin{pmatrix}
+        1 & 1 & \cdots & 1 & 1 \\
+        1 & \omega & \cdots & \omega^{n - 2} & \omega^{n - 1} \\
+        1 & \omega^{2} & \cdots & \omega^{2(n - 2)} & \omega^{2(n - 1)} \\
+        \vdots & \vdots & \ddots & \vdots & \vdots \\
+        1 & \omega^{n - 2} & \cdots & \omega^{4} & \omega^{2} \\
+        1 & \omega^{n - 1} & \cdots & \omega^{2} & \omega
+      \end{pmatrix}.
+  \]
+  Das heißt, die Matrix ist symmetrisch und besitzt vollen Rang, weshalb sie insbesondere immer 
+  invertierbar ist.
+\end{itemize}
+\end{remark}
+
+\begin{proposition}[Inverse DFT]
+Für ein $ n \in \N $ ist die Inverse DFT zu $ V_{n} $ gegeben durch
+\[
+    V_{n}^{-1}
+  = \frac{1}{n} \left( e^{2\pi i j k / n} : j \in \Z_{n}, k \in Z_{m} \right)
+  = \frac{1}{n} \left( \omega^{-jk} : j,k \in \Z_{n} \right).
+\]
+\end{proposition}
+
+\begin{example}
+Für $ n = 4 $ ist
+\[
+    V_{4}
+  = \begin{pmatrix*}[r]
+      1 &  1 &  1 &  1 \\
+      1 &  i & -1 & -i \\
+      1 & -1 &  1 & -1 \\
+      1 & -i & -1 & i
+    \end{pmatrix*}, \qquad
+    V_{4}^{-1}
+  = \frac{1}{4} \begin{pmatrix*}[r]
+      1 &  1 &  1 &  1 \\
+      1 & -i &  1 &  i \\
+      1 &  1 & -1 &  1 \\
+      1 &  i &  1 & -i
+    \end{pmatrix*},
+\]
+das heißt
+\[
+      V_{4} \ V_{4}^{-1}
+    = \frac{1}{4} \begin{pmatrix}
+        4 & 0 & 0 & 0 \\
+        0 & 4 & 0 & 0 \\
+        0 & 0 & 4 & 0 \\
+        0 & 0 & 0 & 4
+      \end{pmatrix}
+    = \begin{pmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 1
+      \end{pmatrix}.
+\]
+\end{example}
