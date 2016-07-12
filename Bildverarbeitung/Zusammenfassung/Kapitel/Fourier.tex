@@ -243,7 +243,8 @@ Fourier-Transformation. Insbesondere wollen wir uns mit deren graphischer Deutun
 Faltungen werden in diesem Kontext auch eine sehr wichtige Rolle spielen, wenn wir die
 Fourier-Transformierte besonders schnell berechnen wollen.
 
-\begin{remark}[Eigenschaften der Fourier-Transformation und deren graphische Deutung] \leavevmode
+\begin{remark}[Eigenschaften der Fourier-Transformation und deren graphische Deutung]
+  \label{prop:properties_fourier} \leavevmode
 	 %%Hier könnten wir zu jeder Eigenschaft kurz schreiben was sie bedeuten und falls nötig oder 
 	 %%möglich durch Bilder
 	%%veranschaulichen
@@ -505,8 +506,9 @@ Fourier-Transformierte besonders schnell berechnen wollen.
 		&= \int_{\T} |\widehat{c}(t)| \dif t
 		 = \int_{\T} \left| \sum_{k \in \Z} c(k) e^{-ikt} \right| \dif t \\
 		&\leq \int_{\T} \sum_{k \in \Z} |c(k)| \underbrace{|e^{-ikt}|}_{= 1} \dif t
-		 = \int_{\T} \underbrace{\sum_{k \in \Z} |c(k)|}_{= \norm{c}_{1}} \dif t 
-		 = \int_{\T} \underbrace{\norm{c}_{1}}_{< \infty} \dif t \\
+		 = \int_{\T} \underbrace{\sum_{k \in \Z} |c(k)|}_{= \norm{c}_{1}} \dif t \\
+		&= \int_{\T} \norm{c}_{1} \dif t
+		 = \underbrace{\norm{c}_{1}}_{< \infty} \underbrace{\int_{\T} 1 \dif t}_{< \infty} \\
 		&< \infty.
 		\end{align*}
 		Mit anderen Worten, die Fourier-Transformation für Folgen ist im Gegensatz zu der für Funktionen
