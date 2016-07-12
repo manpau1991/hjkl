@@ -418,7 +418,9 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
     \end{minipage}
   \caption{Wirkung des Gradientenfilters. Links: Unser Testbild, welches nur aus einem schwarzen 
     Quadrat besteht. Mitte: Anwendung von $ m * \nabla_{x} $ findet alle Kanten in $ x $-
-    Richtung. Rechts: Anwendung von $ m * \nabla_{y} $ findet alle Kanten in $ y $-Richtung.}
+    Richtung. Rechts: Anwendung von $ m * \nabla_{y} $ findet alle Kanten in $ y $-Richtung.
+    Bedingt durch die unterschiedliche Gewichtung (Einträge $ 1 $ und $ -1 $ in den Matrizen)
+    werden die Kanten entweder weiß oder schwarz gezeichnet.}
   \label{fig:Gradient}
   \end{figure}
   Um Kanten in beide Richtungen gleichzeitig zu finden, kann man beispielsweise beide Matrizen über 
@@ -466,5 +468,4 @@ also kontinuierliche Daten, konzipiert sind und später erst diskretisiert werde
   eingesetzt. Allerdings ist der Medianfilter kein linearer Operator und besitzt wegen des 
   Sortierens einen vergleichsweise hohen Rechenaufwand von mindestens $ \mathcal{O}(n \log n) $.
 \end{description}
-\TODO{Sobel-Operator}
 \end{example}
