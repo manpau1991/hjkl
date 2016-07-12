@@ -406,3 +406,42 @@ Neben der Cooley-Tukey-FFT gibt es u.a.\ noch die
 \item \emph{Rader FFT} (falls $ n $ eine Primzahl ist),
 \item \emph{Bluestein FFT}.
 \end{itemize}
+
+\subsection{Fourier und Bilder}
+
+Dank der FFT lassen sich digitale Filter schnell und effizient am Rechner implementieren. Dies kann
+man sich z.B.\ bei der Bildkomprimierung zunutze machen. Die Idee dabei ist, dass man gewisse
+hochfrequente Anteile eines Bildes (feine Texturen, Details usw.) zu einem gewissen Grad aus dem
+Bild entfernen kann, ohne dass dies vom menschlichen wahrgenommen wird. So muss weniger Information
+im Bild gespeichert werden.
+
+Das gegebene Bild wird hierzu in gleichgroße Blöcke (z.B.\ der Größe $ 8 \times 8 $ zur 
+Verarbeitung mit Grafikkarten) aufgeteilt, welche nun alle separat Fourier-transformiert werden.
+Dieser Vorgang lässt sich hervorragend parallelisieren, da zwischen den Blöcken keinerlei 
+Abhängigkeiten bestehen. Anschließend wird auf jeden dieser Blöcke ein Tiefpassfilter (bspw.\ eine 
+diskretisierte Variante eines Binomalfilters) angewendet, um so nur noch die groben Informationen
+des Bildes zu behalten. Auch dieser Vorgang lässt sich über die FFT ausgesprochen schnell 
+durchführen. Abhängig von den Eigenschaften des verwendeten Tiefpassfilters und der gewählten 
+Blockgröße wird das Bild nun mehr oder weniger stark komprimiert worden sein.
+
+Um das resultierende Bild betrachten zu können, muss die Inverse Fourier-Transformation auf jedem 
+der Blöcke ausgeführt werden, da die Bildinformationen ja im Frequenzbereich vorliegen und erst 
+noch in der Ortsbereich überführt werden müssen. Je nach Kompressionsrate des Bildes kann verstärkt 
+Artefaktbildung (Blöcke, Ringe usw.) aufgetreten sein, da das hier beschriebene Verfahren nicht 
+verlustfrei arbeitet.
+
+Dies ist auch die grobe Idee hinter dem Kompressionsverfahren, welches bei JPEG zum Einsatz kommt. 
+Im Gegensatz zur Fourier-Transformation wird bei JPEG auf die \emph{Diskrete Cosinus-Transformation}
+zurückgegriffen. Diese liefert nur reellwertige Ergebnisse und eignet sich daher wesentlich besser
+für die Verarbeitung mit modernen Rechnern. Die bereits komprimierten Daten des Bildes werden bei
+JPEG durch das sog.\ \emph{Huffman-Encoding} nochmals komprimiert, und zwar verlustfrei.
+
+\begin{definition}[Diskrete Cosinus-Transformation (DCT)]
+Die DCT bildet einen Vektor $ f \in l(\Z_{n}) $ auf eine Linearkombination an Cosinus-Termen ab.
+Diese Operation ist insbesondere invertierbar und linear. Von den vier Typen der DCT ist die 
+gebräuchlichste Variante definiert durch
+\[
+  \DCT2 f(j) = \sum_{k \in \Z_{n}} f(k) \cos \left( \frac{\pi (k + \frac{1}{2})j}{n} \right).
+\]
+Auf Basis der FFT lässt sich auch die DCT effizient in $ \mathcal{O}(n \log(n)) $ berechnen.
+\end{definition}
