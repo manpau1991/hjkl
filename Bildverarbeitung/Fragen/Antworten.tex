@@ -77,16 +77,6 @@
       gegen unsere gesuchte Fouriertransformierte konvergiert\footnote{Geht immer, zwecks 
       Banachraum und so (d.h.\ vollständiger Raum, der Grenzwert zu jeder Folge in diesem Raum sit 
       wieder in diesem Raum).}.
-	\item[Wie sieht das Ergebnis der FT bei einer reellwertigen Funktion aus?]
-  	Die Fourier-Transformierte ist wieder reell. Denn: Sei $ f \colon \R \rightarrow \R $, dann ist
-    \[
-    	 \widehat{f}(\xi)
-  	= \int_{\R} f(x) e^{-i\xi x} \dif x \\
-  	= \int_{\R} f(x) \big(
-          \cos(\xi x) - \underbrace{i \sin(\xi x)}_{= 0, \text{ da $ f $ reell}}
-       \big)  \dif x \\
-    = \int_{\R} f(x) \cos(\xi x) \dif x
-    \]
   \item[Was sagt der Satz von Parseval/Plancherel?]
     Der Satz von Parseval/Plancherel beschreibt den Wechsel zwischen einem 
     Skalarprodukt im Zeit- und einem Skalarprodukt im Frequenzbereich.\\
@@ -169,6 +159,8 @@
 	\item[Wo liegen die Informationsmaxima?]
       Die Informationsmaxima liegen am Rand, da die höherfrequenten Anteile dort liegen.
 	\item[Nenne die Formel der DFT]
+  	Die Formel ergibt sich aus der Abtastung der Fourier-Transformation für Folgen mit Schrittweite
+  	$ 2\pi / n $ für ein $ n \in \N $, also
   	\[
     	\widehat{c_{n}}(\xi) = \sum_{k \in \Z} c(k) e^{-2\pi i k \xi / n}.
   	\]
@@ -300,6 +292,13 @@
 
 \begin{description}
 	\item[Skizziere eine Filterbank und beschreibe den Vorgang]
+	Skizze siehe Abbildung~\ref{fig:Filterbank1}.
+    \begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{Fotos/Filterbank1}
+    \caption{Skizze einer Filterbank.}
+    \label{fig:Filterbank1}
+    \end{figure}
 	\item[Nenne 3 typische Filter]
   	Binomialfilter (Glättung), Medianfilter (Glättung), Laplace-Filter (Kantendetektion).
 	\item[Was ist die zentrale Eigenschaft von Filterbänken? Welche Voraussetzung muss dazu gelten?]
@@ -346,7 +345,19 @@
   	mit dem ursprünglichen Eingabesignal übereinstimmen kann, aber nicht muss.
   	Signal 
   \item [Wie funktioniert die Diskrete Wavelet-Transformation mit Filterbänken?] 
-    $ \rightarrow $ siehe Fotos
+    $ \rightarrow $ siehe Abbildungen~\ref{fig:Filterbank2} und~\ref{fig:Filterbank3}.
+    \begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{Fotos/Filterbank2}
+    \caption{}
+    \label{fig:Filterbank2}
+    \end{figure}
+    \begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{Fotos/Filterbank3}
+    \caption{}
+    \label{fig:Filterbank3}
+    \end{figure}
 \end{description}
 \section{Abtastsatz}
 \begin{description}
