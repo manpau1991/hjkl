@@ -90,7 +90,8 @@ Abstand aufgetragen werden und nach oben die Zahl der Punkte, durch die diese Ge
 \begin{remark}[Vor- und Nachteile der Hough-Transformation] \leavevmode
 \begin{itemize}
 \item Es werden Kanten erkannt, die in den meisten Fällen eigentlich gar keine Kanten sind, z.B.\ 
-  die Ränder des Bildes. Dieser Fehler ist aber leicht zu korrigieren.
+  die Ränder des Bildes, oder feine Texturen, wenn der Schwellwert zu niedrig eingestellt ist. 
+  Dieser Fehler ist aber leicht zu korrigieren.
 \item Die Kanten werden nicht lokalisiert. Wir wissen zwar, durch welche Punkte eine Kante im
   Originalbild verläuft. Wir wissen aber nicht, wo eine Kante tatsächlich beginnt und wo sie endet.
   Dies kann auch ein Vorteil sein, da man so z.B.\ verdeckte Kanten wieder rekonstruieren kann.
@@ -224,11 +225,12 @@ konzentriert die Funktion in Zeit und Frequenz um den Schwerpunkt ist. Den Berei
 \[
   H(f) \coloneqq 
     [\mu(f) - \sigma(f), \mu(f) + \sigma(f)] \times
-    [\widehat{\mu(f)} - \widehat{\sigma(f)}, \widehat{\mu(f)} + \widehat{\sigma(f)}]
+    [\widehat{\mu}(f) - \widehat{\sigma}(f), \widehat{\mu}(f) + \widehat{\sigma}(f)]
 \]
-bezeichnet man als \emph{Heisenberg-Box} von $ f $.
+bezeichnet man als \emph{Heisenberg-Box} von $ f $. Eine schematische Darstellung einer solchen
+Box findet sich in Abbildung~\ref{fig:Heisenberg-Box}.
 
-\begin{figure}
+\begin{figure}[ht]
 \centering
 \begin{tikzpicture}
 \draw [->] (-0.5,0) -- (5,0) node [right] {$ t $};
@@ -241,8 +243,39 @@ bezeichnet man als \emph{Heisenberg-Box} von $ f $.
 \draw [decorate,decoration={brace,mirror,amplitude=5pt},yshift=2pt] 
   (4.5,2.5) -- (2.5,2.5) node [midway,yshift=10pt] { $ \sigma $ };
 \end{tikzpicture}
-\caption{}
+\caption{Schematische Darstellung einer Heisenberg-Box (rot gezeichnet) mit Mittelpunkt
+  $ (\mu, \widehat{\mu}) $. Nach rechts aufgetragen ist die Zeit $ t $ und nach oben die Frequenz
+  $ \xi $, die zu diesem Zeitpunkt im Signal auftritt. Man sieht, dass die Heisenberg-Box genau die
+  Ausdehnung $ [\mu - \sigma, \mu + \sigma] \times
+  [\widehat{\mu} - \widehat{\sigma}, \widehat{\mu} + \widehat{\sigma}] $ besitzt.}
 \label{fig:Heisenberg-Box}
 \end{figure}
+\end{remark}
 
+\begin{proposition}[Heisenberg'sche Unschärferelation]
+Für $ f \in L_{2}(\R) $ ist
+\[
+  \sigma(f)\widehat{\sigma}(f) \geq \frac{1}{2}.
+\]
+Insbesondere ist sowohl $ \sigma(f) = 0 $ als auch $ \widehat{\sigma}(f) = 0 $ unmöglich.
+\end{proposition}
+
+\begin{remark}[Heisenberg'sche Unschärferelation] \leavevmode
+\begin{itemize}
+\item Die Heisenberg-Boxen können also nicht beliebig klein werden, was nichts anderes heißt, als
+  dass es keine beliebig genaue Auflösung sowohl im Frequenz- als auch im Zeitbereich gleichzeitig
+  gibt. Jede Heisenberg-Box hat mindestens Fläche $ 2 $.
+\item Die Heisenberg'sche Unschärferelation liefert außerdem eine Erklärung für unsere 
+  Tonwahrnehmung: Ein tiefer Ton besitzt eine geringe Frequenz ($ \rightarrow $ geringe Breite 
+  einer Heisenberg-Box) und daher dauert es vergleichsweise lange ($ \rightarrow $ große Länge der 
+  Box), bis der Ton einmal geschwungen ist. Vorher wird der Ton als solcher gar nicht gehört.
+  Hohe Tönen hingegen besitzen hohe Frequenzen, dementsprechend kurz ist die Zeit, die der Ton
+  braucht, um einmal geschwungen zu sein.
+\item Die beste Zeit-/Frequenz-Lokalisierung erreicht man mit den \emph{modulierten Gauß-Funktionen}
+  \[
+    f(t) = a e^{i \omega t - b(t-u)^{2}} = a e^{i \omega t} e^{-b(t-u)^{2}},
+      \qquad u, \omega \in \R, \quad a,b \in \C.
+  \]
+  In diesem Fall besitzen die Heisenberg-Boxen \emph{exakt} die Fläche $ 2 $.
+\end{itemize}
 \end{remark}
