@@ -7,7 +7,7 @@ Fourier-Transformation (DFT) handelt, wollen wir uns diese zunächst etwas genau
 \subsection{Die Diskrete Fourier-Transformation (DFT)}
 
 Wir werden nun kurz die Formel der Diskreten Fourier-Transformation herleiten. Die 
-(kontinuierliche) Fourier-Transformation einer Folge $ c \in l_{1}(\R) $ ist eine
+(kontinuierliche) Fourier-Transformation einer Folge $ c \in l_{1}(\Z) $ ist eine
 $ 2\pi $-periodische Funktion $ \widehat{c} \in L_{1}(\T) $. Die einfachste Möglichkeit
 $ \widehat{c} $ zu diskretisieren, ist $ \widehat{c} $ einfach an allen $ 2\pi / n $-ten Stellen 
 für ein vorher gewähltes $ n \in \N $ abzutasten. So erhalten wir
@@ -185,7 +185,7 @@ Für $ n \in \N $ und $ c, d \in l(\Z_{n}) $ gilt:
   Die Multiplikation $ \odot $ auf der rechten Seite ist dabei als punktweises Produkt von Vektoren 
   zu verstehen: 
   $ \left( \widehat{c_{n}} \odot \widehat{d_{n}} \right)(j) = 
-    \widehat{c_{n}}(j) \cdot \widehat{c_{n}}(j) $ (sog.\ \emph{Hadamard-Produkt}).
+    \widehat{c_{n}}(j) \cdot \widehat{d_{n}}(j) $ (sog.\ \emph{Hadamard-Produkt}).
 \end{enumerate}
 \end{proposition}
 
@@ -269,7 +269,7 @@ Zahl ist. Dann können wir die Fourier-Transformation von $ c $ für ein $ j \in
 schreiben als
 \[
     \widehat{c_{n}}(j) 
-  = (c(2\bullet))_{m}^{\wedge} + \omega^{j} \ (c(2\bullet + 1))_{m}^{\wedge}.
+  = (c(2\bullet))_{m}^{\wedge}(j) + \omega^{j} \ (c(2\bullet + 1))_{m}^{\wedge}(j).
 \]
 Das bedeutet: Wir halbieren den Eingabevektor der Länge $ n $ in zwei kleinere Vektoren der Länge
 $ m $, indem wir jeweils nur gerade bzw.\ ungerade Indizes betrachten. Danach berechnen wir für 
@@ -281,7 +281,8 @@ Wenden wir dieses Verfahren rekursiv so lange an, bis wir irgendwann nur noch (T
 Länge $ 2 $ zu verarbeiten haben (deren DFT wir direkt berechnen können), ergibt sich nach dem
 Master-Theorem eine Komplexität von $ \mathcal{O}(n \log(n)) $. Dies ist typisch für solche 
 Baumalgorithmen. Denn die Tiefe des Berechnungsbaumes ist ja gerade in $ \mathcal{O}(\log n) $ und
-die Anzahl der Blätter ist in $ \O(n) $. Da wir aus den Blättern des Baumes die Gesamtlösung
+die Anzahl der Blätter ist in $ \mathcal{O}(n) $. Da wir aus den Blättern des Baumes die 
+Gesamtlösung
 zusammensetzen müssen, ergibt sich somit die oben erwähnte Gesamtkomplexität von
 $ \mathcal{O}(n \log(n)) $.
 
@@ -433,8 +434,9 @@ verlustfrei arbeitet.
 Dies ist auch die grobe Idee hinter dem Kompressionsverfahren, welches bei JPEG zum Einsatz kommt. 
 Im Gegensatz zur Fourier-Transformation wird bei JPEG auf die \emph{Diskrete Cosinus-Transformation}
 zurückgegriffen. Diese liefert nur reellwertige Ergebnisse und eignet sich daher wesentlich besser
-für die Verarbeitung mit modernen Rechnern. Die bereits komprimierten Daten des Bildes werden bei
-JPEG durch das sog.\ \emph{Huffman-Encoding} nochmals komprimiert, und zwar verlustfrei.
+für die Verarbeitung mit modernen Rechnern. Die bereits komprimierten Daten des Bildes können bei
+JPEG z.B.\ durch das sog.\ \emph{Huffman-Encoding} nochmals komprimiert werden, und zwar 
+verlustfrei.
 
 \begin{definition}[Diskrete Cosinus-Transformation (DCT)]
 Die DCT bildet einen Vektor $ f \in l(\Z_{n}) $ auf eine Linearkombination an Cosinus-Termen ab.
