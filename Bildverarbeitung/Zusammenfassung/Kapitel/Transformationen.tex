@@ -1,0 +1,109 @@
+\chapter{Transformationen}
+
+\section{Die Hough-Transformation}
+
+Die Hough-Transformation wird verwendet, um Geraden in Bildern zu erkennen. Jede Gerade in einem 
+Bild lässt sich eindeutig durch zwei Parameter codieren:
+\begin{itemize}
+\item Die Richtung der Gerade. Wir suchen dazu nach einem Normalenvektor auf dem Einheitskreis, 
+  welcher senkrecht auf die Gerade steht. Jeden Normalenvektor kann man schreiben als
+  \[
+    v_{\theta} = \begin{pmatrix} \cos(\theta) \\ \sin(\theta) \end{pmatrix},
+  \]
+  d.h.\ $ \theta $ gibt den Winkel zwischen der $ x $-Achse und dem Vektor $ v_{\theta} $ an. Da es
+  zu jeder Gerade offensichtlich zwei Normalenvektoren gibt, beschränken wir uns auf
+  $ \theta \in [-\pi / 2, \pi / 2) $, um eine eindeutige Darstellung zu erhalten.
+\item Der Abstand $ c \in \R $ der Gerade zum Ursprung. Damit ist die Länge der Strecke gemeint, 
+  die durch den Ursprung geht und die Gerade senkrecht schneidet.
+\end{itemize}
+Die Parametrisierung aller Geraden durch einen Punkt $ x $ des Bildes ist dann gegeben durch
+\[
+  H(x) = \left\{ 
+    (\theta, c) : v_{\theta}^{\top} x = c
+  \right\} \subset \left[ -\frac{\pi}{2}, \frac{\pi}{2} \right) \eqqcolon \mathbb{H}.
+\]
+Wir betrachten nun eine Menge $ X \subset \R^{2} $ von Punkten (z.B.\ ein Bild) und bilden zu jedem 
+der Punkte $ x $ in $ X $ die Menge $ H(x) $. Wir zählen nun, wie oft ein Paar $ (\theta, c) $
+insgesamt in den Mengen $ H(x) $ aufgetaucht ist, d.h.\
+\[
+  n_{X}(\theta, c) \coloneqq \#\{ x \in X : (\theta, c) \in H(x) \}.
+\]
+Nimmt $ n_{X}(\theta, c) $ einen großen Wert an, dann bedeutet dies, dass wir viele Punkte gefunden
+haben, die in einer Linie liegen, sprich eine Gerade bilden. Uns interessiert dabei nicht, welchen
+Farb- oder Helligkeitswert die Bildpunkte haben, sondern einfach nur, ob dieser Bildpunkt vorhanden
+ist oder nicht. Dazu müssen wir das Bild zuerst binarisieren.
+
+\begin{definition} \leavevmode
+\begin{itemize}
+\item Ein binarisiertes Bild ist ein Bild, das nur die Werte $ 0 $ oder $ 1 $ annimmt (Pixel nicht
+  vorhanden oder vorhanden).
+\item Die Hough-Transformation eines endlichen binarisierten Bildes mit Pixeln
+  $ X = \{ (x_{j}, y_{j}) \in \R^{2} : j = 1, \ldots, N \} $ ist
+  \[
+    (H(X))(\theta, c) = n_{X}(\theta, c), \qquad (\theta, c) \in \mathbb{H}.
+  \]
+\end{itemize}
+\end{definition}
+
+Da die meisten Geraden keinen Punkt treffen werden und $ H(X) $ damit fast überall $ 0 $ ist,
+zerlegt man $ \mathbb{H} $ normalerweise in kleinere Bereiche $ \mathbb{H}_{jk} $, von denen man
+glaubt, dass sie viele Geraden enthalten werden. Dabei ist
+$ \mathbb{H}_{jk} \coloneqq \Theta_{j} \times C_{k} $ mit $ j,k = 1, \ldots, M, M' $. $ \Theta_{j} $
+ist eine Partition von $ [-\pi / 2, \pi / 2) $ und $ C_{k} $ ist eine Zerlegung eines (hinreichend
+großen Teilbereichs) von $ \mathbb{R} $. Damit lässt sich festlegen, in welchen Bereichen des Bildes
+man nach welchen Geraden suchen will.
+
+\begin{remark}[Pseudo-Algorithmus zur Diskreten Hough-Transformation] \leavevmode
+\begin{enumerate}
+\item Gegeben ist ein (beliebiger) Punkt $ p = (x,y) $ des binarisierten Bildes. Wir wollen 
+  feststellen, wie viele Geraden durch $ p $ verlaufen.
+\item Initialisiere die Matrix $ \mathbf{H} $ mit $ \mathbf{0}_{M \times M'} $. In dieser Matrix
+  wird die Häufigkeit codiert, mit der man für ein gegebenes Paar $ (\theta, c) $ einen Punkt
+  des Bildes getroffen hat.
+\item Für $ j = 1, \ldots, M $:
+  \begin{enumerate}
+  \item Wähle einen Mittelpunkt $ \theta_{j} $ der Partition $ \Theta_{j} $.
+  \item Bestimme einen Index $ k $ mit $ 1 \leq k \leq M' $ so, dass
+    \[
+      x \cos(\theta_{j}) + y \cos(\theta_{j}) \in C_{k}.
+    \]
+    D.h., bestimme die Teilbereiche $ C_{k} $ von $ \R $, durch die die Gerade verläuft.
+  \item Erhöhe die Anzahl für das entsprechende Paar $ (\theta_{j}, k) $ in der Matrix
+  $ \mathbf{H} $ um 1: $ H_{jk} \leftarrow H_{jk} + 1 $.
+  \end{enumerate}
+\item Ergebnis: $ \mathbf{H} $ ist die diskrete Hough-Transformation.
+\end{enumerate}
+\end{remark}
+
+Die Matrix $ \mathbf{H} $ kann man nun wiederum als Bild darstellen, indem man die Einträge der
+Matrix (die ja Häufigkeiten sind) einfach als Helligkeitswert interpretiert. Die $ x $-Achse des
+Bildes gibt den Winkel $ \theta $ der Gerade an, und die $ y $-Achse den Abstand $ c $ der Geraden 
+zum Nullpunkt. Ist das Bild an einer Stelle $ (\theta, c) $ hell, so wissen wir, dass die durch
+$ (\theta, c) $ codierte Gerade mit hoher Wahrscheinlichkeit eine Gerade in unserem Ursprungsbild
+darstellt. Eine andere Möglichkeit, die Ergebnisse der Hough-Transformation zu veranschaulichen,
+wäre ein Histogramm zu erstellen, bei dem nach rechts z.B.\ alle Möglichen Paare an Winkel und
+Abstand aufgetragen werden und nach oben die Zahl der Punkte, durch die diese Geraden gehen.
+
+\begin{remark}[Vor- und Nachteile der Hough-Transformation] \leavevmode
+\begin{itemize}
+\item Es werden Kanten erkannt, die in den meisten Fällen eigentlich gar keine Kanten sind, z.B.\ 
+  die Ränder des Bildes. Dieser Fehler ist aber leicht zu korrigieren.
+\item Die Kanten werden nicht lokalisiert. Wir wissen zwar, durch welche Punkte eine Kante im
+  Originalbild verläuft. Wir wissen aber nicht, wo eine Kante tatsächlich beginnt und wo sie endet.
+  Dies kann auch ein Vorteil sein, da man so z.B.\ verdeckte Kanten wieder rekonstruieren kann.
+\item Bevor die Hough-Transformation auf ein Bild angewendet werden kann, muss dieses binarisiert
+  werden. D.h.\ es muss festgelegt werden, welche Pixel des Bildes als potentielle Kanten
+  betrachtet werden und welche nicht. Dies geschieht meistens durch Schwellwerte, welche aber durch
+  Willkür oder Ausprobieren zustande kommen.
+\item Mithilfe der Hough-Transformation lassen sich nicht nur Geraden finden, sondern theoretisch
+  alle Kurven, die man irgendwie parametrisieren kann. Z.B.\ kann man Kreise eindeutig durch
+  einen Mittelpunkt und Radius darstellen und dies ermöglicht es, mit der Hough-Transformation 
+  Kreise im Bild zu finden. Das Problem dabei ist nur, dass mit steigender Zahl an Freiheitsgraden 
+  der Aufwand der Transformation \emph{exponentiell} steigt. Je komplexer also die Formen sind,
+  nach denen man sucht, desto länger dauert die Transformation. In solchen Fällen hilft es dann nur,
+  einen oder mehrere der Freiheitsgrade zu eliminieren, indem man z.B.\ für Kreise einen festen
+  Radius oder Mittelpunkt einstellt.
+\end{itemize}
+Summa summarum: Die Hough-Transformation ist vor allem dann nützlich, wenn man unterbrochene
+Kanten im Bild finden will oder das Bild nur durch wenige Kanten dominiert wird.
+\end{remark}
