@@ -20,7 +20,7 @@ Die Parametrisierung aller Geraden durch einen Punkt $ x $ des Bildes ist dann g
 \[
   H(x) = \left\{ 
     (\theta, c) : v_{\theta}^{\top} x = c
-  \right\} \subset \left[ -\frac{\pi}{2}, \frac{\pi}{2} \right) \eqqcolon \mathbb{H}.
+  \right\} \subset \left[ -\frac{\pi}{2}, \frac{\pi}{2} \right) \times \R \eqqcolon \mathbb{H}.
 \]
 Wir betrachten nun eine Menge $ X \subset \R^{2} $ von Punkten (z.B.\ ein Bild) und bilden zu jedem 
 der Punkte $ x $ in $ X $ die Menge $ H(x) $. Wir zählen nun, wie oft ein Paar $ (\theta, c) $
@@ -35,8 +35,11 @@ ist oder nicht. Dazu müssen wir das Bild zuerst binarisieren.
 
 \begin{definition} \leavevmode
 \begin{itemize}
-\item Ein binarisiertes Bild ist ein Bild, das nur die Werte $ 0 $ oder $ 1 $ annimmt (Pixel nicht
-  vorhanden oder vorhanden).
+\item Ein binarisiertes Bild ist ein Bild, das nur die Werte $ 0 $ oder $ 1 $ annimmt.
+  $ 0 $ bedeutet dabei, dass die Farb- oder Grauwertinformation aus dem Originalbild im 
+  binarisierten Bild verworfen wird und dieser Bildpunkt im binarisierten Bild \enquote{unsichtbar} 
+  sein soll und $ 1 $ bedeutet entsprechend, dass der Bildpunkt aus dem Original auch im 
+  binarisierten Bild zu sehen sein soll.
 \item Die Hough-Transformation eines endlichen binarisierten Bildes mit Pixeln
   $ X = \{ (x_{j}, y_{j}) \in \R^{2} : j = 1, \ldots, N \} $ ist
   \[
@@ -58,7 +61,7 @@ man nach welchen Geraden suchen will.
 \item Gegeben ist ein (beliebiger) Punkt $ p = (x,y) $ des binarisierten Bildes. Wir wollen 
   feststellen, wie viele Geraden durch $ p $ verlaufen.
 \item Initialisiere die Matrix $ \mathbf{H} $ mit $ \mathbf{0}_{M \times M'} $. In dieser Matrix
-  wird die Häufigkeit codiert, mit der man für ein gegebenes Paar $ (\theta, c) $ einen Punkt
+  wird die Häufigkeit codiert, mit der man für ein gegebenes Paar $ (\theta, c) $ den Punkt $ p $
   des Bildes getroffen hat.
 \item Für $ j = 1, \ldots, M $:
   \begin{enumerate}
@@ -106,4 +109,140 @@ Abstand aufgetragen werden und nach oben die Zahl der Punkte, durch die diese Ge
 \end{itemize}
 Summa summarum: Die Hough-Transformation ist vor allem dann nützlich, wenn man unterbrochene
 Kanten im Bild finden will oder das Bild nur durch wenige Kanten dominiert wird.
+\end{remark}
+
+\section{Zeit-/Frequenz -- Fenster \& Gabor}
+
+Mit der Fourier-Transformation kann man zwar die in einem Signal enthaltenen Frequenzen analysieren.
+Man kann damit aber nicht feststellen, zu welchem Zeitpunkt bzw.\ an welchem Ort des Signals
+welche Frequenz auftritt. Ein weiteres Problem besteht in der Fourier-Transformation sehr langer
+Signale, was oft die Kapazitäten kleiner Prozessoren in Handys usw.\ übersteigt.
+
+Dies motiviert die Einführung der \emph{Gabor-Transformation}, einer Variante der 
+Fourier-Transformation, bei der das Signal in kleineren Stücken durch ein wanderndes 
+\enquote{Fenster} betrachtet wird. Denn wenn man die Daten \enquote{fenstert} und nur auf diesem 
+Bereich betrachtet, dann sieht man i.W.\ auch nur die Frequenzen, die in diesem Bereich auftreten
+und erreicht somit eine bessere Lokalisierung als bei der Fourier-Transformation. Daher wird die 
+Gabor-Transformation auch als \enquote{gefensterte Fourier-Transformation} bezeichnet.
+
+\begin{definition}\leavevmode
+\begin{itemize}
+\item Als \emph{Fensterfunktion} bezeichnen wir eine reelle, gerade und energienormierte Funktion
+  $ g $, d.h. $ g(x) = g(-x) $ und $ \norm{g}_{2} = 1 $.
+\item Wir definieren
+  \[
+    \phi_{t, \xi}(x) \coloneqq e^{i\xi x} g(x - t), \qquad x \in \R, \quad (t, \xi) \in \R^{2}.
+  \]
+\item Die Gabor-Transformation zu einer Funktion $ f $ ist dann definiert als
+  \[
+      Gf(t,\xi)
+    = \langle f, \phi_{t,\xi} \rangle
+    = \int_{\R} f(x) \overline{\phi_{t, \xi}}(x) \dif x
+    = \int_{\R} f(x) e^{-i \xi x} g(x - t) \dif x,
+      \qquad (t, \xi) \in \R^{2}.
+  \]
+\end{itemize}
+\end{definition}
+
+\begin{remark}
+Die Gabor-Transformation liefert also ein Spektogramm $ |Gf| : \R^{2} \rightarrow \R $, das angibt,
+wieviel Energie sich zu einem bestimmten Zeitpunkt $ t $ in einer bestimmten Frequenz $ \xi $
+konzentriert. Natürlich wird das Spektogramm auch beeinflusst durch die Wahl der Fensterfunktion
+$ g $. Wählt man z.B.\ die Rechtecksfunktion, so hat man bedingt durch das Abschneiden wieder mit
+Artefakten im Spektogramm zu kämpfen. Wählt man hingegen die Gauß-Funktion, so kann man diesem
+Effekt etwas entgegentreten, erhält aber dafür ein Fenster, das \enquote{zu den Rändern} hin immer
+milchiger wird. Ein weiterer wichtiger Aspekt ist, dass die Länge des Fensters mit der Periodenlänge
+des Signals und der Abtastfrequenz kompatibel sein muss. Sonst kommt es zum sog.\ \enquote{Leck-
+Effekt}, bei dem Frequenzen im Spektogramm \enquote{verschmiert} werden.
+\end{remark}
+
+\begin{proposition}
+Für $ f \in L_{2}(\R) $ gilt:
+\begin{description}
+\item [Inverse Gabor-Transformation]
+  \[
+    f(x) = \frac{1}{2\pi} \int_{\R} \int_{\R} Gf(t,\xi) e^{i \xi x} g(x - t) \dif \xi \dif t.
+  \]
+\item [Parseval-Plancherel]
+  \[
+    \int_{\R} |f(x)|^{2} \dif x = \frac{1}{2\pi} \int_{\R}\int_{\R} |Gf(t,\xi)|^{2} \dif \xi \dif t.
+  \]
+  Die Gabor-Transformation auf $ L_{2}(\R) $ im Wesentlichen eine Isometrie.
+\end{description}
+\end{proposition}
+
+\begin{remark}[Implementierung der Gabor-Transformation]
+Unter Verwendung der Identität
+\[
+    (Gf(\bullet, \xi))^{\wedge}(\omega)
+  = \widehat{f}(\omega + \xi)\widehat{g}(\omega)
+\]
+und damit
+\[
+    Gf(t, \xi)
+  = \left( (Gf(t, \xi))^{\wedge} \right)^{\vee}
+  = \left( \widehat{f}(\bullet + \xi) \widehat{g} \right)^{\vee}(t),
+\]
+kann man die Gabor-Transformation effizient über die FFT implementieren, wenn man $ f $ und $ g $
+diskret abtastet.
+\end{remark}
+
+Die Gabor-Transformation ist ein Beispiel für die sog.\ \emph{Zeit-Frequenz-Analyse}, bei der man
+versucht, die in einem Signal auftretenden Frequenzen zu lokalisieren. Ein weiteres Beispiel ist
+Notenschrift, bei der die Form einer Note die zu spielende Dauer und die Lage einer Note die
+Tonhöhe, also die Frequenz angibt. Intuitiv müsste man meinen, dass ein kleineres Fenster eine 
+bessere Lokalisierung zur Folge hat. Das ist im Grunde genommen auch richtig, aber es gibt gewisse 
+\enquote{Grenzen}.
+
+\begin{definition}[Zeit-/Frequenzlokalisierung]
+Die \emph{Zeitlokalisierung} einer Funktion $ f \in L_{2}(\R) $ ist als
+\[
+  \mu = \mu(f) = \frac{1}{\norm{f}_{2}^{2}} \int_{\R} t |f(t)|^{2} \dif t
+\]
+definiert, die \emph{Frequenzlokalisierung} von $ f $ entsprechend als
+\[
+    \widehat{\mu} = \widehat{\mu}(f)
+  = \frac{1}{\norm{\widehat{f}}_{2}^{2}} \int_{\R} \xi |\widehat{f}(\xi)|^{2} \dif t
+  = \frac{1}{2\pi \norm{f}_{2}^{2}} \int_{\R} \xi |\widehat{f}(\xi)|^{2} \dif t.
+\]
+Die \emph{Zeitvariation} von $ f $ ist definiert als
+\[
+  \sigma^{2} = \frac{1}{\norm{f}_{2}^{2}} \int_{\R} (t - \mu)^{2} |f(t)|^{2} \dif t
+\]
+und entsprechend die \emph{Frequenzvariation} als
+\[
+    \widehat{\sigma}^{2}
+  = \frac{1}{2\pi \norm{f}_{2}^{2}} 
+      \int_{\R} (\xi - \widehat{\mu})^{2} |\widehat{f}(\xi)|^{2} \dif t.
+\]
+\end{definition}
+
+\begin{remark}[Heisenberg-Boxen]
+Eine Funktion hat also ihren Schwerpunkt in Zeit/Frequenz an der Stelle $ (\mu, \widehat{\mu}) $
+und die Variationen $ \sigma^{2} $ und $ \widehat{\sigma}^{2} $ geben an, wie gut lokalisiert oder
+konzentriert die Funktion in Zeit und Frequenz um den Schwerpunkt ist. Den Bereich
+\[
+  H(f) \coloneqq 
+    [\mu(f) - \sigma(f), \mu(f) + \sigma(f)] \times
+    [\widehat{\mu(f)} - \widehat{\sigma(f)}, \widehat{\mu(f)} + \widehat{\sigma(f)}]
+\]
+bezeichnet man als \emph{Heisenberg-Box} von $ f $.
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\draw [->] (-0.5,0) -- (5,0) node [right] {$ t $};
+\draw [->] (0,-0.5) -- (0,3) node [left] {$ \xi $};
+\draw [dashed] (2.5,0) node [below] {$ \mu $} -- (2.5,2.5);
+\draw [dashed] (0,1.5) node [left] {$ \widehat{\mu} $} -- (4.5,1.5);
+\draw [red] (0.5,0.5) rectangle (4.5,2.5);
+\draw [decorate,decoration={brace,mirror,amplitude=5pt},xshift=2pt] 
+  (4.5,1.5) -- (4.5,2.5) node [midway,xshift=10pt] { $ \widehat{\sigma} $ };
+\draw [decorate,decoration={brace,mirror,amplitude=5pt},yshift=2pt] 
+  (4.5,2.5) -- (2.5,2.5) node [midway,yshift=10pt] { $ \sigma $ };
+\end{tikzpicture}
+\caption{}
+\label{fig:Heisenberg-Box}
+\end{figure}
+
 \end{remark}
