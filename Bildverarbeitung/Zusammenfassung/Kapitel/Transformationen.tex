@@ -129,12 +129,12 @@ Gabor-Transformation auch als \enquote{gefensterte Fourier-Transformation} bezei
 \begin{definition}\leavevmode
 \begin{itemize}
 \item Als \emph{Fensterfunktion} bezeichnen wir eine reelle, gerade und energienormierte Funktion
-  $ g $, d.h. $ g(x) = g(-x) $ und $ \norm{g}_{2} = 1 $.
+  $ g \in L_{2}(\R) $, d.h. $ g(x) = g(-x) $ und $ \norm{g}_{2} = 1 $.
 \item Wir definieren
   \[
     \phi_{t, \xi}(x) \coloneqq e^{i\xi x} g(x - t), \qquad x \in \R, \quad (t, \xi) \in \R^{2}.
   \]
-\item Die Gabor-Transformation zu einer Funktion $ f $ ist dann definiert als
+\item Die Gabor-Transformation zu einer Funktion $ f \in L_{2}(\R) $ ist dann definiert als
   \[
       Gf(t,\xi)
     = \langle f, \phi_{t,\xi} \rangle
@@ -203,8 +203,8 @@ Die \emph{Zeitlokalisierung} einer Funktion $ f \in L_{2}(\R) $ ist als
 definiert, die \emph{Frequenzlokalisierung} von $ f $ entsprechend als
 \[
     \widehat{\mu} = \widehat{\mu}(f)
-  = \frac{1}{\norm{\widehat{f}}_{2}^{2}} \int_{\R} \xi |\widehat{f}(\xi)|^{2} \dif t
-  = \frac{1}{2\pi \norm{f}_{2}^{2}} \int_{\R} \xi |\widehat{f}(\xi)|^{2} \dif t.
+  = \frac{1}{\norm{\widehat{f}}_{2}^{2}} \int_{\R} \xi |\widehat{f}(\xi)|^{2} \dif \xi
+  = \frac{1}{2\pi \norm{f}_{2}^{2}} \int_{\R} \xi |\widehat{f}(\xi)|^{2} \dif \xi.
 \]
 Die \emph{Zeitvariation} von $ f $ ist definiert als
 \[
@@ -214,40 +214,65 @@ und entsprechend die \emph{Frequenzvariation} als
 \[
     \widehat{\sigma}^{2}
   = \frac{1}{2\pi \norm{f}_{2}^{2}} 
-      \int_{\R} (\xi - \widehat{\mu})^{2} |\widehat{f}(\xi)|^{2} \dif t.
+      \int_{\R} (\xi - \widehat{\mu})^{2} |\widehat{f}(\xi)|^{2} \dif \xi.
 \]
 \end{definition}
 
-\begin{remark}[Heisenberg-Boxen]
-Eine Funktion hat also ihren Schwerpunkt in Zeit/Frequenz an der Stelle $ (\mu, \widehat{\mu}) $
-und die Variationen $ \sigma^{2} $ und $ \widehat{\sigma}^{2} $ geben an, wie gut lokalisiert oder
-konzentriert die Funktion in Zeit und Frequenz um den Schwerpunkt ist. Den Bereich
-\[
-  H(f) \coloneqq 
-    [\mu(f) - \sigma(f), \mu(f) + \sigma(f)] \times
-    [\widehat{\mu}(f) - \widehat{\sigma}(f), \widehat{\mu}(f) + \widehat{\sigma}(f)]
-\]
-bezeichnet man als \emph{Heisenberg-Box} von $ f $. Eine schematische Darstellung einer solchen
-Box findet sich in Abbildung~\ref{fig:Heisenberg-Box}.
+\begin{remark}[Heisenberg-Boxen]  \leavevmode
+\begin{itemize}
+\item Mann kann die Funktionen
+  \[
+    \frac{|f(t)|^{2}}{\norm{f}_{2}^{2}} \qquad \text{und} \qquad
+    \frac{|\widehat{f}(\xi)|^{2}}{\norm{\widehat{f}}_{2}^{2}}
+  \]
+  als Wahrscheinlichkeitsfunktionen auffassen, denn dann gilt
+  \[
+    1 = \frac{1}{\norm{f}_{2}^{2}} \int_{\R} |f(t)|^{2} \dif t
+      = \frac{1}{\norm{\widehat{f}}_{2}^{2}} \int_{\R} |\widehat{f}(\xi)|^{2} \dif \xi.
+  \]
+  Die Definition von Erwartungswert $ \mu $ und Varianz $ \sigma^{2} $ ergibt sich dann ganz
+  automatisch.
+\item Der Wert $ \mu(f) $ ist sozusagen der gewichtete Mittelwert der Energie der Funktion $ f $ im
+  Zeitbereich. Analog kann man $ \widehat{\mu}(f) $ als gewichteten Mittelwert der Energie von
+  $ \widehat{f} $ im Frequenzbereich betrachten.
+\item $ \sigma(f) $ und $ \widehat{\sigma}(f) $ geben an, wie sehr die Funktion von ihrem Mittelwert
+  in Zeit und Frequenz abweicht.
+\item Eine Funktion hat also ihren Schwerpunkt in Zeit/Frequenz an der Stelle $ (\mu, 
+  \widehat{\mu}) $ und die Variationen $ \sigma^{2} $ und $ \widehat{\sigma}^{2} $ geben an, wie 
+  gut lokalisiert oder konzentriert die Funktion in Zeit und Frequenz um den Schwerpunkt ist. Den 
+  Bereich
+  \[
+    H(f) \coloneqq 
+      [\mu(f) - \sigma(f), \mu(f) + \sigma(f)] \times
+      [\widehat{\mu}(f) - \widehat{\sigma}(f), \widehat{\mu}(f) + \widehat{\sigma}(f)]
+  \]
+  bezeichnet man als \emph{Heisenberg-Box} von $ f $. Eine schematische Darstellung einer solchen
+  Box findet sich in Abbildung~\ref{fig:Heisenberg-Box}.
+\end{itemize}
 
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}
-\draw [->] (-0.5,0) -- (5,0) node [right] {$ t $};
-\draw [->] (0,-0.5) -- (0,3) node [left] {$ \xi $};
-\draw [dashed] (2.5,0) node [below] {$ \mu $} -- (2.5,2.5);
-\draw [dashed] (0,1.5) node [left] {$ \widehat{\mu} $} -- (4.5,1.5);
-\draw [red] (0.5,0.5) rectangle (4.5,2.5);
+\draw [->] (-0.5,0) -- (7,0) node [right] {$ t $};
+\draw [->] (0,-0.5) -- (0,5) node [left] {$ \xi $};
+\draw [dashed] (4.5,0) node [below] {$ \mu $} -- (4.5,4.5);
+\draw [dashed] (0,3.5) node [left] {$ \widehat{\mu} $} -- (6.5,3.5);
+\draw [red] (2.5,2.5) rectangle (6.5,4.5);
 \draw [decorate,decoration={brace,mirror,amplitude=5pt},xshift=2pt] 
-  (4.5,1.5) -- (4.5,2.5) node [midway,xshift=10pt] { $ \widehat{\sigma} $ };
+  (6.5,3.5) -- (6.5,4.5) node [midway,xshift=10pt] { $ \widehat{\sigma} $ };
 \draw [decorate,decoration={brace,mirror,amplitude=5pt},yshift=2pt] 
-  (4.5,2.5) -- (2.5,2.5) node [midway,yshift=10pt] { $ \sigma $ };
+  (6.5,4.5) -- (4.5,4.5) node [midway,yshift=10pt] { $ \sigma $ };
+\draw [color=gray, domain=2.5:6.5] plot (\x,{exp(-(\x-4.5)^2)});
+\node [color=gray] at (6, 1) {$ \frac{|f(t)|^{2}}{\norm{f}_{2}^{2}} $};
+\draw [color=gray, domain=-4.5:-2.5, rotate around={-90:(0,0)}] plot (\x,{exp(-(\x+3.5)^2)-0.35});
+\node [color=gray] at (1, 2.5) {$ \frac{|\widehat{f}(\xi)|^{2}}{\norm{\widehat{f}}_{2}^{2}} $};
 \end{tikzpicture}
 \caption{Schematische Darstellung einer Heisenberg-Box (rot gezeichnet) mit Mittelpunkt
   $ (\mu, \widehat{\mu}) $. Nach rechts aufgetragen ist die Zeit $ t $ und nach oben die Frequenz
   $ \xi $, die zu diesem Zeitpunkt im Signal auftritt. Man sieht, dass die Heisenberg-Box genau die
   Ausdehnung $ [\mu - \sigma, \mu + \sigma] \times
-  [\widehat{\mu} - \widehat{\sigma}, \widehat{\mu} + \widehat{\sigma}] $ besitzt.}
+  [\widehat{\mu} - \widehat{\sigma}, \widehat{\mu} + \widehat{\sigma}] $ besitzt, d.h.\
+  die Länge $ 2\sigma $ und die Höhe $ 2\widehat{\sigma} $.}
 \label{fig:Heisenberg-Box}
 \end{figure}
 \end{remark}
@@ -264,9 +289,9 @@ Insbesondere ist sowohl $ \sigma(f) = 0 $ als auch $ \widehat{\sigma}(f) = 0 $ u
 \begin{itemize}
 \item Die Heisenberg-Boxen können also nicht beliebig klein werden, was nichts anderes heißt, als
   dass es keine beliebig genaue Auflösung sowohl im Frequenz- als auch im Zeitbereich gleichzeitig
-  gibt. Jede Heisenberg-Box hat mindestens Fläche $ 2 $.
+  gibt. Jede Heisenberg-Box hat mindestens Fläche $ 2 $. Je genauer
 \item Die Heisenberg'sche Unschärferelation liefert außerdem eine Erklärung für unsere 
-  Tonwahrnehmung: Ein tiefer Ton besitzt eine geringe Frequenz ($ \rightarrow $ geringe Breite 
+  Tonwahrnehmung: Ein tiefer Ton besitzt eine geringe Frequenz ($ \rightarrow $ geringe Höhe 
   einer Heisenberg-Box) und daher dauert es vergleichsweise lange ($ \rightarrow $ große Länge der 
   Box), bis der Ton einmal geschwungen ist. Vorher wird der Ton als solcher gar nicht gehört.
   Hohe Tönen hingegen besitzen hohe Frequenzen, dementsprechend kurz ist die Zeit, die der Ton
@@ -279,3 +304,243 @@ Insbesondere ist sowohl $ \sigma(f) = 0 $ als auch $ \widehat{\sigma}(f) = 0 $ u
   In diesem Fall besitzen die Heisenberg-Boxen \emph{exakt} die Fläche $ 2 $.
 \end{itemize}
 \end{remark}
+
+\TODO{Beispiel zur Gabor-Transformation}
+
+\section{Wavelets}
+
+Da die Gabor-Transformation im allgemeinen nicht die beste Zeit-/Frequenz-Lokalisierung bieten kann,
+wollen wir uns nun mit einer leistungsfähigeren Methode der Zeit-Frequenz-Analyse beschäftigen,
+nämlich mit der sog.\ \emph{Kontinuierlichen Wavelet-Transformation}.
+
+\begin{definition}[Wavelets und Zulässigkeit] \leavevmode
+\begin{itemize}
+\item Eine (möglicherweise komplexwertige) Funktion $ \psi \in L_{2}(\R) $ heißt \emph{Wavelet},
+  wenn sie \emph{mittelwertfrei} ist, d.h.\ wenn gilt:
+  \[
+    \int_{\R} \psi(t) \dif t = 0.
+  \]
+\item Ein Wavelet $ \psi $ heißt \emph{normalisiert}, wenn $ \norm{\psi}_{2} = 1 $.
+\item Ein Wavelet $ \psi $ heißt \emph{zulässig}, wenn
+  \[
+    C_{\psi} \coloneqq \int_{\R} \frac{|\widehat{\psi}(\xi)|^{2}}{|\xi|} \dif \xi < \infty.
+  \]
+\end{itemize}
+\end{definition}
+
+\begin{remark} \leavevmode
+\begin{itemize}
+\item Der Name \enquote{Wavelet} (\enquote{Wellchen}) für eine mittelwertfreie Funktion leitet sich
+  davon ab, dass diese Funktion Anteile oberhalb und unterhalb der $ x $-Achse haben muss und 
+  dadurch eine \enquote{wellenähnliche} Struktur besitzt.
+\item Die Zulässigkeitsbedingung sorgt dafür, dass sich $ \widehat{\psi}(\xi) $ am Übergang
+  $ \xi \to 0 $ \enquote{brav} verhält, also hinreichend schnell gegen $ 0 $ geht. Das heißt
+  insbesondere, dass
+  \[
+    0 = \widehat{\psi}(0) = \int_{\R} \psi(x) e^{-i \cdot 0 \cdot x} \dif x = \int_{\R} \psi(x) 
+    \dif x
+  \]
+  gelten muss. Daraus folgt sofort, dass jede zulässige Funktion \emph{automatisch} per definitionem
+  ein Wavelet ist.
+\item Ist das Wavelet $ \psi : \R \rightarrow \R $ reell, so vereinfacht sich die 
+  Zulässigkeitsbedingung zu
+  \[
+    C_{\psi} = \int_{0}^{\infty} \frac{|\widehat{\psi}(\xi)|^{2}}{\xi} \dif \xi < \infty.
+  \]
+\end{itemize}
+\end{remark}
+
+\begin{definition}[Wavelet-Transformation]
+Zu einem normalisierten Wavelet $ \psi $ und $ f \in L_{2}(\R) $ ist die Wavelet-Transformation
+definiert als
+\[
+  W_{\psi}f(t, s) \coloneqq
+  \int_{\R} f(x) \frac{1}{\sqrt{|s|}} \overline{\psi\left(\frac{x - t}{s}\right)} \dif x, \qquad
+    (t,s) \in \R \times \R.
+\]
+\end{definition}
+
+\begin{remark} \leavevmode
+\begin{itemize}
+\item Der Parameter $ t $ verschiebt das Wavelet $ \psi\left(\frac{x - t}{s}\right) $ in der Zeit
+  und $ s $ skaliert dieses Wavelet (d.h.\ Streckung oder Stauchung bzgl.\ der $ x $-Achse).
+\item Der Term $ 1 / \sqrt{|s|} $ sorgt dafür, dass das Wavelet $ \psi\left(\frac{x - t}{s}\right) $
+  normiert ist hinsichtlich der Energienorm.
+\end{itemize}
+\end{remark}
+
+\begin{example}[Wavelets]
+\begin{figure}[ht]
+\centering
+\begin{minipage}{0.49\textwidth}
+\includegraphics[width=\linewidth]{Bilder/mexican-hat}
+\end{minipage}
+\hfill
+\begin{minipage}{0.49\textwidth}
+\includegraphics[width=\linewidth]{Bilder/morlet}
+\end{minipage}
+\caption{Links: Das Mexican-Hat-Wavelet. Rechts: Das Morlet-Wavelet für $ \omega = 1 $ mit
+  Real- und Imaginärteil separat gezeichnet (blau bzw.\ rot).}
+\label{fig:wavelets}
+\end{figure}
+\leavevmode
+\begin{enumerate}
+\item Das \emph{Haar-Wavelet} ist die unstetige Funktion
+  \[
+    \psi(x) \coloneqq \begin{cases}
+      1, & x \in [-1,0), \\
+      -1, & x \in (0,1], \\
+      0, & \text{sonst}.
+    \end{cases}
+  \]
+\item Das \emph{Mexican-Hat-Wavelet} ist als
+  \[
+    \psi(t) \coloneqq (1 - t^{2}) e^{-t^{2} / 2} = \dod[2]{}{t} e^{-t^{2} / 2}, \qquad t \in \R
+  \]
+  definiert. Es besitzt zwar unendlichen Träger, klingt aber exponentiell ab, weshalb es immer noch
+  über eine gute Zeitlokalisierung verfügt. Die zugehörige Fourier-Transformierte ist
+  \[
+    \widehat{\psi}(t) = \sqrt{2\pi} \xi^{2} e^{-\xi^{2} / 2}
+  \]
+  und damit i.w.\ wieder das Wavelet selbst.
+\item Das \emph{Morlet-Wavelet} ist der \enquote{komplexe Bruder} des Mexican-Hat-Wavelets und ist
+  definiert als
+  \[
+    \psi(t) \coloneqq e^{i \omega t} e^{-t^{2} / 2}, \qquad t \in \R, \quad \omega \in \R_{+}.
+  \]
+  Der Parameter $ \omega $ ist frei wählbar und gibt an, wie oft das Wavelet oszilliert.
+  Das Morlet-Wavelet ist nach unserer Definition kein zulässiges Wavelet, da
+  \[
+    \int_{\R} \psi(t) = \sqrt{2\pi} e^{-\omega^{2} / 2} \neq 0.
+  \]
+  Wir können aber
+  \[
+    \widetilde{\psi}(t) \coloneqq \psi(t) - \sqrt{2\pi} e^{-\omega^{2} / 2}
+  \]
+  setzen, um ein zulässiges Wavelet zu erhalten.
+\end{enumerate}
+\end{example}
+
+\begin{remark}
+Wie wir wissen, bietet uns der modulierte Gauß-Kern die optimale Auflösung hinsichtlich Zeit
+\emph{und} Frequenz. Aus diesem Grund verwenden sowohl das Mexican-Hat- als auch das Morlet-Wavelet
+die \enquote{Grundfunktion} $ e^{-\bullet^{2} / 2} $.
+\end{remark}
+
+\begin{remark}[Skalogramm]
+Die Wavelet-Transformation lässt sich in einem sog.\ \emph{Skalogramm} veranschaulichen. Dabei wird
+nach rechts die Zeit $ t $ aufgetragen und nach oben die Skalen $ s $. Aber Vorsicht: Die Achse mit
+den Skalen ist \enquote{verkehrt herum}, d.h.\ nach oben nehmen die Skalen ab und nach unten nehmen
+die Skalen zu. Eine Skala kann man sich vorstellen wie den ungefähren Reziprokwert einer Frequenz.
+Farbig codiert ist schließlich der Wert von $ |W_{\psi}f(t,s) $, d.h.\ mit welcher Intensität eine
+Skala $ s $ zum Zeitpunkt $ t $ auftritt.
+\end{remark}
+
+Die Zulässigkeit ist eine wichtige Voraussetzung für die Invertierbarkeit der 
+Wavelet-Transformation:
+
+\begin{proposition}[Inverse Wavelet-Transformation]
+Für ein normalisiertes, zulässiges Wavelet $ \psi $ und eine Funktion $ f \in L_{2}(\R) $ ist
+\[
+  f(x) = \frac{1}{C_{\psi}} \int_{\R} \int_{\R} W_{\psi} f(t,s)
+            \frac{1}{\sqrt{|s|}} \psi\left( \frac{x - t}{s} \right) \dif t \frac{\dif s}{s^{2}}.
+\]
+\end{proposition}
+
+\begin{remark}[Inverse Wavelet-Transformation] \leavevmode
+\begin{itemize}
+\item Ist das Wavelet $ \psi $ reell und $ f \in L_{2}(\R) $, dann vereinfacht sich die 
+Inversionsformel zu
+\[
+  f(x) = \frac{1}{C_{\psi}} \int_{0}^{\infty} \int_{\R} W_{\psi} f(t,s)
+            \frac{1}{\sqrt{s}} \psi\left( \frac{x - t}{s} \right) \dif t \frac{\dif s}{s^{2}},
+\]
+wobei natürlich
+\[
+  C_{\psi} = \int_{0}^{\infty} \frac{|\widehat{\psi}(\xi)|^{2}}{\xi} \dif \xi.
+\]
+\item Die Umkehrformel gilt nur im $ L_{2} $-Sinn, also eigentlich nicht punktweise.
+\item Man kann\footnote{Ich kann es nicht\dots} mathematisch zeigen, dass die 
+  Wavelet-Transformation \emph{hochgradig redundant} ist. Dazu stellen wir zunächst fest, dass für 
+  die Fourier-Transformation einer \emph{komplexwertigen} Funktion $ f $ gilt
+  \[
+      \overline{f}^{\wedge}(\xi) 
+    = \int_{\R} \overline{f(x)} e^{-i\xi x} \dif x
+    = \int_{\R} \overline{f(x)} \overline{e^{i\xi x}} \dif x
+    = \overline{\int_{\R} f(x) e^{i\xi x} \dif x}
+    = \overline{\widehat{f}(-\xi)}.
+  \]
+  Bildet man nun die Fourier-Transformierte zur Wavelet-Transformation, dann erhält man
+  \[
+    (W_{\psi}f(t,s))^{\wedge}(\xi) = \sqrt{s} \widehat{f}(\xi) \widehat{\psi}(s\xi),
+  \]
+  d.h.\ für zwei Skalen $ s, s' \in \R_{+} $ und eine Frequenz $ \xi $ gilt dann, wenn man obige
+  Formel nach $ \widehat{f}(\xi) $ auflöst,
+  \[
+     \widehat{f}(\xi)
+   = \frac{(W_{\psi}f(\bullet,s))^{\wedge}(\xi)}{\sqrt{s}\widehat{\psi}(s\xi)}
+   = \frac{(W_{\psi}f(\bullet,s'))^{\wedge}(\xi)}{\sqrt{s'}\widehat{\psi}(s'\xi)}
+  \]
+  und damit, wenn man nach $ (W_{\psi}f(\bullet,s))^{\wedge}(\xi) $ auflöst,
+  \[
+      (W_{\psi}f(\bullet,s))^{\wedge}(\xi)
+    = \sqrt{\frac{s}{s'}} \frac{\widehat{\psi}(s\xi)}{\widehat{\psi}(s'\xi)}
+      (W_{\psi}f(\bullet,s'))^{\wedge}(\xi).
+  \]
+  Soll heißen: Kennt man die Wavelet-Transformation für \emph{eine} Skala $ s $, dann kann man
+  daraus die Wavelet-Transformation für \emph{alle} Skalen $ s' $ herleiten.
+\end{itemize}
+\end{remark}
+
+Wir kommen nun zum fundamentalen Unterschied zwischen der Gabor-Transformation und der 
+Wavelet-Transformation. Dieser hat etwas mit den Heisenberg-Boxen zu tun. Bevor wir dem näher
+nachgehen können, müssen wir zunächst noch etwas Vorarbeit leisten.
+
+\begin{definition} \leavevmode
+\begin{itemize}
+\item Die \emph{Zeit-Frequenz-Atome} zu einem Wavelet $ \psi $ sind definiert als
+  \[
+    \psi_{t,s} \coloneqq \psi\left(\frac{\bullet - u}{s}\right), \qquad (u,s) \in \R \times \R_{+}.
+  \]
+\item Ein Wavelet $ \psi $ heißt zentriert, falls
+  \[
+    \mu_{t}(\psi) = 0
+  \]
+  gilt. Da per definitionem für ein beliebiges $ f \in L_{2}(\R) $ und $ u \in \R $
+  \[
+      \mu_{t}(f(\bullet - u))
+    = \int_{\R} t |f(t - u)|^{2} \dif t
+    = \int_{\R} (t + u) |f(t)|^{2} \dif t
+    = \mu_{t}(f) + u
+  \]
+  gilt, können wir durch geeignete Verschiebung \emph{immer} annehmen, dass $ \psi $ zentriert ist.
+\end{itemize}
+\end{definition}
+
+Nun zum eigentlichen Satz.
+
+\begin{proposition}
+Das Heisenberg-Rechteck $ H(\psi_{t,s}) $ zu einem zentrierten Wavelet $ \psi $ hat den
+Mittelpunkt $ (t, \mu_{\xi}(\psi) / s) $ sowie die Seitenlängen $ s \sigma_{t}(\psi) $ und
+$ \sigma_{\xi}(\psi) / s $.
+\end{proposition}
+
+%\begin{remark}
+%Dieser letzte Satz sagt \emph{alles} über den Unterschied zwischen Gabor-Transformation und
+%Wavelet-Transformation:
+%\begin{itemize}
+%\item Bei der Gabor-Transformation besitzen die Heisenberg-Boxen für die Atome $ \phi_{t,\xi} $ die
+%  Ausmaße
+%  \[
+%    H_{t,\xi} = [t - \sigma(\phi), t + \sigma(\phi)] \times
+%                [\xi - \widehat{\sigma}(\phi), \xi + \widehat{\sigma}(\phi)].
+%  \]
+%  Das heißt, unabhängig von Translation oder Skalierung eines Atoms bleibt das Seitenverhältnis
+%  der Heisenberg-Box \emph{immer unverändert}, und die Fläche einer Heisenberg-Box
+%  Die Gabor-Transformation löst somit konstant in Zeit- und Frequenz auf.
+%\item Die Wavelet-Transformation arbeitet mit \emph{adaptiver} (oder relativer) 
+%  Zeit-Frequenz-Auflösung. Egal, wie man das Wavelet skaliert oder verschiebt, die Ausmaße der
+%  Heisenberg-Boxen passen sich immer so an, dass die Fläche gleich bleibt. Das heißt, man hat 
+%  automatisch die bestmögliche Lokalisierung im Zeit- und Frequenzbereich.
+%\end{itemize}
+%\end{remark}
