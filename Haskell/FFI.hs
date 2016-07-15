@@ -2,7 +2,7 @@
 module Main (main) where
 
 -- Basic usage of the foreign function interface (FFI)
--- Stolen from the Haskell wiki.
+-- Stolen from the Haskell wiki (6).
 -- Thomas Lang, 2016
 
 import Prelude hiding (sin)
