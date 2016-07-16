@@ -786,6 +786,15 @@ die Ordnung des Downsamplings, dann spricht man von \emph{Unterabtastung}. Eine 
 wurde bereits oben anhand des Translationsoperators gezeigt. Ist die Zahl der Subbänder größer als
 die Ordnung des Downsamplings, so spricht man von \emph{Überabtastung}.
 
+\begin{proposition}
+Für $ n \in \N $ ist
+\[
+    (\downarrow_{n}c)^{*}(z^{n})
+  = \frac{1}{n} \sum_{k \in \Z_{n}} c^{*}(e^{2\pi ik/n}z), \qquad
+    (\uparrow_{n}c)^{*}(z) = c^{*}(z^{n})
+\]
+\end{proposition}
+
 Wir werden nun sehen, dass sich jede Analyse-Filterbank als Matrix beschrieben lässt. Dabei kommt
 endlich die z-Transformation ins Spiel. Dabei nehmen wir an, dass jeder Filter $ F_{j} $ ein
 LTI-Filter mit Impulsantwort $ f_{j} $ ist, dass also $ F_{j}c = f_{j} * c $ gilt.
@@ -887,6 +896,8 @@ Das heißt
 \begin{itemize}
 \item Das Ergebnis einer Filterbank lässt sich also berechnen, indem man die Modulationsmatrix der
   Filterbank mit dem Polyphasen-Vektor des Signals multipliziert.
+\item Der Polyphase-Vektor ist sozusagen eine vektorwertige Abtastung des
+  Signals auf dem Einheitskreis. 
 \item Für den Fall $ n = 2 $ gilt
   \[
     \begin{pmatrix}
@@ -994,3 +1005,74 @@ Eine Filterbank $ (F,G) $ besitzt die Fähigkeit zur perfekten Rekonstruktion ge
   \widetilde{M}(z) M(z) = I, \qquad z \in \C.
 \]
 \end{proposition}
+
+\section{Subdivision, Funktionen, Wavelets}
+
+Führen wir uns kurz die Analyse-Filterbank für den Fall $ n = 2 $ vor Augen:
+\[
+  c \rightarrow \odot
+  \begin{array}{*{6}{c}}
+    \nearrow & \boxed{F_{0}} & \rightarrow & \boxed{\downarrow_{2}} & \rightarrow & c_{0} \\[1em]
+    \searrow & \boxed{F_{1}} & \rightarrow & \boxed{\downarrow_{2}} & \rightarrow & c_{1}
+  \end{array}
+\]
+Man kann die Daten $ c_{0} $ und $ c_{1} $ ihrerseits wieder in eine Analyse-Filterbank einspeisen
+und somit weiter zerlegen. Dadurch entsteht eine baumartige Kaskade von Signalen:
+\[
+  c \rightarrow \odot
+  \begin{array}{*{7}{c}}
+    \nearrow & \boxed{F_{0}} & \rightarrow & \boxed{\downarrow_{2}} & \rightarrow & 
+      c_{0} \rightarrow \odot
+      \begin{array}{*{6}{c}}
+        \nearrow & \boxed{F_{0}} & \rightarrow & \boxed{\downarrow_{2}} & \rightarrow & c_{00}
+          \\[0.5em]
+        \searrow & \boxed{F_{1}} & \rightarrow & \boxed{\downarrow_{2}} & \rightarrow & c_{01}
+      \end{array} \\[1.5em]
+    \searrow & \boxed{F_{1}} & \rightarrow & \boxed{\downarrow_{2}} & \rightarrow &
+    c_{1} \rightarrow \odot
+      \begin{array}{*{6}{c}}
+        \nearrow & \boxed{F_{0}} & \rightarrow & \boxed{\downarrow_{2}} & \rightarrow & c_{10}
+          \\[0.5em]
+        \searrow & \boxed{F_{1}} & \rightarrow & \boxed{\downarrow_{2}} & \rightarrow & c_{11}
+      \end{array}
+  \end{array}
+\]
+Diesen Ansatz bezeichnet man auch als \emph{Wavelet-Packages}.
+
+In der Wavelet-Analysis ist $ F_{0} $ normalerweise ein \enquote{Tiefpassfilter} und $ F_{0} $ ein 
+\enquote{Hochpassfilter}. Dabei werden nur die Daten weiter zerlegt, die aus $ F_{0} $ herauskommen.
+Also:
+\[
+  c \rightarrow \odot
+  \begin{array}{*{7}{l}}
+    \nearrow & \boxed{F_{0}} & \rightarrow & \boxed{\downarrow_{2}} & \rightarrow & 
+      c_{0} \rightarrow \odot
+      \begin{array}{*{6}{c}}
+        \nearrow & \boxed{F_{0}} & \rightarrow & \boxed{\downarrow_{2}} & \rightarrow & c_{00}
+          \\[0.5em]
+        \searrow & \boxed{F_{1}} & \rightarrow & \boxed{\downarrow_{2}} & \rightarrow & c_{01}
+      \end{array} \\
+    \searrow & \boxed{F_{1}} & \rightarrow & \boxed{\downarrow_{2}} & \rightarrow & c_{1} &
+  \end{array}
+\]
+
+Umgekehrt wird natürlich auch wieder die Synthese als Kaskade realisiert, und zwar durch Kaskaden
+der Synthese-Filterbank:
+\[
+  \begin{array}{*{9}{c}}
+    \begin{array}{*{6}{c}}
+      c_{00} & \rightarrow & \boxed{\uparrow_{2}} & \rightarrow & \boxed{G_{0}} & \searrow \\[0.5em]
+      c_{01} & \rightarrow & \boxed{\uparrow_{2}} & \rightarrow & \boxed{G_{1}} & \nearrow 
+    \end{array} 
+      & \oplus & \rightarrow & c_{0} & \rightarrow & \boxed{\uparrow_{2}} & \rightarrow 
+      & \boxed{G_{0}} & \searrow
+      \\[1.5em]
+    \begin{array}{*{6}{c}}
+      c_{00} & \rightarrow & \boxed{\uparrow_{2}} & \rightarrow & \boxed{G_{0}} & \searrow \\[0.5em]
+      c_{01} & \rightarrow & \boxed{\uparrow_{2}} & \rightarrow & \boxed{G_{1}} & \nearrow 
+    \end{array}
+      & \oplus & \rightarrow & c_{1} & \rightarrow & \boxed{\uparrow_{2}} & \rightarrow 
+      & \boxed{G_{1}} & \nearrow
+  \end{array}
+  \oplus \rightarrow c
+\]
