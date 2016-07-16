@@ -309,7 +309,7 @@ Insbesondere ist sowohl $ \sigma(f) = 0 $ als auch $ \widehat{\sigma}(f) = 0 $ u
 
 \section{Wavelets}
 
-Da die Gabor-Transformation im allgemeinen nicht die beste Zeit-/Frequenz-Lokalisierung bieten kann,
+Da die Gabor-Transformation im Allgemeinen nicht die beste Zeit-/Frequenz-Lokalisierung bieten kann,
 wollen wir uns nun mit einer leistungsfähigeren Methode der Zeit-Frequenz-Analyse beschäftigen,
 nämlich mit der sog.\ \emph{Kontinuierlichen Wavelet-Transformation}.
 
@@ -402,7 +402,7 @@ definiert als
   \[
     \widehat{\psi}(t) = \sqrt{2\pi} \xi^{2} e^{-\xi^{2} / 2}
   \]
-  und damit i.w.\ wieder das Wavelet selbst.
+  und damit i.W.\ wieder das Wavelet selbst.
 \item Das \emph{Morlet-Wavelet} ist der \enquote{komplexe Bruder} des Mexican-Hat-Wavelets und ist
   definiert als
   \[
@@ -432,7 +432,7 @@ Die Wavelet-Transformation lässt sich in einem sog.\ \emph{Skalogramm} veransch
 nach rechts die Zeit $ t $ aufgetragen und nach oben die Skalen $ s $. Aber Vorsicht: Die Achse mit
 den Skalen ist \enquote{verkehrt herum}, d.h.\ nach oben nehmen die Skalen ab und nach unten nehmen
 die Skalen zu. Eine Skala kann man sich vorstellen wie den ungefähren Reziprokwert einer Frequenz.
-Farbig codiert ist schließlich der Wert von $ |W_{\psi}f(t,s) $, d.h.\ mit welcher Intensität eine
+Farbig codiert ist schließlich der Wert von $ |W_{\psi}f(t,s)| $, d.h.\ mit welcher Intensität eine
 Skala $ s $ zum Zeitpunkt $ t $ auftritt.
 \end{remark}
 
@@ -500,18 +500,18 @@ nachgehen können, müssen wir zunächst noch etwas Vorarbeit leisten.
 \begin{itemize}
 \item Die \emph{Zeit-Frequenz-Atome} zu einem Wavelet $ \psi $ sind definiert als
   \[
-    \psi_{t,s} \coloneqq \psi\left(\frac{\bullet - u}{s}\right), \qquad (u,s) \in \R \times \R_{+}.
+    \psi_{t,s} \coloneqq \psi\left(\frac{\bullet - t}{s}\right), \qquad (t,s) \in \R \times \R_{+}.
   \]
 \item Ein Wavelet $ \psi $ heißt zentriert, falls
   \[
-    \mu_{t}(\psi) = 0
+    \mu(\psi) = 0
   \]
   gilt. Da per definitionem für ein beliebiges $ f \in L_{2}(\R) $ und $ u \in \R $
   \[
-      \mu_{t}(f(\bullet - u))
+      \mu(f(\bullet - u))
     = \int_{\R} t |f(t - u)|^{2} \dif t
     = \int_{\R} (t + u) |f(t)|^{2} \dif t
-    = \mu_{t}(f) + u
+    = \mu(f) + u
   \]
   gilt, können wir durch geeignete Verschiebung \emph{immer} annehmen, dass $ \psi $ zentriert ist.
 \end{itemize}
@@ -521,26 +521,104 @@ Nun zum eigentlichen Satz.
 
 \begin{proposition}
 Das Heisenberg-Rechteck $ H(\psi_{t,s}) $ zu einem zentrierten Wavelet $ \psi $ hat den
-Mittelpunkt $ (t, \mu_{\xi}(\psi) / s) $ sowie die Seitenlängen $ s \sigma_{t}(\psi) $ und
-$ \sigma_{\xi}(\psi) / s $.
+Mittelpunkt $ (t, \widehat{\mu}(\psi) / s) $ sowie die Seitenlängen $ s \sigma(\psi) $ und
+$ \widehat{\sigma}(\psi) / s $.
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\draw [->] (-0.5,0) -- (5,0) node [right] {Zeit};
+\draw [<-] (0,-0.5) node [left] {Skala} -- (0,3);
+\draw [dashed] (2.5,0) node [below] {$ t $} -- (2.5,2.5);
+\draw [dashed] (0,1.5) node [left] {$ \dfrac{\widehat{\mu}}{s} $} -- (4.5,1.5);
+\draw [red] (0.5,0.5) rectangle (4.5,2.5);
+\draw [decorate,decoration={brace,mirror,amplitude=5pt},xshift=2pt] 
+  (4.5,1.5) -- (4.5,2.5) node [midway,xshift=10pt] { $ \dfrac{\widehat{\sigma}}{s} $ };
+\draw [decorate,decoration={brace,mirror,amplitude=5pt},yshift=2pt] 
+  (4.5,2.5) -- (2.5,2.5) node [midway,yshift=10pt] { $ s\sigma $ };
+\end{tikzpicture}
+\caption{Ausmaße der Heisenberg-Box bei einem zentrierten Wavelet. Auf der $ x $-Achse ist 
+weiterhin die Zeit aufgetragen und auf der $ y $-Achse befinden sich die Skalen. Man beachte
+jedoch, dass die $ y $-Achse \enquote{verkehrt herum} ist, d.h.\ niedrige Skalen (welcher hoher
+Frequenz entsprechen) sind weiter oben angesiedelt und hohe Skalen (welche niedriger Frequenz
+entsprechen) weiter unten.}
+\label{fig:Heisenberg-Box-Wavelet}
+\end{figure}
 \end{proposition}
 
-%\begin{remark}
-%Dieser letzte Satz sagt \emph{alles} über den Unterschied zwischen Gabor-Transformation und
-%Wavelet-Transformation:
-%\begin{itemize}
-%\item Bei der Gabor-Transformation besitzen die Heisenberg-Boxen für die Atome $ \phi_{t,\xi} $ die
-%  Ausmaße
-%  \[
-%    H_{t,\xi} = [t - \sigma(\phi), t + \sigma(\phi)] \times
-%                [\xi - \widehat{\sigma}(\phi), \xi + \widehat{\sigma}(\phi)].
-%  \]
-%  Das heißt, unabhängig von Translation oder Skalierung eines Atoms bleibt das Seitenverhältnis
-%  der Heisenberg-Box \emph{immer unverändert}, und die Fläche einer Heisenberg-Box
-%  Die Gabor-Transformation löst somit konstant in Zeit- und Frequenz auf.
-%\item Die Wavelet-Transformation arbeitet mit \emph{adaptiver} (oder relativer) 
-%  Zeit-Frequenz-Auflösung. Egal, wie man das Wavelet skaliert oder verschiebt, die Ausmaße der
-%  Heisenberg-Boxen passen sich immer so an, dass die Fläche gleich bleibt. Das heißt, man hat 
-%  automatisch die bestmögliche Lokalisierung im Zeit- und Frequenzbereich.
-%\end{itemize}
-%\end{remark}
+\begin{remark}
+Dieser letzte Satz sagt \emph{alles} über den Unterschied zwischen Gabor-Transformation und
+Wavelet-Transformation:
+\begin{itemize}
+\item Bei der Gabor-Transformation besitzen die Heisenberg-Boxen für die Atome $ \phi_{t,\xi} $ die
+  Ausmaße
+  \[
+    H_{t,\xi} = [t - \sigma(\phi), t + \sigma(\phi)] \times
+                [\xi - \widehat{\sigma}(\phi), \xi + \widehat{\sigma}(\phi)].
+  \]
+  Das heißt, unabhängig von der Skalierung der Fensterfunktion bleibt das 
+  \emph{Seitenverhältnis} der Heisenberg-Box \emph{immer unverändert}. Die Gabor-Transformation 
+  löst somit \emph{konstant} in Zeit- und Frequenz auf.
+\item Die Wavelet-Transformation arbeitet mit \emph{adaptiver} (oder relativer)
+  Zeit-Frequenz-Auflösung, d.h.\ das Seitenverhältnis der Heisenberg-Box ändert sich dynamisch.
+  Besitzt ein Signal sowohl niedrige als auch hohe Frequenzen, dann möchte man\dots
+  \begin{itemize}
+  \item in Bereichen hoher Frequenz (also bei kleinen Werten des Skalenparameters $ s $) eine gute 
+    Auflösung in Ort/Zeit haben. Denn in hohen Frequenzen stecken die Details eines Signals, und
+    von denen möchte man genau wissen, wo sie sich befinden. Wegen der Heisenberg'schen
+    Unschärferelation ist dafür die Auflösung im Frequenzbereich geringer, sodass man nicht genau 
+    bestimmen kann, wie die Details aussehen.
+  \item in Bereichen niedriger Frequenz (also bei großen Werten von $ s $) eine gute Auflösung
+    im Frequenzbereich haben. Denn in den niedrigen Frequenzen stecken die einflussreichen groben 
+    Informationen eines Signals. Deshalb möchte man hier genau wissen, welche Werte diese annehmen.
+    Eine gute Auflösung in Ort/Zeit hingegen ist nicht so wichtig, weil die niedrigen Frequenzen
+    nur langsam schwingen und sich daher lokal weniger ändert.
+  \end{itemize}
+  Man wünscht sich also bei niedrigen Frequenzen eine gute Frequenzauflösung unter Inkaufnahme 
+  einer schlechten Zeitauflösung und bei hohen Frequenzen eine gute Zeitauflösung bei schlechterer 
+  Frequenzauflösung. Genau das leistet die Wavelet-Transformation. Dieser Sachverhalt ist auch in
+  Abbildung~\ref{fig:Heisenberg-Box-Wavelet-Anpassung} veranschaulicht. Die Gabor-Transformation 
+  leistet beides nicht.
+  \begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[scale=0.5]
+  \draw [->] (-0.5,0) -- (9.5,0) node [right] {Zeit};
+  \draw [->] (0,-0.5) -- (0,10) node [left] {Frequenz};
+  
+  \draw [red] (0.5,0.5) rectangle (4.5,1);
+  \draw [red] (5,0.5) rectangle (9,1);
+  
+  \draw [red] (0.5,1.5) rectangle (2.5,2.5);
+  \draw [red] (3,1.5) rectangle (5,2.5);
+  \draw [red] (5.5,1.5) rectangle (7.5,2.5);
+  
+  \draw [red] (0.5,3) rectangle (1.5,5);
+  \draw [red] (2,3) rectangle (3,5);
+  \draw [red] (3.5,3) rectangle (4.5,5);
+  \draw [red] (5,3) rectangle (6,5);
+  \draw [red] (6.5,3) rectangle (7.5,5);
+  \draw [red] (8,3) rectangle (9,5);
+  
+  \draw [red] (0.5,5.5) rectangle (1,9.5);
+  \draw [red] (1.5,5.5) rectangle (2,9.5);
+  \draw [red] (2.5,5.5) rectangle (3,9.5);
+  \draw [red] (3.5,5.5) rectangle (4,9.5);
+  \draw [red] (4.5,5.5) rectangle (5,9.5);
+  \draw [red] (5.5,5.5) rectangle (6,9.5);
+  \draw [red] (6.5,5.5) rectangle (7,9.5);
+  \draw [red] (7.5,5.5) rectangle (8,9.5);
+  \draw [red] (8.5,5.5) rectangle (9,9.5);
+  \end{tikzpicture}
+  \caption{Die schematische Darstellung der Heisenberg-Boxen zu einem Wavelet. Nach oben (also
+  zu höheren Frequenzen und damit kleineren Skalen) werden die Rechtecke schmäler und höher. Dadurch
+  verbessert sich die Auflösung im Zeitbereich auf Kosten der Auflösung im Frequenzbereich. Nach 
+  unten
+  hin (kleinere Frequenzen und damit größere Skalen) werden die Rechtecke breiter und niedriger. Die
+  Auflösung im Frequenzbereich verbessert sich auf Kosten der Auflösung im Zeitbereich.}
+  \label{fig:Heisenberg-Box-Wavelet-Anpassung}
+  \end{figure}
+\item Die Heisenberg-Boxen zu einem Wavelet haben alle dieselbe Fläche, nämlich
+  \[
+    2s\sigma \cdot 2\frac{\widehat{\sigma}}{s} = 4 \sigma \widehat{\sigma}.
+  \]
+\end{itemize}
+\end{remark}

@@ -300,6 +300,8 @@
       welcher offensichtlich beide Richtungen kombiniert. Eine Diskretisierung ergibt z.B. die Filtermatrix
       $$ \begin{pmatrix} 1&1&1\\1&-8&1\\1&1&1 \end{pmatrix}.$$
 \end{description}
+
+\newpage
 \subsection{Filterbänke}
 
 \begin{description}
@@ -308,7 +310,7 @@
     \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{Fotos/Filterbank1}
-    \caption{Skizze einer Filterbank.}
+    \caption{Skizze einer (entarteten) Filterbank.}
     \label{fig:Filterbank1}
     \end{figure}
 	\item[Nenne 3 typische Filter]
@@ -357,20 +359,56 @@
   	mit dem ursprünglichen Eingabesignal übereinstimmen kann, aber nicht muss.
   	Signal 
   \item [Wie funktioniert die Diskrete Wavelet-Transformation mit Filterbänken?] 
-    $ \rightarrow $ siehe Abbildungen~\ref{fig:Filterbank2} und~\ref{fig:Filterbank3}.
-    \begin{figure}[ht]
-    \centering
-    \includegraphics[width=\linewidth]{Fotos/Filterbank2}
-    \caption{}
-    \label{fig:Filterbank2}
+    Für die DWT wird eine entartete Filterbank verwendet. Dabei wird das Resultat
+    der Hochpass-Filterung aufgespalten in Anteile (Details) in $x$-, in $y$- und in Diagonalrichtung.
+    Die rekursive Zerlegung erfolgt auf dem Tiefpass-gefilterten Teilsignal.
+
+    Dies liefert die Waveletkoeffizienten als Vektor
+
+    $$ [c^n,d^n,\ldots,d^1]. $$
+
+    Dabei nimmt der Detailgrad hier nach rechts zu, d.h. $d^1$ beinhaltet die Hälfte aller Frequenzen des Gesamtsignals,
+    und zwar die höheren Frequenzen, was man mit feinen Details assoziieren kann. Dies setzt sich fort, so dass $d^2$
+    die Hälfte aller Frequenzen des Tiefpass-gefilterten Gesamtsignals enthält. Das geht dann 
+    bis zu $c^n$, welches die gröbsten Details des Bildes (gebildet durch fortlaufende Tiefpass-Filterung) beinhaltet.
+
+
+    Dies kann man auch hierarchisch abspeichern. Schematisch ist dies in Abbildung~\ref{fig:dwtscheme} 
+    dargestellt, ein konkretes Beispiel ist in Abbildung~\ref{fig:dwtlichtenstein} ersichtlich.
+
+    \begin{figure}[!ht]
+      \centering
+      \includegraphics[width=.6\textwidth]{Fotos/DWT.png}
+      \caption{Schematischer Aufbau des DWT-Resultates}
+      \label{fig:dwtscheme}
     \end{figure}
-    \begin{figure}[ht]
-    \centering
-    \includegraphics[width=\linewidth]{Fotos/Filterbank3}
-    \caption{}
-    \label{fig:Filterbank3}
+
+    \begin{figure}[!ht]
+      \centering
+      \includegraphics[width=.6\textwidth]{Fotos/DWT_Lichtenstein.png}
+      \caption{Diskrete Wavelet-Transformation mit Rekursionstiefe $2$}
+      \label{fig:dwtlichtenstein}
     \end{figure}
+
+    Dabei sieht man, dass die größten drei Kästchen die Hälfte aller Frequenzen in den jeweiligen Richtungen
+    beinhalten (also den ersten Hochpass-Anteil). Das linke obere Kästchen ist dann der Rekursionsschritt
+    auf dem Tiefpass-gefilterten Signal. Dies wird insgesamt zweimal gemacht (also insgesamt drei \emph{Zoomstufen}).
+    \emph{Zoom} bedeutet hier der Faktor $2^j$ in der Zweiskalenbeziehung.
+
+  \item[Was kann man nun mit der DWT anstellen?]
+    Zu allererst kann das Bild komprimiert werden, da man lediglich die von null verschiedenen Waveletkoeffizienten
+    speichern muss. Ferner kann man das Ursprungsbild immer rekonstruieren.
+
+    Da die hierarchische Struktur der Kästchen das Auflösungsniveau (hier auch mit \emph{Zoom} bezeichnet)
+    darstellt, kann man Features relativ leicht erkennen, in dem man v.a. in den jeweils interessanten Kästchen sucht
+    und somit den Suchaufwand verringert.
+
+
+    Schließlich ist auch Entrauschen noch sehr leicht möglich, in dem man einfach in den äußersten Kästchen 
+    Wavelekoeffizienten, die größer als ein entsprechender Schwellwert sind, wegwirft/auf null setzt. Das funktioniert,
+    weil ja in diesen äußersten Kästchen die feinsten Anteile (die höchsten Frequenzen) gespeichert sind.
 \end{description}
+
 \section{Abtastsatz}
 \begin{description}
 	\item[Welche Eigenschaften müssen für eine Abtastung gelten?]
