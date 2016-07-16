@@ -51,7 +51,7 @@
       arbeitet man weiterhin mit diskret vielen Pixeln, besitzt aber kontinuierlich viele Werte,
       die die Farbe angegeben können. Unserer Meinung nach ist dieses Modell nicht sehr sinnvoll
       für unsere Anwendungszwecke.
-    \item Kontinuierlich: $ I \colon \R^{2} \rightarrow \R^{2} $. Dieses Modell ist besonders gut
+    \item Kontinuierlich: $ I \colon \R^{2} \rightarrow \R $. Dieses Modell ist besonders gut
       geeignet, um Mathematik damit zu machen. Die ganze Theorie aus der Analysis greift hier
       (Stetigkeit von Funktionen usw.). Hier besitzen wir kontinuierlich viele Bildpunkte und
       kontinuierlich viele Farbwerte. Durch Interpolation (Spline-Interpolation,
@@ -74,7 +74,7 @@
       Die resultierende Fouriertransformierte liegt dann in $L_1(\R) \cap L_2(\R)$.\\
       Formal beruht dies darauf, dass der Raum $L_1(\R)\cap L_2(\R)$ dicht in $L_2(\R)$ liegt. Deshalb
       lässt sich also immer eine Funktionenfolge aus $L_1(\R)\cap L_2(\R)$ finden, die im Grenzwert
-      gegen unsere gesuchte Fouriertransformierte konvergiert\footnote{Geht immer, zwecks 
+      gegen unsere gesuchte Fouriertransformierte (im $L_2(\R)$) konvergiert\footnote{Geht immer, zwecks 
       Banachraum und so (d.h.\ vollständiger Raum, der Grenzwert zu jeder Folge in diesem Raum sit 
       wieder in diesem Raum).}.
   \item[Was sagt der Satz von Parseval/Plancherel?]
@@ -198,7 +198,7 @@
     	Ich verstehe die Frage nicht, was ist damit gemeint?
 	\item[Wie sieht ein Tiefpass-Filter aus? Zeichne den Graph]
       Ein Tiefpass-Filter $f$ lässt wie der Name sagt die tiefen Frequenzen durch, entsprechen wir sich für die 
-      obere Frequenz $\xi$ ergeben, dass $\hat f([0,\xi])>0$ ist, während er für die höheren Frequenzen sperrt, also
+      obere Frequenz $\xi$ ergeben, dass $|\hat f([0,\xi])|>0$ ist, während er für die höheren Frequenzen sperrt, also
       $\hat f((\xi,2\pi]) = 0$.
 
       Ein idealer Tiefpass-Filter ist dabei die Rechtecksfunktion, welche direkt an der Frequenzgrenze $\xi$
@@ -240,9 +240,9 @@
               +---------------------> A ---------> A --- ....
       \end{lstlisting}
 	\item[Was ist eine Impulsantwort?]
-  	Der Filter angewandt auf den Dirac-Puls. Man kann nachweisen, dass jeder Filter nur durch den 
-  	Dirac-Puls beschrieben werden kann und man dadurch Informationen über das Verhalten des Filters 
-  	hat.
+  	Der Filter angewandt auf den Dirac-Puls. Man kann nachweisen, dass jeder LTI-Filter nur durch die 
+  	Anwendung des Filteroperators auf den Dirac-Puls beschrieben werden kann und man dadurch Informationen 
+    über das Verhalten des Filters hat.
 	\item[Spielt die Laufzeit von Filtern in der Praxis eine Rolle?]
   	Das kommt natürlich immer auf die Anwendung an. Will ich z.B.\ ein Audio- oder Videosignal in 
   	Echtzeit filtern, so muss der Filter natürlich sehr schnell arbeiten. Ein anderes Beispiel ist, 
@@ -261,7 +261,8 @@
       Mit einem Gradientenfilter können Kanten in Bildern erkannt/hervorgehoben werden.
 	\item[Wie funktioniert er?]
       Ist eine solche Kante in einem Bild, so muss dort ein signifikant anderer Farbwert
-      vorhanden sein. Dies macht man sich zu nutze, indem man sich die Steigung zwischen
+      vorhanden sein. Dies macht man sich zu Nutze, indem man sich die \emph{Steigung} (also
+      den Differenzwert) zwischen
       zwei benachbarten Farbwerten ansieht: Ist diese Steigung groß, so sind die Farbwerte
       grob unterschiedlich (beispielsweise eine schwarze Kante auf einem weißen Hintergrund),
       was ein Indikator für eine Kante ist.
@@ -308,11 +309,11 @@
   	in die Analyse-Filterbank. Das Ergebnis davon kommt in die Synthese-Filterbank, daraus bekomme 
   	ich einen weiteren Polyphase-Vektor, den ich dann ein Ausgangssignal $ c' $ umwandeln kann.
   	Der Polyphase-Vektor ist sozusagen eine vektorwertige Abtastung des Signals auf dem 
-  	Einheitsmatrix. Die Modulationsmatrix $ M $ ist eine darstellende Matrix der 
+  	Einheitskreis. Die Modulationsmatrix $ M $ ist eine darstellende Matrix der 
   	Analyse-Filterbank, und $ \widetilde{M} $ die darstellende Matrix der Synthese-Filterbank.
-  	Soll Perfect Reconstruction gelten, d.h.\ dass $ c = c' $ gilt, dann muss ich alle Änderungen, 
-  	die $ M $ gemacht hat, auch wieder rückgängig machen können durch $ \widetilde{M} $. 
-  	Mathematisch: $ M \widetilde{M} = I $. Voraussetzungen an die Filter in der Filterbank werden 
+  	Soll perfekte Rekonstruktion gelten, d.h.\ dass $ c = c' $ gilt, dann müssen alle Änderungen, 
+  	die $ M $ gemacht hat, auch wieder durch $ \widetilde{M} $ rückgängig gemacht werden. 
+  	Mathematisch: $\widetilde{M}M = I $. Voraussetzungen an die Filter in der Filterbank werden 
   	bereits durch die Modulationsmatrizen $ M $ und $ \widetilde{M} $ gegeben.
   	
   	Mathematische Formeln:
@@ -400,12 +401,13 @@
 \section{Abtastsatz}
 \begin{description}
 	\item[Welche Eigenschaften müssen für eine Abtastung gelten?]
-  	Funktion muss integrierbar sein. Schrittweite der Abtastung muss kleiner sein als $ h^{*} $, um 
+  	Die Funktion muss absolut summierbar sein, die Schrittweite der Abtastung muss kleiner sein als die 
+    Nyquist-Abtastweite $h^*$, um 
   	Unterabtastung zu vermeiden, und die Funktion muss bandbeschränkt sein, weil man nicht 
   	unendlich viele Frequenzen rekonstruieren kann.
 	\item[Erkläre den Shannonschen Abtastsatz]
-      Der Shannon'sche Abtastsatz sagt, dass wenn man eine $T$-bandbeschränkte $L_1$-Funktion fein genug
-      abtastet, dann kann man aus dieser Abtastung durch eine semi-diskrete Faltung mit der \emph{sinc}-Funktion
+      Der Shannon'sche Abtastsatz sagt, dass wenn obige Anforderungen erfüllt sind, 
+      dann kann man aus dieser Abtastung durch eine semi-diskrete Faltung mit der \emph{sinc}-Funktion
       die Originalfunktion eindeutig rekonstruieren.
 	\item[Wie funktioniert Abtasten überhaupt?]
       Beim Abtasten mit Faktor $h$ nimmt man nur jeden $h$-ten Funktionswert in die Evaluation auf.
@@ -430,7 +432,7 @@
       das Signal \emph{lebt}. Formal ist der Träger
       $$ \text{supp} f = \{t \in \R \colon f(t) \neq 0 \} \subset \R $$
 
-      In einem realen Anwendungsfall wir ein Signal immer endlichen Träger $[a,b]\subset\R$ haben, 
+      In einem realen Anwendungsfall wird ein Signal immer endlichen Träger $[a,b]\subset\R$ haben, 
       also gilt für ein passendes Maß $\INTM{\mu}$, dass $\INTM{\mu}([a,b]) < \infty$ ist.
 \end{description}
 \section{Transformationen}
@@ -438,11 +440,12 @@
 \begin{description}
 	\item[Was ist die Hough-Transformation?]
       % Ja, hier hab ich textbf verwendet, weil ich das explizit fett haben will, nur so zur Info ...
-      Die Hough-Transformation ist ein allgemeines Verfahren, um in einem \textbf{binearisierten} Bild Formen zu erkennen.
+      Die Hough-Transformation ist ein allgemeines Verfahren, um in einem \textbf{binarisierten} Bild Formen zu erkennen.
 	\item[Wie funktioniert sie?]
       Bei der Hough-Transformation wird für alle möglichen Variationen einer Form im gesamten Bild
-      gesucht, ob diese vorkommt. Dies wir dadurch realisiert, dass man bei der Test-Form alle Pixel gezählt
-      werden, bei der in der binearisierten Form ein Farbwert (z.B. 1 für Schwarz) steht. Hat man nun eine hohe Anzahl
+      gesucht, ob diese vorkommt. Dies wird dadurch realisiert, dass man alle Pixel zählt, 
+      bei der in der binarisierten Form des Bildes ein Farbwert (z.B. 1 für Schwarz) an der gerade untersuchten
+      Form an der Position steht. Hat man nun eine hohe Anzahl an solchen Pixeln
       gefunden, so hat man ziemlich sicher auch die gesuchte Form im Bild erkannt.
 	\item[Was ermöglicht sie?]
       Mit diesem Verfahren kann man nun nach \emph{allen möglichen} Formen in Bildern suchen, die Formen müssen sich 
