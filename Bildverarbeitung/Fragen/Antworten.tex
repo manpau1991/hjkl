@@ -355,9 +355,10 @@
 
     $$ [c^n,d^n,\ldots,d^1]. $$
 
-    Dabei nimmt der Detailgrad hier nach rechts zu, d.h. $d^1$ beinhaltet die Hälfte aller Frequenzen,
-    und zwar die höheren Frequenzen, was man mit feinen Details assoziieren kann. Dies setzt sich fort
-    bis zu $c^n$, welches die gröbsten Details beinhaltet.
+    Dabei nimmt der Detailgrad hier nach rechts zu, d.h. $d^1$ beinhaltet die Hälfte aller Frequenzen des Gesamtsignals,
+    und zwar die höheren Frequenzen, was man mit feinen Details assoziieren kann. Dies setzt sich fort, so dass $d^2$
+    die Hälfte aller Frequenzen des Tiefpass-gefilterten Gesamtsignals enthält. Das geht dann 
+    bis zu $c^n$, welches die gröbsten Details des Bildes (gebildet durch fortlaufende Tiefpass-Filterung) beinhaltet.
 
 
     Dies kann man auch hierarchisch abspeichern. Schematisch ist dies in Abbildung~\ref{fig:dwtscheme} 
