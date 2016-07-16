@@ -356,7 +356,7 @@ definiert als
 \[
   W_{\psi}f(t, s) \coloneqq
   \int_{\R} f(x) \frac{1}{\sqrt{|s|}} \overline{\psi\left(\frac{x - t}{s}\right)} \dif x, \qquad
-    (t,s) \in \R \times \R.
+    (t,s) \in \R \times \R_{+}.
 \]
 \end{definition}
 
@@ -622,3 +622,375 @@ Wavelet-Transformation:
   \]
 \end{itemize}
 \end{remark}
+
+\subsection{Die Implementierung der Wavelet-Transformation}
+That's too nerdy for me\dots
+
+\subsection{Inverse Transformation \& Pferdefüße}
+That's too nerdy for me\dots
+
+\subsection{Beispiele -- Musik und Kanten}
+That's too nerdy for me\dots
+
+Und noch eine Definition, die ich hier einfach so einstreue, weil wir mal eine Übungsaufgabe dazu
+gemacht haben, auch wenn dies nicht unmittelbar hier her passt:
+
+\begin{definition}
+Ein Wavelet $ \psi $ besitzt $ n $ verschwindende Momente, wenn
+\[
+  \int_{\R} t^{k} \psi(t) \dif t = 0, \qquad k = 0, \ldots, n-1.
+\]
+\end{definition}
+
+\begin{remark}\leavevmode
+\begin{itemize}
+\item Das Wavelet $ \psi' $ hat dann übrigens $ n + 1 $ verschwindende Momente.
+\item Das Haar-Wavelet hat genau ein verschwindendes Moment (siehe Übung).
+\item Wozu soll das überhaupt gut sein? Ich hab keine Ahnung, aber soweit ich das beurteilen kann
+  scheint das irgendwas mit der Analyse eines Skalogramms zu tun haben (?)
+\end{itemize}
+\end{remark}
+
+\section{Filterbänke}
+
+Filterbänke verwenden die Idee des sog.\ \emph{Subband Coding}. Dabei wird das Signal in mehrere
+Teilsignale (\emph{Subbänder}) aufgespalten, welche dann separat weiterverarbeitet werden, z.B.\ 
+mit der Wavelet-Transformation. Natürlich sollte aus den Subbändern auch wieder das ursprüngliche
+Signal rekonstruiert werden können. Dazu brauchen wir erst wieder etwas mathematische Theorie.
+
+\begin{definition}[z-Transformation]
+Die \emph{z-Transformation} eines diskreten Signals $ c \in l_{1}(\Z) $ ist die formale 
+Laurent-Reihe
+\[
+  c^{*}(z) \coloneqq \sum_{k \in \Z} c(k) z^{-k}, 
+    \qquad z \in \C_{\times} \coloneqq \C \setminus \{ 0 \}.
+\]
+\end{definition}
+
+\begin{remark}[z-Transformation]
+Die z-Transformation kann als Verallgemeinerung der Diskreten Fourier-Transformation angesehen 
+werden. Schließlich gilt ja für beliebiges $ \theta \in \T $
+\[
+    c^{*}(e^{i\theta})
+  = \sum_{k \in \Z} c(k) \left( e^{i\theta} \right)^{-k}
+  = \sum_{k \in \Z} c(k) e^{-i\theta k}
+  = \widehat{c}(\theta).
+\]
+Beispielsweise gilt auch für $ c, d \in l_{1}(\Z) $
+\[
+  (c * d)^{*}(z) = c^{*}(z) d^{*}(z).
+\]
+\end{remark}
+
+Nun wäre die naheliegendste Idee, für die Subband-Zerlegung das Signal mittels verschiedener 
+nicht überlappender Bandpassfilter (charakteristische Funktionen) aufzuspalten. Dies mit 
+LTI-Filtern zu realisieren ist aber weder alles andere als einfach, noch effizient. Daher wollen 
+wir uns nun eine einfachere und praktikablere Zerlegung ansehen.
+
+\begin{definition}
+Sei $ n \geq 2 $. Der Operator $ \downarrow_{n} $, der eine Folge $ c \in l(\Z) $ abbildet auf
+\[
+  \downarrow_{n} c = c(n \cdot \bullet),
+\]
+heißt \emph{Downsampling-Operator} der Ordnung $ n $. Der Operator $ \uparrow_{n} $ mit
+\[
+  \uparrow_{n} c(j) = \begin{cases}
+    c(j / n), & j \in n\Z \\
+    0, & j \in Z \setminus n\Z,
+  \end{cases}
+\]
+heißt \emph{Upsampling-Operator} der Ordnung $ n $.
+\end{definition}
+
+\begin{remark}\leavevmode
+\begin{itemize}
+\item Der Downsampling-Operator der Ordnung $ n $ behält also nur jeden $ n $-ten Eintrag eines 
+  Signals. Der Upsampling-Operator \enquote{bläst} das Signal künstlich auf, indem er zwischen die 
+  bereits vorhandenen Einträge einfach $ n - 1 $ weitere $ 0 $-Einträge setzt. Beispiel: Aus der
+  Folge
+  \[
+    c \coloneqq \begin{bmatrix} 1 & 2 & 3 & 4 & 5 \end{bmatrix}
+  \]
+  gewinnt man mittels Downsampling der Ordnung $ 2 $
+  \[
+    \downarrow_{2} c = \begin{bmatrix} 1 & 3 & 5 \end{bmatrix}
+  \]
+  und mittels Upsampling der Ordnung $ 2 $
+  \[
+    \uparrow_{2} c = \begin{bmatrix} 1 & 0 & 2 & 0 & 3 & 0 & 4 & 0 & 5 \end{bmatrix}.
+  \]
+\item In der Operatorschreibweise liest man von rechts nach links, d.h. bei
+  $ \downarrow_{n} \uparrow_{n} c $ wird zuerst $ \uparrow_{n} $ und dann $ \downarrow_{n} $
+  ausgeführt.
+\item Offensichtlich gilt:
+  \[
+    \downarrow_{n} \uparrow_{n} = I \neq{} \uparrow_{n} \downarrow_{n}.
+  \]
+  Denn auf der linken Seite wird zuerst mit Nullen aufgefüllt, welche dann wieder entfernt werden.
+  Auf der rechten Seite werden allerdings alle $ n $-ten Einträge entfernt, welche dann durch Nullen
+  ersetzt werden.
+\end{itemize}
+\end{remark}
+
+Mithilfe des Downsampling-Operators der Ordnung $ n $ kann man nun ein Signal $ c $ in die $ n $ 
+Subbänder
+\[
+  c_{j} \coloneqq{} \downarrow_{n} \tau_{j} c, \qquad j \in \Z_{n}
+\]
+zerlegen, welche man mit der Formel
+\[
+  c = \sum_{j \in \Z_{n}} \tau_{j} \uparrow_{n} c_{j}
+\]
+wieder zu $ c $ kombinieren kann. Beispiel: Angenommen, wie haben ein $ 9 $-periodisches Signal
+$ c $ mit den Einträgen
+\[
+  c = \begin{bmatrix} 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \end{bmatrix},
+\]
+dann erhalten wir durch Translation um $ 0,1,2 $ und jeweils Downsampling der Ordnung $ 3 $ die 
+drei Subbänder
+\[
+c_{0} \coloneqq \begin{bmatrix} 1 & 4 & 7 \end{bmatrix}, \quad
+c_{1} \coloneqq \begin{bmatrix} 2 & 5 & 8 \end{bmatrix}, \quad
+c_{2} \coloneqq \begin{bmatrix} 3 & 6 & 9 \end{bmatrix},
+\]
+sodass $ c_{j} = c(n \cdot \bullet + j) $ für ein $ j \in \Z_{3} $.
+Upsampling der Ordnung $ 3 $ und Translation um $ 0,1,2 $ liefern mit anschließender Addition wieder
+das Ausgangssignal:
+\[
+  \begin{array}{*{9}{c}}
+  1 & 0 & 0 & 4 & 0 & 0 & 7 & 0 & 0 \\
+  0 & 2 & 0 & 0 & 5 & 0 & 0 & 8 & 0 \\
+  0 & 0 & 3 & 0 & 0 & 6 & 0 & 0 & 9 \\ \hline
+  1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9
+  \end{array}
+\]
+
+Das Subband-Coding verallgemeinert dieses Prinzip. Statt des Translationsoperators verwenden wir
+jetzt einfach $ n $ allgemeine Filter $ F_{j} $, $ j \in \Z_{n} $, und wenden auf jedes der 
+Resultate den Downsampling-Operator an:
+\[
+  c_{j} ={} \downarrow_{n} F_{j} c, \qquad j \in \Z_{n}.
+\]
+Schematisch:
+\[
+  \begin{array}{*{9}{c}}
+  & & & \nearrow & \boxed{F_{0}} & \rightarrow & \boxed{\downarrow_{n}} & \rightarrow & c_{0} \\
+  c & \rightarrow & \odot & & \vdots & & \vdots & & \vdots \\
+  & & & \searrow & \boxed{F_{n-1}} & \rightarrow & \boxed{\downarrow_{n}} & \rightarrow & c_{n-1}
+  \end{array}
+\]
+Diese Zerlegung bezeichnet man als \emph{Analyse-Filterbank} $ F = (F_{j} : j \in \Z_{n}) $. Wir 
+haben dabei die Anzahl der Subbänder gleich der Ordnung des Downsampling-Operators gewählt. Solche
+Filterbänke bezeichnet man als \emph{kritisch abgetastet}. Ist die Anzahl der Subbänder kleiner als
+die Ordnung des Downsamplings, dann spricht man von \emph{Unterabtastung}. Eine solche Filterbank
+wurde bereits oben anhand des Translationsoperators gezeigt. Ist die Zahl der Subbänder größer als
+die Ordnung des Downsamplings, so spricht man von \emph{Überabtastung}.
+
+Wir werden nun sehen, dass sich jede Analyse-Filterbank als Matrix beschrieben lässt. Dabei kommt
+endlich die z-Transformation ins Spiel. Dabei nehmen wir an, dass jeder Filter $ F_{j} $ ein
+LTI-Filter mit Impulsantwort $ f_{j} $ ist, dass also $ F_{j}c = f_{j} * c $ gilt.
+
+\begin{definition}[Modulationsmatrix]
+Die \emph{Modulationsmatrix} $ M(z) $ zu der Filterbank
+\[
+  F = (F_{j} : j \in \Z_{n})
+\]
+ist definiert als
+\begin{align*}
+   M(z)
+  &\coloneqq \frac{1}{n} \left( f_{j}^{*} \left( e^{2\pi ik/n} \right) : j,k \in \Z_{n} \right) \\
+  &= \frac{1}{n} \begin{pmatrix}
+    f_{0}^{*}(z) & f_{0}^{*}(e^{2\pi i/n}) & \cdots & f_{0}^{*}(e^{2\pi i(n-1)/n} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    f_{n-1}^{*}(z) & f_{n-1}^{*}(e^{2\pi i/n}) & \cdots & f_{n-1}^{*}(e^{2\pi i(n-1)/n})
+  \end{pmatrix}.
+\end{align*}
+\end{definition}
+
+\begin{remark}[Modulationsmatrix] \leavevmode
+\begin{itemize}
+\item Für $ n = 2 $ hat die Modulationsmatrix die Gestalt
+  \[
+    M(z) = \frac{1}{2}
+    \begin{pmatrix}
+      f_{0}^{*}(z) & f_{0}^{*}(-z) \\
+      f_{1}^{*}(z) & f_{1}^{*}(-z)
+    \end{pmatrix}.
+  \]
+\item Die Vorfaktoren $ e^{2\pi ik/n} $ vor der Variablen $ z $ sind $ n $-te Einheitswurzeln und
+  spielen daher die Rolle verallgemeinerter Vorzeichen.
+\item Die Bedeutung der Modulationsmatrix liegt darin, dass sie die Filterbank beschreibt.
+\end{itemize}
+\end{remark}
+
+\begin{example}[Modulationsmatrix für die Translationsfilter]
+Wir berechnen die Modulationsmatrix für die Translationsfilter $ F_{j} = \tau_{j} $,
+$ j \in \Z_{n} $. Dazu bestimmen wir als Erstes die Impulsantwort $ f_{j} $ für $ F_{j} $. Es gilt
+\[
+  f_{j} = F_{j}\delta = \tau_{j}\delta = \delta(\bullet + j).
+\]
+Die z-Transformation der Impulsantwort ist damit für ein $ z \in \C_{\times} $ gegeben durch
+\[
+    f_{j}^{*}(z)
+  = \sum_{k \in \Z} f_{j}(k) z^{-k}
+  = \sum_{k \in \Z} \delta(k + j) z^{-k}
+  = \begin{cases}
+      0, & k \neq -j, \\
+      z^{j}, & k = -j
+    \end{cases}
+  = z^{j}.
+\]
+Die Modulationsmatrix $ M(z) $ zur Filterbank $ F = (F_{j} : j \in \Z_{n}) $ ist schließlich
+\begin{align*}
+   M(z)
+&= \frac{1}{n} \left( f_{j}^{*}(e^{2\pi ik/n}) : j,k \in \Z_{n} \right) 
+ = \frac{1}{n} \begin{pmatrix}
+     1 & 1 & \cdots & 1 \\
+     \vdots & \vdots & \ddots & \vdots \\
+     z^{n-1} & \left( e^{2\pi i/n}z \right)^{n-1} & \cdots & \left( e^{2\pi i(n-1)/n}z \right)^{n-1}
+   \end{pmatrix}.
+\end{align*}
+\end{example}
+
+\begin{definition}[Polyphasen-Vektor]
+Der Vektor
+\[
+  \left( c^{*}(e^{2\pi ik/n}z) : k \in \Z_{n} \right)
+\]
+zu einem Signal $ c $ heißt \emph{Polyphasen-Vektor} zu $ c $.
+\end{definition}
+
+\begin{proposition}
+Für die Analyse-Filterbank gilt
+\[
+    \left( c^{*}_{k}(z^{n}) : k \in \Z_{n} \right)
+  = M(z) \left( c^{*}(e^{2\pi ik/n}z) : k \in \Z_{n} \right).
+\]
+Das heißt
+\[
+    \begin{pmatrix}
+      c_{0}^{*}(z^{n}) \\
+      c_{1}^{*}(z^{n}) \\
+      \vdots \\
+      c_{n-1}^{*}(z^{n})
+    \end{pmatrix}
+  = M(z) \begin{pmatrix}
+      c^{*}(z) \\
+      c^{*}(e^{2\pi i/n}z) \\
+      \vdots \\
+      c^{*}(e^{2\pi i(n-1)/n}z)
+    \end{pmatrix}
+\]
+\end{proposition}
+
+\begin{remark} \leavevmode
+\begin{itemize}
+\item Das Ergebnis einer Filterbank lässt sich also berechnen, indem man die Modulationsmatrix der
+  Filterbank mit dem Polyphasen-Vektor des Signals multipliziert.
+\item Für den Fall $ n = 2 $ gilt
+  \[
+    \begin{pmatrix}
+      c_{0}^{*}(z^{2}) \\
+      c_{1}^{*}(z^{2})
+    \end{pmatrix}
+  = \frac{1}{2}
+    \begin{pmatrix}
+      f_{0}^{*}(z) & f_{0}^{*}(-z) \\
+      f_{1}^{*}(z) & f_{1}^{*}(-z)
+    \end{pmatrix}
+    \begin{pmatrix}
+      c^{*}(z) \\
+      c^{*}(-z)
+    \end{pmatrix}.
+  \]
+\end{itemize}
+\end{remark}
+
+Nun wollen wir den Analyseprozess umkehren und die Subbänder $ c_{j} $, $ j \in \Z_{n} $ wieder zu
+einem Signal $ c $ zusammensetzen. Dazu gehen wir genau den umgekehrten Weg und führen erst ein
+Upsampling jedes Subbandes durch, filtern das Ergebnis mit den entsprechenden Filtern $ G_{j} $,
+$ j \in \Z_{n} $ und summieren die Resultate schließlich auf. Also:
+\[
+  c' = \sum_{k \in \Z_{n}} G_{j} \uparrow_{n} c_{j}.
+\]
+Dies führt uns zur \emph{Synthese-Filterbank}
+\[
+  \begin{array}{*{9}{c}}
+    c_{0} & \rightarrow & \boxed{\uparrow_{n}} & \rightarrow & \boxed{G_{0}} & \searrow & & \\
+    \vdots & & \vdots & & \vdots & & \oplus & \rightarrow & c' \\
+    c_{n-1} & \rightarrow & \boxed{\uparrow_{n}} & \rightarrow & \boxed{G_{n-1}} & \nearrow & &
+  \end{array}
+\]
+mit der Modulationsmatrix
+\[
+  \widetilde{M}(z) = \begin{pmatrix}
+    g_{0}^{*}(z) & \cdots & g_{n-1}^{*}(z) \\
+    \vdots & \ddots & \vdots \\
+    g_{0}^{*}(e^{2\pi i(n-1)/n}) & \cdots & g_{n-1}^{*}(e^{2\pi i(n-1)/n})
+  \end{pmatrix}.
+\]
+Das heißt
+\[
+    \left( c^{*}(e^{2\pi ik/n}z) : k \in \Z_{n} \right)
+  = \widetilde{M}(z) \left( c^{*}_{k}(z^{n}) : k \in \Z_{n} \right).
+\]
+Auf der linken Seite erhalten wir also wieder genau den Polyphasen-Vektor, den wir anfangs mit der 
+Modulationsmatrix der Analyse-Filterbank multipliziert haben.
+
+Was wir aber letztendlich betrachten wollen sind nicht die Analyse- oder Synthese-Filterbank für 
+sich alleine genommen, sondern das Gesamtsystem, die \emph{Filterbank}, die wir erhalten, wenn wir
+Analyse- und Synthese-Filterbank zusammenstöpseln:
+\[
+  \begin{array}{*{17}{c}}
+    & & & \nearrow & \boxed{F_{0}} & \rightarrow & \boxed{\downarrow_{n}} & \rightarrow & c_{0} 
+        & \rightarrow & \boxed{\uparrow_{n}} & \rightarrow & \boxed{G_{0}} & \searrow & & \\
+    c & \rightarrow & \odot & & \vdots & & \vdots & & \vdots 
+        & & \vdots & & \vdots & & \oplus & \rightarrow & c' \\
+    & & & \searrow & \boxed{F_{n-1}} & \rightarrow & \boxed{\downarrow_{n}} & \rightarrow & c_{n-1}
+        & \rightarrow & \boxed{\uparrow_{n}} & \rightarrow & \boxed{G_{n-1}} & \nearrow & &
+  \end{array}
+\]
+Dabei sollte hinten wieder dasselbe herauskommen, was man vorne hineingesteckt hat.
+
+\begin{definition}[Perfekte Rekonstruktion]
+Die Filterbank $ (F,G) $ liefert \emph{perfekte Rekonstruktion}, wenn $ c' = c $ für alle
+Eingabedaten $ c $ gilt.
+\end{definition}
+
+\begin{remark}[Perfekte Rekonstruktion]\leavevmode
+\begin{itemize}
+\item Unter Verwendung der Modulationsmatrizen für Analyse- und Synthese-Filterbank kann man
+  perfekte Rekonstruktion auch schreiben als:
+  \[
+      \left( c^{*}(e^{2\pi ik/n}z) : k \in \Z_{n} \right)
+    = \widetilde{M}(z) M(z)
+      \left( c^{*}(e^{2\pi ik/n}z) : k \in \Z_{n} \right).
+  \]
+  Da links und rechts zwei identische Polyphasen-Vektoren stehen, folgt sofort
+  \[
+    \widetilde{M}(z) M(z) = I, \qquad \widetilde{M}(z) = M^{-1}(z).
+  \]
+  Damit ist die \emph{komplette} Filterbank bereits durch die Modulationsmatrix der
+  Analyse-Filterbank festgelegt.
+\item Manchmal erlaubt man der Filterbank auch, dass die Originaldaten zeitverzögert rekonstruiert
+  werden, d.h.\ $ c' = \tau_{k} c $ für ein $ k \in \Z $. Das ist zwar streng genommen keine
+  perfekte Rekonstruktion mehr, aber aus $ \tau_{k} c $ lässt sich $ c $ ja leicht wieder gewinnen.
+\item Es ist
+  \[
+    \widetilde{M}(z) M(z) =
+    \left( 
+      \sum_{l \in \Z} g_{l}^{*}(e^{2\pi ij/n}z) f_{l}^{*}(e^{2\pi ik/n}z) : j,k \in \Z_{n}
+    \right).
+  \]
+\end{itemize}
+\end{remark}
+
+Wir wissen jetzt, dass perfekte Rekonstruktion aus $ \widetilde{M}(z) M(z) = I $ folgt. Interessant
+ist, dass auch die Umkehrung gilt.
+
+\begin{proposition}[Perfekte Rekonstruktion]
+Eine Filterbank $ (F,G) $ besitzt die Fähigkeit zur perfekten Rekonstruktion genau dann, wenn
+\[
+  \widetilde{M}(z) M(z) = I, \qquad z \in \C.
+\]
+\end{proposition}
