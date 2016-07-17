@@ -267,10 +267,18 @@ Hinter der Cooley-Tukey-FFT steckt ein einfacher Divide-and-Conquer-Algorithmus.
 zu transformierendes Signal der Länge $ n $ ist $ c \in l(\Z_{n}) $, wobei $ n = 2m $ eine gerade 
 Zahl ist. Dann können wir die Fourier-Transformation von $ c $ für ein $ j \in \Z_{n} $ auch
 schreiben als
-\[
+\begin{align*}
     \widehat{c_{n}}(j) 
-  = (c(2\bullet))_{m}^{\wedge}(j) + \omega^{j} \ (c(2\bullet + 1))_{m}^{\wedge}(j).
-\]
+  &= \sum_{k \in \Z_{n}} c(k) e^{-2\pi i jk/n} \\
+  &= \sum_{k \in \Z_{m}} c(2k) e^{-2\pi i j2k/(2m)}
+       + \sum_{k \in \Z_{m}} c(2k+1) e^{-2\pi i j(2k+1)/(2m)} \\
+  &= \underbrace{\sum_{k \in \Z_{m}} c(2k) e^{-2\pi i jk/m}}_{= (c(2\bullet))_{m}^{\wedge}(j)}
+       + \underbrace{\sum_{k \in \Z_{m}} c(2k+1) e^{-2\pi i jk/m}}_{
+           =(c(2\bullet + 1))_{m}^{\wedge}(j)
+         }
+         \underbrace{e^{-\pi i j/m}}_{= e^{-2\pi i j/n} = \omega^{j}} \\
+  &= (c(2\bullet))_{m}^{\wedge}(j) + \omega^{j} \ (c(2\bullet + 1))_{m}^{\wedge}(j).
+\end{align*}
 Das bedeutet: Wir halbieren den Eingabevektor der Länge $ n $ in zwei kleinere Vektoren der Länge
 $ m $, indem wir jeweils nur gerade bzw.\ ungerade Indizes betrachten. Danach berechnen wir für 
 diese zwei Vektoren jeweils die DFT der Ordnung $ m $. Die resultierenden Ergebnisvektoren setzen 
@@ -325,8 +333,23 @@ faktorisieren lässt:
 \begin{pmatrix}
 1 & \cdot & \cdot & \cdot \\ \cdot & \cdot & 1 & \cdot \\ \cdot & 1 & \cdot & \cdot \\ \cdot & 
 \cdot & \cdot & 1
-\end{pmatrix}.
+\end{pmatrix},
 }_{\coloneqq M_{1}}
+\]
+wobei $ M_{3} = \diag(\omega^{0 \cdot 0}, \omega^{0 \cdot 1}, \omega^{1 \cdot 0}, 
+\omega^{1 \cdot 1}) = \diag(1,1,1,i) $ und
+\[
+  M_{4} M_{3} = \begin{pmatrix*}[r]
+    1 & \cdot & 1 & \cdot \\
+    \cdot & 1 & \cdot & i \\
+    1 & \cdot & -1 & \cdot \\
+    \cdot & 1 & \cdot & -i
+  \end{pmatrix*} = \begin{pmatrix*}[r]
+    1 & \cdot & \omega^{0} & \cdot \\
+    \cdot & 1 & \cdot & \omega^{1} \\
+    1 & \cdot & \omega^{2} & \cdot \\
+    \cdot & 1 & \cdot & \omega^{3}
+  \end{pmatrix*}.
 \]
 Und damit gilt für ein Eingabesignal $ x \in l(\Z_{4}) $
 \[
@@ -393,12 +416,11 @@ Diese Berechnung ist in Abbildung~\ref{fig:cooley-tukey-fft} schematisch dargest
 \end{figure}
 Zur Erklärung: Die Matrix $ M_{1} $ bewirkt die Aufteilung des Eingabevektors in gerade und ungerade
 Indizes. Die Matrix $ M_{2} $ führt anschließend jeweils eine $ \DFT_{2} $ auf den Teilvektoren 
-durch. Danach erfolgt eine Skalierung der Daten durch $ M_{3} $ (dies entspricht dem Korrekturterm
-$ \omega^{j} $). Abhängig von der Wahl von $ j $ müssen die beiden Vektoren nun wieder zu einem
-großen Vektor zusammengesetzt werden, was durch $ M_{4} $ geschieht. Unter der Annahme, dass 
-Multiplikationen mit $ 1 $ und $ -1 $ sowie Additionen mit $ 0 $ wegoptimiert werden können, 
-benötigt dieser ganze Vorgang insgesamt nur drei Additionen und vier Multiplikationen, wohingegen 
-beim naiven Ansatz über die Transformationsmatrix $ V_{4} $ zwölf Additionen und vier 
+durch. Zum Schluss muss noch der Korrekturterm $ \omega^{j} $ angewendet und die beiden Vektoren 
+wieder zu einem großen Vektor zusammengesetzt werden, was durch $ M_{4}M_{3} $ geschieht. Unter der 
+Annahme, dass Multiplikationen mit $ 1 $ und $ -1 $ sowie Additionen mit $ 0 $ wegoptimiert werden 
+können, benötigt dieser ganze Vorgang insgesamt nur drei Additionen und vier Multiplikationen, 
+wohingegen beim naiven Ansatz über die Transformationsmatrix $ V_{4} $ zwölf Additionen und vier 
 Multiplikationen auszuführen sind.
 
 Neben der Cooley-Tukey-FFT gibt es u.a.\ noch die

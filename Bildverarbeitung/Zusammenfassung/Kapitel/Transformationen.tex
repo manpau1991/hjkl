@@ -103,7 +103,7 @@ Abstand aufgetragen werden und nach oben die Zahl der Punkte, durch die diese Ge
   alle Kurven, die man irgendwie parametrisieren kann. Z.B.\ kann man Kreise eindeutig durch
   einen Mittelpunkt und Radius darstellen und dies ermöglicht es, mit der Hough-Transformation 
   Kreise im Bild zu finden. Das Problem dabei ist nur, dass mit steigender Zahl an Freiheitsgraden 
-  der Aufwand der Transformation \emph{exponentiell} steigt. Je komplexer also die Formen sind,
+  der Aufwand der Transformation \emph{polynomial} steigt. Je komplexer also die Formen sind,
   nach denen man sucht, desto länger dauert die Transformation. In solchen Fällen hilft es dann nur,
   einen oder mehrere der Freiheitsgrade zu eliminieren, indem man z.B.\ für Kreise einen festen
   Radius oder Mittelpunkt einstellt.
@@ -341,7 +341,8 @@ nämlich mit der sog.\ \emph{Kontinuierlichen Wavelet-Transformation}.
     \dif x
   \]
   gelten muss. Daraus folgt sofort, dass jede zulässige Funktion \emph{automatisch} per definitionem
-  ein Wavelet ist.
+  ein Wavelet ist. Die Identität $ 0 = \widehat{\psi}(0) $ besagt zudem, dass ein Wavelet
+  Charakteristiken eines Bandpassfilters besitzt.
 \item Ist das Wavelet $ \psi : \R \rightarrow \R $ reell, so vereinfacht sich die 
   Zulässigkeitsbedingung zu
   \[
@@ -395,12 +396,12 @@ definiert als
   \]
 \item Das \emph{Mexican-Hat-Wavelet} ist als
   \[
-    \psi(t) \coloneqq (1 - t^{2}) e^{-t^{2} / 2} = \dod[2]{}{t} e^{-t^{2} / 2}, \qquad t \in \R
+    \psi(t) \coloneqq (1 - t^{2}) e^{-t^{2} / 2} = -\dod[2]{}{t} e^{-t^{2} / 2}, \qquad t \in \R
   \]
   definiert. Es besitzt zwar unendlichen Träger, klingt aber exponentiell ab, weshalb es immer noch
   über eine gute Zeitlokalisierung verfügt. Die zugehörige Fourier-Transformierte ist
   \[
-    \widehat{\psi}(t) = \sqrt{2\pi} \xi^{2} e^{-\xi^{2} / 2}
+    \widehat{\psi}(\xi) = \sqrt{2\pi} \xi^{2} e^{-\xi^{2} / 2}
   \]
   und damit i.W.\ wieder das Wavelet selbst.
 \item Das \emph{Morlet-Wavelet} ist der \enquote{komplexe Bruder} des Mexican-Hat-Wavelets und ist
@@ -411,7 +412,7 @@ definiert als
   Der Parameter $ \omega $ ist frei wählbar und gibt an, wie oft das Wavelet oszilliert.
   Das Morlet-Wavelet ist nach unserer Definition kein zulässiges Wavelet, da
   \[
-    \int_{\R} \psi(t) = \sqrt{2\pi} e^{-\omega^{2} / 2} \neq 0.
+    \int_{\R} \psi(t) \dif t = \sqrt{2\pi} e^{-\omega^{2} / 2} \neq 0.
   \]
   Wir können aber
   \[
@@ -807,11 +808,11 @@ Die \emph{Modulationsmatrix} $ M(z) $ zu der Filterbank
 ist definiert als
 \begin{align*}
    M(z)
-  &\coloneqq \frac{1}{n} \left( f_{j}^{*} \left( e^{2\pi ik/n} \right) : j,k \in \Z_{n} \right) \\
+  &\coloneqq \frac{1}{n} \left( f_{j}^{*} \left( e^{2\pi ik/n}z \right) : j,k \in \Z_{n} \right) \\
   &= \frac{1}{n} \begin{pmatrix}
-    f_{0}^{*}(z) & f_{0}^{*}(e^{2\pi i/n}) & \cdots & f_{0}^{*}(e^{2\pi i(n-1)/n} \\
+    f_{0}^{*}(z) & f_{0}^{*}(e^{2\pi i/n}z) & \cdots & f_{0}^{*}(e^{2\pi i(n-1)/n}z) \\
     \vdots & \vdots & \ddots & \vdots \\
-    f_{n-1}^{*}(z) & f_{n-1}^{*}(e^{2\pi i/n}) & \cdots & f_{n-1}^{*}(e^{2\pi i(n-1)/n})
+    f_{n-1}^{*}(z) & f_{n-1}^{*}(e^{2\pi i/n}z) & \cdots & f_{n-1}^{*}(e^{2\pi i(n-1)/n}z)
   \end{pmatrix}.
 \end{align*}
 \end{definition}
@@ -983,6 +984,8 @@ Eingabedaten $ c $ gilt.
   \]
   Damit ist die \emph{komplette} Filterbank bereits durch die Modulationsmatrix der
   Analyse-Filterbank festgelegt.
+  
+  Übrigens: Die Filterbank für die Translationsfilter besitzt perfekte Rekonstruktion.
 \item Manchmal erlaubt man der Filterbank auch, dass die Originaldaten zeitverzögert rekonstruiert
   werden, d.h.\ $ c' = \tau_{k} c $ für ein $ k \in \Z $. Das ist zwar streng genommen keine
   perfekte Rekonstruktion mehr, aber aus $ \tau_{k} c $ lässt sich $ c $ ja leicht wieder gewinnen.
@@ -1039,9 +1042,9 @@ und somit weiter zerlegen. Dadurch entsteht eine baumartige Kaskade von Signalen
 \]
 Diesen Ansatz bezeichnet man auch als \emph{Wavelet-Packages}.
 
-In der Wavelet-Analysis ist $ F_{0} $ normalerweise ein \enquote{Tiefpassfilter} und $ F_{0} $ ein 
-\enquote{Hochpassfilter}. Dabei werden nur die Daten weiter zerlegt, die aus $ F_{0} $ herauskommen.
-Also:
+In der Wavelet-Analysis ist $ F_{0} $ normalerweise ein \enquote{Tiefpassfilter} und $ G_{0} $ ein 
+\enquote{Hochpassfilter}. Dabei werden typischerweise nur die Daten weiter zerlegt, die aus $ F_{0} 
+$ herauskommen. Also:
 \[
   c \rightarrow \odot
   \begin{array}{*{7}{l}}
@@ -1056,8 +1059,24 @@ Also:
   \end{array}
 \]
 
-Umgekehrt wird natürlich auch wieder die Synthese als Kaskade realisiert, und zwar durch Kaskaden
-der Synthese-Filterbank:
+Nach $ r $ derartigen Kaskadenschritten erhält man somit die Ausgabesignale
+\[
+  c_{j}^{r}, \qquad j = 0, \ldots, 2^{r} - 1.
+\]
+Der Index $ j $ in Binärschreibweise gibt dabei genau die Filterungskaskade an, der $ c_{j}^{r} $
+unterworfen wurde. Das heißt, besitzt $ j $ in Binärschreibweise die Darstellung
+$ \epsilon_{r-1} \ \epsilon_{r-2} \ \cdots \ \epsilon_{0} $, dann ist $ c_{j}^{r} $ entstanden
+durch
+\[
+  c_{j}^{r} = \downarrow_{2} F_{\epsilon_{0}} \downarrow_{2} F_{\epsilon_{1}} \cdots
+              \downarrow_{2} F_{\epsilon_{n-1}}c.
+\]
+Man beachte wiederum, dass man in der Operatorschreibweise von rechts nach links ließt. Bspw.\ 
+erhält man das Teilsignal $ c_{01} $, indem man $ c $ zuerst $ \boxed{F_{0}} \rightarrow 
+\boxed{\downarrow_{2}} $ durchlaufen lässt und dann $ \boxed{F_{1}} \rightarrow 
+\boxed{\downarrow_{2}} $ anwendet.
+
+Umgekehrt wird die Synthese der Teilsignale durch Kaskaden der Synthese-Filterbank realisiert:
 \[
   \begin{array}{*{9}{c}}
     \begin{array}{*{6}{c}}
@@ -1076,3 +1095,75 @@ der Synthese-Filterbank:
   \end{array}
   \oplus \rightarrow c
 \]
+
+Wir schieben nun die Analyse-Filterbank etwas beiseite und konzentrieren uns auf die 
+kaskadenartige Synthese-Filterbank. Wir wollen aus einfachen Eingabedaten mithilfe des
+Synthese-Prozesses neue Funktionen erzeugen (\emph{Subdivision}). Wenn wir ein gegebenes Signal
+$ x $ in $ c_{0}^{r} $ einspeisen, dann generieren wir offensichtlich ein neues Signal
+\[
+    c_{r} 
+  = \underbrace{G_{0} \uparrow_{2} \cdots G_{0} \uparrow_{2}}_{\text{$ r $-mal}} x
+  = (G_{0} \uparrow_{2})^{r}x,
+\]
+welches wegen des Upsamplings $ 2^{r} $ so viele Daten enthält wie $ x $. Daher betrachten wir im
+Folgenden nur $ c_{r}(2^{-r} \cdot \bullet) \in l(2^{-r}\Z) $. Wir bilden hiervon die 
+Fourier-Transformation
+\[
+  \phi_{r}(\xi) = (c_{r}(2^{-r} \cdot \bullet))^{\wedge}(\xi), \qquad r \in \N_{0},
+\]
+welche sich in der z-Transformation schreiben lässt als
+\[
+  \phi_{r}(\xi) = \prod_{j = 1}^{r} \frac{1}{2} g_{0}^{*} \left(e^{i\xi/2^{j}}\right).
+\]
+$ g_{0} $ bezeichnet dabei die Impulsantwort des Filters $ G_{0} $. Was passiert, wenn wir $ c $ 
+durch unendlich viele Kaskaden der Synthese-Filterbank laufen lassen und davon die 
+Fourier-Transformation bilden? Wir definieren dazu die Grenzfunktion
+\[
+  \phi(\xi) \coloneqq \phi_{\infty}(\xi) \coloneqq \lim\limits_{r \to \infty} \phi_{r}(\xi)
+  = \prod_{j = 1}^{\infty} \frac{1}{2} g_{0}^{*} \left(e^{i\xi/2^{j}}\right),
+\]
+vorbehaltlich Konvergenz des unendlichen Produkts. Diese Funktion besitzt die Eigenschaft
+\[
+  \phi(\xi) = \frac{1}{2} g_{0}^{*} \left( e^{i\xi / 2} \right) \phi \left( \frac{\xi}{2} \right).
+\]
+Unter der Annahme, dass $ \phi \in L_{1}(\R) $, kann man die Inverse Fourier-Transformation
+$ \psi = \phi^{\vee} $ zu $ \phi $ bilden, d.h.\ $ \phi = \widehat{\psi} $. Damit können wir die 
+letzte Formel auch schreiben als
+\[
+  \widehat{\phi}(\xi) = ((g_{0} * \psi)(2 \cdot \bullet))^{\wedge}(\xi),
+\]
+also
+\[
+  \phi = (g_{0} * \psi)(2 \cdot \bullet) = \sum_{k \in \Z} g_{0}(k) \phi(2 \cdot \bullet - k).
+\]
+Diese Gleichung bezeichnet man als \emph{Zweiskalenbeziehung} oder \emph{Verfeinerungsgleichung}.
+Sie besagt, dass sich $ \phi $ darstellen lässt durch Überlagerung verschobener und gestauchter
+Varianten von sich selbst. Die Funktion besitzt also eine gewisse Selbstähnlichkeit. Siehe auch
+Abbildung~\ref{fig:zweiskalenbeziehung} zur Veranschaulichung. Man kann zeigen, dass solche 
+Funktionen eigentlich nur als Ergebnis des Subdivision-Prozesses entstehen.
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \draw [<->,thick] (-5,0) -- (5,0);
+  \draw (0,-0.1) -- (0,0.1);
+  \foreach \x in {1,...,4}{
+    \draw (-\x,-0.1) -- (-\x,0.1);
+    \draw (\x,-0.1) -- (\x,0.1);
+  };
+  \draw [->,thick] (0,0) -- (0,4);
+  \draw [fill=blue,opacity=0.25] (-4,0) -- (-2,1.5) -- (0,0) -- cycle;
+  \draw [fill=blue,opacity=0.25] (0,0) -- (2,1.5) -- (4,0) -- cycle;
+  \draw [fill=blue,opacity=0.25] (-2,0) -- (0,3) -- (2,0) -- cycle;
+  \draw [red, thick] (-4,0) -- (0,3) -- (4,0);
+\end{tikzpicture}
+\caption{Die Zweiskalenbeziehung der stückweisen linearen \enquote{Dachfunktion}. Die fett rot
+gezeichnete Funktion kann man darstellen als Überlagerung der drei blau hinterlegten Funktionen,
+welche allesamt gestauchte und verschobene Varianten der roten Funktion sind.}
+\label{fig:zweiskalenbeziehung}
+\end{figure}
+
+\begin{remark}[Zweiskalenbeziehung]
+Warum ist das wichtig?
+Unendliche Produkt konvergiert, wenn Folge eine Einsfolge ist -> Filter haben mittelnden Charakter 
+-> Tiefpassfilter.
+\end{remark}
