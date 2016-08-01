@@ -1,4 +1,7 @@
-import Control.Monad (MonadPlus(..))
+module MyList where
+
+import Control.Applicative
+import Control.Monad 
 
 -- Definition of a custom list datatype.
 data List a = Empty 
@@ -8,10 +11,10 @@ data List a = Empty
 instance Monad List where
     -- return :: a -> List a
     return x = Cons x Empty
-    -- (>>=) :: List a -> (List b) -> List b
+    -- (>>=) :: List a -> (a -> List b) -> List b
     xs >>= f = conc (fmap f xs)
     -- (>>) :: List a -> List b -> List b
-    xs >> ys = conc (fmap (\_ -> ys) xs)
+    xs >> ys = xs >>= \_ -> ys --conc (fmap (\_ -> ys) xs)
     -- fail :: String -> List a
     fail _ = Empty
 
@@ -26,6 +29,20 @@ instance MonadPlus List where
 instance Functor List where
     fmap _ Empty = Empty
     fmap f (Cons x xs) = Cons (f x) (fmap f xs)
+
+instance Applicative List where
+    -- pure :: a -> List a
+    pure = return
+
+    -- (<*>) :: List (a -> b) -> List a -> List b
+    fs <*> xs = ap fs xs
+
+instance Alternative List where
+    -- empty :: List a
+    empty = Empty
+
+    -- (<|>) :: List a -> List a -> List a
+    xs <|> ys = app xs ys
 
 instance Show a => Show (List a) where
     -- show :: List a -> String
