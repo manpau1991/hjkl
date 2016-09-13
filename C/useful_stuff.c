@@ -44,6 +44,9 @@ void unrollLoop(void) {
 // the compiler a volatile inline-assembly statement
 // which will not be optimized away. But we tell that
 // "memory" has changed, so a barrier will be made.
+//
+// Or more precisely: This prevents the compiler from
+// rearranging code.
 #define BARRIER __asm__ __volatile__ ("": : :"memory");
 
 
