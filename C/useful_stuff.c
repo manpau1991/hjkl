@@ -40,6 +40,13 @@ void unrollLoop(void) {
 }
 
 
+// This pragma performs a simple barrier by telling
+// the compiler a volatile inline-assembly statement
+// which will not be optimized away. But we tell that
+// "memory" has changed, so a barrier will be made.
+#define BARRIER __asm__ __volatile__ ("": : :"memory");
+
+
 int main(int argc, char** argv) {
 #if CPP_COMMENTS_SUPPORTED
     printf("C++ comments are supported.\n\n");
@@ -50,5 +57,7 @@ int main(int argc, char** argv) {
     printf("\n");
 
     unrollLoop();
+
+    BARRIER
     return 0;
 }
